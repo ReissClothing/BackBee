@@ -1,0 +1,11 @@
+services:
+#    back_bee_core.example:
+#        class: BackBee\Bundle\CoreBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]
+    site:
+        class: BackBee\CoreDomain\Site\Site
+        arguments:
+            - 0ab498464671a28d34c8b1511867e9d7
+        calls:
+            - [setLabel, ['Reiss']]
+            - [setServerName, ['symfony.dev']]
