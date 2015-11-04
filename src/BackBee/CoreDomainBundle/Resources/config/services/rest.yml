@@ -1,0 +1,90 @@
+parameters:
+    bbapp.rest.hydrator.class: BackBee\Rest\Hydration\RestHydrator
+    bbapp.rest.encoder_provider.class: BackBee\Rest\Encoder\ContainerEncoderProvider
+    bbapp.rest.encoder_json.class: Symfony\Component\Serializer\Encoder\JsonEncoder
+    bbapp.rest.encoder_xml.class: Symfony\Component\Serializer\Encoder\XmlEncoder
+
+    bbapp.rest.listener_validation.class: BackBee\Rest\EventListener\ValidationListener
+    bbapp.rest.listener_pagination.class: BackBee\Rest\EventListener\PaginationListener
+    bbapp.rest.listener_param_converter.class: BackBee\Rest\EventListener\ParamConverterListener
+    bbapp.rest.listener_body.class: BackBee\Rest\EventListener\BodyListener
+    bbapp.rest.listener_exception.class: BackBee\Rest\EventListener\ExceptionListener
+    bbapp.rest.listener_exception.mapping:
+        Exception:
+            code: 500
+        Symfony\Component\Security\Core\Exception\ProviderNotFoundException:
+            code: 401
+            message: Authentication failed - supplied public key or signature is incorrect
+        Doctrine\ORM\ORMException:
+            code: 500
+        Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException:
+            code: 401
+            message: Authenticaton failed - public key not provided
+
+services:
+    rest.hydrator:
+        class:      %bbapp.rest.hydrator.class%
+        arguments:  ["@doctrine.orm.default_entity_manager"]
+
+    rest.encoder_provider:
+        class:      %bbapp.rest.encoder_provider.class%
+        calls:
+            - [setContainer, [@service_container]]
+        arguments:  [{json: "rest.encoder.json", xml: "rest.encoder.xml"}]
+
+    rest.encoder.json:
+        class:      %bbapp.rest.encoder_json.class%
+
+    rest.encoder.xml:
+        class:      %bbapp.rest.encoder_xml.class%
+
+    rest.listener.body:
+        class:      %bbapp.rest.listener_body.class%
+        arguments:  [@rest.encoder_provider, true]
+        calls:
+            - [setPath, [%bbapp.rest_api.path%]]
+
+    rest.listener.exception:
+        class:      %bbapp.rest.listener_exception.class%
+        calls:
+            - [setPath, [%bbapp.rest_api.path%]]
+            - [setMapping, [%bbapp.rest.listener_exception.mapping%]]
+
+    rest.listener.validation:
+        class:      %bbapp.rest.listener_validation.class%
+        arguments:  [@service_container]
+
+    rest.listener.pagination:
+        class:      %bbapp.rest.listener_pagination.class%
+        arguments:  [@rest.metadata.factory, @validator]
+        calls:
+            - [setPath, [%bbapp.rest_api.path%]]
+
+    rest.listener.param_converter:
+        class:      %bbapp.rest.listener_param_converter.class%
+        arguments:  [@rest.metadata.factory, @validator]
+        calls:
+            - [setPath, [%bbapp.rest_api.path%]]
+
+#    rest.listener.security:
+#        class: BackBee\Rest\EventListener\SecurityListener
+#        arguments: [@security.context, @bb.expression_language, @security.trust_resolver, @security.role_hierarchy]
+#        calls:
+#            - [setMetadataFactory, [@rest.metadata.factory]]
+
+    rest.metadata.annotation_reader:
+        class: Doctrine\Common\Annotations\AnnotationReader
+
+    rest.metadata.annotation_driver:
+        class: BackBee\Rest\Mapping\Driver\AnnotationDriver
+        arguments:  [@rest.metadata.annotation_reader]
+
+    rest.metadata.factory:
+        class: Metadata\MetadataFactory
+        arguments:  [@rest.metadata.annotation_driver]
+        calls:
+            - [setCache, [@rest.metadata.cache]]
+
+    rest.metadata.cache:
+        class:     BackBee\Rest\Metadata\Cache\FileCache
+        arguments: ["%bbapp.cache.dir%/", %kernel.debug%]

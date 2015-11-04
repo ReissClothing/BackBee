@@ -20,9 +20,42 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('back_bee_core_domain');
 
-        // Here you should define the parameters that are allowed to
-        // configure your bundle. See the documentation linked above for
-        // more information on that topic.
+        $rootNode
+            ->children()
+                ->arrayNode('renderer')
+                    ->children()
+                        ->arrayNode('bb_scripts_directory')
+                            ->children()
+                                ->scalarNode('common')->end()
+                                ->scalarNode('form')->end()
+                            ->end()
+                        ->end()
+                        ->arrayNode('adapter')
+                            ->children()
+                                ->arrayNode('twig')
+                                    ->children()
+                                        ->scalarNode('class')->end()
+                                        ->arrayNode('config')->end()
+                                    ->end()
+                                ->end()
+                                ->arrayNode('phtml')
+                                    ->children()
+                                        ->scalarNode('class')->end()
+                                        ->arrayNode('config')->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                        ->arrayNode('path')
+                            ->children()
+                                ->scalarNode('scriptdir')->end()
+                                ->scalarNode('layoutdir')->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end()
+        ;
 
         return $treeBuilder;
     }

@@ -1,0 +1,103 @@
+# Serializer services and parameters
+
+services:
+    serializer:
+        class: JMS\Serializer\Serializer
+        arguments:
+            - @serializer.metadata_factory
+            - @serializer.handler_registry
+            - @serializer.object_constructor
+            - @serializer.serialization_visitor_map
+            - @serializer.deserialization_visitor_map
+            - @serializer.event_dispatcher
+
+    serializer.serialization_visitor_map:
+        class: PhpCollection\Map
+        calls:
+            - [set, [json, @serializer.json_serialization_visitor]]
+    serializer.deserialization_visitor_map:
+        class: PhpCollection\Map
+        calls:
+            - [set, [json, @serializer.json_deserialization_visitor]]
+
+
+    serializer.metadata_factory:
+        class: Metadata\MetadataFactory
+        arguments:
+            - @serializer.metadata.lazy_loading_driver
+            - Metadata\ClassHierarchyMetadata
+            - %debug%
+        calls:
+            - [setCache, [@serializer.metadata.cache]]
+
+    serializer.handler_registry:
+        class: JMS\Serializer\Handler\LazyHandlerRegistry
+        arguments: [@service_container]
+        calls:
+            - [registerSubscribingHandler, [@serializer.handler.arraycollection]]
+    serializer.object_constructor:
+        class: BackBee\Serializer\Construction\DoctrineObjectConstructor
+        arguments:
+            - @doctrine
+            - @serializer.object_fallback_constructor
+
+    serializer.object_fallback_constructor:
+        class: JMS\Serializer\Construction\UnserializeObjectConstructor
+
+    serializer.json_serialization_visitor:
+        class: JMS\Serializer\JsonSerializationVisitor
+        arguments:
+            - @serializer.naming_strategy
+        calls:
+            - [setOptions, [[]]]
+    serializer.json_deserialization_visitor:
+        class: JMS\Serializer\JsonDeserializationVisitor
+        arguments:
+            - @serializer.naming_strategy
+            - @serializer.object_constructor
+    serializer.event_dispatcher:
+        class: JMS\Serializer\EventDispatcher\LazyEventDispatcher
+        arguments: [@service_container]
+        calls:
+            - [addListener, ['serializer.post_serialize', [@serializer.event.pagelistener, 'onPostSerialize'], 'BackBee\CoreDomain\NestedNode\Page']]
+    serializer.metadata.lazy_loading_driver:
+        class: Metadata\Driver\LazyLoadingDriver
+        arguments: [@service_container, serializer.metadata_driver]
+
+    serializer.metadata_driver:
+        class: JMS\Serializer\Metadata\Driver\DoctrineTypeDriver
+        arguments: [@serializer.metadata_annotation_driver, @doctrine]
+
+    serializer.metadata_annotation_driver:
+        class: JMS\Serializer\Metadata\Driver\AnnotationDriver
+        arguments: [@annotation_reader]
+
+        #JMS\Serializer\Metadata\Driver
+
+    serializer.metadata.cache:
+        class: BackBee\Rest\Metadata\Cache\FileCache
+        arguments:  ["%bbapp.cache.dir%/"]
+
+    serializer.naming_strategy:
+        class: BackBee\Serializer\Naming\DoctrinePropertyNamingStrategy
+        arguments:  [@doctrine, @serializer.serialized_naming_strategy]
+
+    serializer.serialized_naming_strategy:
+        class: JMS\Serializer\Naming\SerializedNameAnnotationStrategy
+        arguments:  [@serializer.camel_case_naming_strategy]
+
+    serializer.camel_case_naming_strategy:
+        class: JMS\Serializer\Naming\CamelCaseNamingStrategy
+
+    serializer.doctrine_property_naming_strategy:
+        class: BackBee\Serializer\Naming\DoctrinePropertyNamingStrategy
+        arguments:  [@doctrine]
+
+    # Serializer handlers
+    serializer.handler.arraycollection:
+        class: JMS\Serializer\Handler\ArrayCollectionHandler
+
+    # Serializer events
+    serializer.event.pagelistener:
+        class: BackBee\NestedNode\Listener\Serializer\PageListener
+        arguments: [@service_container]

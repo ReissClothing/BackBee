@@ -85,3 +85,22 @@ swiftmailer:
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
+
+
+back_bee_core_domain:
+    renderer:
+        bb_scripts_directory:
+            common: %bbapp.base.dir%/Resources/scripts
+            form: %bbapp.base.dir%/Form/Templates/scripts
+
+        adapter:
+            twig:
+                class: BackBee\Renderer\Adapter\Twig
+                config: []
+            phtml:
+                class: BackBee\Renderer\Adapter\phtml
+                config: []
+
+        path:
+            scriptdir: Templates/scripts
+            layoutdir: Layouts

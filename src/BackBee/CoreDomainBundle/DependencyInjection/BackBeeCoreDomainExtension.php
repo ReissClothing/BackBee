@@ -22,7 +22,13 @@ class BackBeeCoreDomainExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $container->setParameter('bbapp.config.renderer', $config['renderer']);
+
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config/services'));
+        $loader->load('bb.yml');
+        $loader->load('new.yml');
         $loader->load('services.yml');
+        $loader->load('routing.yml');
+        $loader->load('rest.yml');
     }
 }

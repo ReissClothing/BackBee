@@ -1,0 +1,10 @@
+parameters:
+
+    bbapp.routing.class: BackBee\Routing\RouteCollection
+    bbapp.routing.default_protocol: http
+    bbapp.routing.image_uri_prefix: images
+    bbapp.routing.media_uri_prefix: media
+    bbapp.routing.resource_uri_prefix: resources
+
+    classcontent_thumbnail.base_folder: img/contents
+    classcontent_thumbnail.extension: png

@@ -1,0 +1,29 @@
+# Profile services and parameters
+parameters:
+    bbapp.toolbar.listener.class: BackBee\Profiler\EventListener\ToolbarListener
+    bbapp.profiler.listener.class: BackBee\Event\Listener\ProfilerListener
+
+services:
+    profiler.listener:
+        class:      %bbapp.profiler.listener.class%
+        arguments:  [@profiler]
+        calls:
+            - [setEnabled, [%debug%]]
+        tags:
+            - { name: kernel.event_subscriber }
+
+    profiler.toolbar.listener:
+        class:      %bbapp.toolbar.listener.class%
+        arguments:  [%debug%]
+        calls:
+            - [setContainer, [@service_container]]
+
+    profiler:
+        class:      Symfony\Component\HttpKernel\Profiler\Profiler
+        arguments:  [@profiler.storage, @logging]
+        calls:
+            - [set, [["@data_collector.config", "@data_collector.request", "@data_collector.exception", "@data_collector.events", "@data_collector.logger", "@data_collector.memory", "@data_collector.routing", "@data_collector.doctrine"]]]
+
+    profiler.storage:
+        class:      BackBee\Profiler\FileProfilerStorage
+        arguments:  [@bbapp, "file:%bbapp.cache.dir%/_profiler/"]

@@ -1,0 +1,285 @@
+parameters:
+    # bbapp parameters, somes will be set at init of container by BBApplication
+    bbapp.locale: 'en_US'
+    translator.fallback: 'en'
+
+    # bbapp classes
+#    bbapp.config.class: BackBee\Config\Config
+    bbapp.logger.class: BackBee\Logging\Logger
+    bbapp.logger_debug.class: BackBee\Logging\DebugStackLogger
+    bbapp.controller.class: BackBee\Controller\FrontController
+#    bbapp.media.controller.class: BackBee\Controller\MediaController
+#    bbapp.resource.controller.class: BackBee\Controller\ResourceController
+    bbapp.renderer.class: BackBee\Renderer\Renderer
+    bbapp.event.dispatcher.class: BackBee\Event\Dispatcher
+    bbapp.urlgenerator.class: BackBee\CoreDomainBundle\Rewriting\UrlGenerator
+    bbapp.translator.class: BackBee\Translation\Translator
+    bbapp.pagebuilder.class: BackBee\NestedNode\Builder\PageBuilder
+    bbapp.registry.class: Symfony\Component\HttpFoundation\ParameterBag
+    bbapp.autoloader.class: BackBee\AutoLoader\AutoLoader
+    bbapp.keywordbuilder.class: BackBee\NestedNode\Builder\KeywordBuilder
+    bbapp.controller_resolver.class: BackBee\Controller\ControllerResolver
+    bbapp.request.class: Symfony\Component\HttpFoundation\Request
+
+    bbapp.script.command: php
+    bbapp.console.command: bin/console.php
+
+    bbapp.rest_api.path: /rest/
+    bbapp.rest_api.version: 1
+
+    bbapp.dbal.logger.profiling.class: BackBee\Logging\DebugStackLogger
+
+    # data collectors
+    bbapp.collector.config.class: BackBee\Profiler\DataCollector\ConfigDataCollector
+    bbapp.collector.request.class: Symfony\Component\HttpKernel\DataCollector\RequestDataCollector
+    bbapp.collector.exception.class: Symfony\Component\HttpKernel\DataCollector\ExceptionDataCollector
+    bbapp.collector.events.class: Symfony\Component\HttpKernel\DataCollector\EventDataCollector
+    bbapp.collector.logger.class: Symfony\Component\HttpKernel\DataCollector\LoggerDataCollector
+    bbapp.collector.time.class: Symfony\Component\HttpKernel\DataCollector\TimeDataCollector
+    bbapp.collector.memory.class: Symfony\Component\HttpKernel\DataCollector\MemoryDataCollector
+    bbapp.collector.routing.class: BackBee\Profiler\DataCollector\RoutingDataCollector
+    bbapp.collector.doctrine.class: BackBee\Profiler\DataCollector\DoctrineDataCollector
+
+    data_collector.templates:
+        config: "%bbapp.base.dir%/Resources/scripts/Collector/config.html.twig"
+        request: "%bbapp.base.dir%/Resources/scripts/Collector/request.html.twig"
+        exception: "%bbapp.base.dir%/Resources/scripts/Collector/exception.html.twig"
+        events: "%bbapp.base.dir%/Resources/scripts/Collector/events.html.twig"
+        logger: "%bbapp.base.dir%/Resources/scripts/Collector/logger.html.twig"
+        # time: "%bbapp.base.dir%/Resources/scripts/Collector/time.html.twig"
+        memory: "%bbapp.base.dir%/Resources/scripts/Collector/memory.html.twig"
+        routing: "%bbapp.base.dir%/Resources/scripts/Collector/routing.html.twig"
+        db: "%bbapp.base.dir%/Resources/scripts/Collector/db.html.twig"
+
+    config.yml_files_to_ignore: ['services', 'bootstrap']
+
+    bbapp.config.configurator.class: BackBee\Config\Configurator
+    bbapp.config.persistor.class: BackBee\Config\Persistor
+    bbapp.bundle.loader.class: BackBee\Bundle\BundleLoader
+    bbapp.classcontent.category_manager.class: BackBee\ClassContent\CategoryManager
+    bbapp.classcontent.manager.class: BackBee\ClassContent\ClassContentManager
+    bbapp.classcontent.exception_on_unknown_classname: true  # true: always throw an exception on class content unknown
+                                                             # false:  always ignore class content unknown
+                                                             # debug: throw an exception on class content unknown if debug mode is activated
+
+services:
+
+#    config:
+#        class:      %bbapp.config.class%
+#        arguments:  [%bbapp.base.dir%/Config, @cache.bootstrap, null, %debug%, %config.yml_files_to_ignore%]
+#        tags:
+#            - { name: "dumpable", dispatch_event: false }
+#        calls:
+#            - [setContainer, [@service_container]]
+#            - [setEnvironment, [%bbapp.environment%]]
+#        configurator: [@config.configurator, configureApplicationConfig]
+
+#    event.dispatcher:
+#        class:      %bbapp.event.dispatcher.class%
+#        arguments:  [@bbapp, @config]
+#        tags:
+#            - { name: "dumpable", dispatch_event: false }
+#    ed:
+#        alias: event.dispatcher
+
+    request:
+        class: %bbapp.request.class%
+        factory: [%bbapp.request.class%, createFromGlobals]
+
+#    controller:
+#        class:      %bbapp.controller.class%
+#        arguments:  [@bbapp]
+
+#    media.controller:
+#        class:      %bbapp.media.controller.class%
+#        arguments: [@bbapp]
+
+#    resource.controller:
+#        class:      %bbapp.resource.controller.class%
+#        arguments: [@bbapp]
+
+#    renderer:
+#        class:      %bbapp.renderer.class%
+#pasarle la configuracion bbapp.config.renderer
+#        arguments:  [@bbapp]
+#        tags:
+#            - { name: "dumpable", dispatch_event: false }
+
+#    rewriting.urlgenerator:
+#        class:      %bbapp.urlgenerator.class%
+#        arguments:  [@bbapp]
+
+#    translator:
+#        class:      %bbapp.translator.class%
+#        arguments:  [@bbapp, %bbapp.locale%]
+#        calls:
+#            - [setLocale, [%bbapp.locale%]]
+
+    pagebuilder:
+        class:      %bbapp.pagebuilder.class%
+        arguments:  [@doctrine.orm.default_entity_manager]
+
+    registry:
+        class:      %bbapp.registry.class%
+
+#    autoloader:
+#        class:      %bbapp.autoloader.class%
+#        arguments:  [@bbapp]
+#        calls:
+#            - [setEventDispatcher, [@event.dispatcher]]
+#        tags:
+#            - { name: "dumpable", dispatch_event: false }
+
+    keywordbuilder:
+        class:      %bbapp.keywordbuilder.class%
+        arguments:  [@doctrine.orm.default_entity_manager]
+
+
+#    bundle.loader:
+#        class:      %bbapp.bundle.loader.class%
+#        arguments:  [@bbapp]
+#        tags:
+#            - { name: "dumpable", dispatch_event: false }
+
+    config.configurator:
+        class:      %bbapp.config.configurator.class%
+        arguments:  [@bbapp, @bundle.loader]
+        public:     false
+
+#    config.persistor:
+#        class:      %bbapp.config.persistor.class%
+#        arguments:  ["@bbapp", "@config.configurator"]
+
+#    classcontent.iconizer.thumbnail:
+#        class:      BackBee\ClassContent\Iconizer\ThumbnailIconizer
+#        arguments:  [@bbapp]
+#
+#    classcontent.iconizer.property:
+#        class:      BackBee\ClassContent\Iconizer\PropertyIconizer
+#        arguments:  [@routing]
+#
+#    classcontent.iconizer.chained:
+#        class:      BackBee\ClassContent\Iconizer\ChainIconizer
+#        arguments:  [["@classcontent.iconizer.property", "@classcontent.iconizer.thumbnail"]]
+#
+#    classcontent.category_manager:
+#        class:      %bbapp.classcontent.category_manager.class%
+#        arguments: [@bbapp]
+#
+#    classcontent.manager:
+#        class:      %bbapp.classcontent.manager.class%
+#        arguments: [@bbapp, "@classcontent.iconizer.chained"]
+
+#    controller_resolver:
+#        class:      %bbapp.controller_resolver.class%
+#        arguments:  [@bbapp]
+
+#    annotation_reader.cache:
+#        class: Doctrine\Common\Cache\ArrayCache
+#
+#    annotation_reader:
+#        class: Doctrine\Common\Annotations\CachedReader
+#        arguments: [@annotation_reader_chained, @annotation_reader.cache]
+#
+#    annotation_reader_chained:
+#        class: BackBee\Annotations\ChainAnnotationReader
+#        arguments: [[@annotation_reader.full, @annotation_reader.simple]]
+#
+#    annotation_reader.simple:
+#        class: Doctrine\Common\Annotations\SimpleAnnotationReader
+#        calls:
+#            - [addNamespace, ['Doctrine\ORM\Mapping']]
+#
+#    annotation_reader.full:
+#        class: Doctrine\Common\Annotations\AnnotationReader
+
+    # data collectors
+    data_collector.config:
+        class: %bbapp.collector.config.class%
+        calls:
+            - [setKernel, [@?controller]]
+
+    data_collector.request:
+        class: %bbapp.collector.request.class%
+        tags:
+            - { name: kernel.event_subscriber }
+
+    data_collector.exception:
+        class: %bbapp.collector.exception.class%
+        tags:
+
+    data_collector.events:
+        class: %bbapp.collector.events.class%
+        tags:
+
+#    data_collector.logger:
+#        class: %bbapp.collector.logger.class%
+#        arguments:  [@logging]
+#        tags:
+#            - { name: monolog.logger,  channel: profiler }
+
+    data_collector.time:
+        class: %bbapp.collector.time.class%
+        arguments:  [@?controller]
+        tags:
+            - { name: monolog.logger,  channel: profiler }
+
+    data_collector.memory:
+        class: %bbapp.collector.memory.class%
+
+    data_collector.routing:
+        class: %bbapp.collector.routing.class%
+        calls:
+            - [setContainer, [@service_container]]
+
+
+    data_collector.doctrine:
+        class: %bbapp.collector.doctrine.class%
+        calls:
+            - [setContainer, [@service_container]]
+
+#    doctrine.dbal.logger.profiling:
+#        class: %bbapp.dbal.logger.profiling.class%
+#        arguments:  [@bbapp]
+
+#    doctrine.connection.default:
+#        class: Doctrine\DBAL\Connection
+#        factory: [@em, getConnection]
+
+#    doctrine:
+#        class: BackBee\Doctrine\Registry
+#        arguments:
+#            - @service_container
+#            - {default: @doctrine.connection.default}
+#            - {default: em}
+#            - default
+#            - default
+
+    # validator
+#    validator:
+#        class: Symfony\Component\Validator\Validator
+#        arguments:  ["@validator.metadata_factory", "@validator.factory", "@translator"]
+#
+#    validator.metadata_factory:
+#        class: Symfony\Component\Validator\Mapping\ClassMetadataFactory
+#        arguments:  ["@validator.loader_annotation"]
+#
+#    validator.loader_annotation:
+#        class: Symfony\Component\Validator\Mapping\Loader\AnnotationLoader
+#        arguments:  ["@validator.annotation_reader"]
+#
+#    validator.annotation_reader:
+#        class: Doctrine\Common\Annotations\CachedReader
+#        arguments: [@validator.annotation_reader.main, @validator.annotation_reader_cache]
+#
+#    validator.annotation_reader.main:
+#        class: Doctrine\Common\Annotations\AnnotationReader
+#
+#    validator.annotation_reader_cache:
+#        class: Doctrine\Common\Cache\FilesystemCache
+#        arguments:  ["%bbapp.cache.dir%", "validator.annotation.cache"]
+#
+#    validator.factory:
+#        class: Symfony\Component\Validator\ConstraintValidatorFactory
+
+

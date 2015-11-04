@@ -4,9 +4,59 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "eee6d01c72b19ae26ac1dd1994ac88b9",
-    "content-hash": "63ab11f0b86bf01053939c95631b719b",
+    "hash": "e1bd99996dc08db4f8e4f578e3526003",
+    "content-hash": "63f7734d766134f292f3dda199bcbf66",
     "packages": [
+        {
+            "name": "backbee/utils",
+            "version": "v2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/backbee/utils.git",
+                "reference": "1fe29626042ea394204fcf39bfc71818048f1bb8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/backbee/utils/zipball/1fe29626042ea394204fcf39bfc71818048f1bb8",
+                "reference": "1fe29626042ea394204fcf39bfc71818048f1bb8",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.4"
+            },
+            "require-dev": {
+                "symfony/yaml": "~2.7"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "BackBee\\Utils\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Mickaël Andrieu",
+                    "email": "mickael.andrieu@lp-digital.fr"
+                }
+            ],
+            "description": "BackBee tools library for php",
+            "keywords": [
+                "Array manipulation",
+                "string manipulation",
+                "tools",
+                "utilities"
+            ],
+            "time": "2015-06-27 21:06:45"
+        },
         {
             "name": "doctrine/annotations",
             "version": "v1.2.7",

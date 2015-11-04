@@ -17,3 +17,12 @@ parameters:
 
     # A secret key that's used to generate certain security-related tokens
     secret:            ThisTokenIsNotSoSecretChangeIt
+
+    bbapp.base.dir: /var/www
+    bbapp.storage.dir: /var/www/repository/Data/Storage
+    bbapp.temporary.dir: /var/www/repository/Data/Tmp;
+    bbapp.base.repository.dir:  /var/www/repository;
+    bbapp.cache.dir: /var/www/cache
+    bbapp.log.dir: /var/www/log
+    bbapp.data.dir: /var/www/repository/Data
+    secret_key: ThisSecretKeyMustBeChanged

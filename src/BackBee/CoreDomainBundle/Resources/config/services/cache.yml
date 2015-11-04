@@ -1,0 +1,61 @@
+
+parameters:
+    bbapp.cachebootstrap.class: BackBee\Cache\File\Cache
+    bbapp.cachecontrol.class: BackBee\Cache\DAO\Cache
+    bbapp.cache_listener.class: BackBee\Event\Listener\CacheListener
+    bbapp.cache.identifier_generator.class: BackBee\Cache\CacheIdentifierGenerator
+    bbapp.cache.validator.class: BackBee\Cache\CacheValidator
+
+services:
+
+    cache.bootstrap:
+        class:      %bbapp.cachebootstrap.class%
+        arguments:  [{cachedir: "%bbapp.cache.dir%", cacheautogenerate: "%bbapp.cache.autogenerate%"}, "%bbapp.context%"]
+
+    cache.control:
+        class:      %bbapp.cachecontrol.class%
+        arguments:  [{doctrine.orm.default_entity_manager: @doctrine.orm.default_entity_manager}, %bbapp.context%, @logging]
+
+    cache.listener:
+        class:      %bbapp.cache_listener.class%
+        arguments:  [@bbapp, @cache.validator, @cache.identifier_generator]
+
+    # Cache identifier generator
+    cache.identifier_generator:
+        class: %bbapp.cache.identifier_generator.class%
+        arguments: [@service_container]
+
+    cache.query_parameter.appender:
+        class: BackBee\Cache\IdentifierAppender\QueryParameterAppender
+        arguments: [@request, @doctrine.orm.default_entity_manager, 2, [content]]
+        tags:
+            - {name: cache.identifier.appender}
+
+    cache.node_parameter.appender:
+        class: BackBee\Cache\IdentifierAppender\NodeAppender
+        arguments: [@doctrine.orm.default_entity_manager, [content]]
+        tags:
+            - {name: cache.identifier.appender}
+
+    # Cache validator
+    cache.validator:
+        class: %bbapp.cache.validator.class%
+        arguments: [@service_container]
+
+    cache.request_method.validator:
+        class: BackBee\Cache\Validator\RequestMethodValidator
+        arguments: [@request, ['get'], cache_status]
+        tags:
+            - {name: cache.validator}
+
+    cache.application_core.validator:
+        class: BackBee\Cache\Validator\ApplicationCoreValidator
+        arguments: [@bbapp, cache_status]
+        tags:
+            - {name: cache.validator}
+
+    cache.pattern.validator:
+        class: BackBee\Cache\Validator\PatternValidator
+        arguments: [[]]
+        tags:
+            - {name: cache.validator}

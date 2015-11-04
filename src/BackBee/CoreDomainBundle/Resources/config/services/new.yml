@@ -1,0 +1,17 @@
+services:
+    bb.context.resource_dir:
+        class: ResourceDirContext
+        arguments:
+            - %bbapp.base.repository.dir%
+
+    # ----------------- EVENT LISTENERS --------------------
+    nestednode.page_listener:
+        arguments:
+            - @doctrine.orm.default_entity_manager
+            - @security.authorization_checker
+        class: BackBee\CoreDomainBundle\Event\Listener\PageListener
+        tags:
+            - { name: "kernel.event_listener", event: "nestednode.page.postload", method: onPostLoad }
+            - { name: "kernel.event_listener", event: "nestednode.section.preupdate", method: onPreUpdate }
+            - { name: "kernel.event_listener", event: "nestednode.page.preupdate", method: onPreUpdate }
+            - { name: "kernel.event_listener", event: "nestednode.page.onflush", method: onFlushPage }
