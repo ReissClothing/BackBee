@@ -1,7 +1,7 @@
 {% extends 'BackBeeWebBundle::layout.html.twig' %}
 {% block head %}
     {{ parent() }}
-    {{ this.partial('partials/head.twig')|raw }}
+    {{ this.partial('BackBeeWebBundle::partials/head.html.twig')|raw }}
 {% endblock %}
 
 {% block body %}
@@ -12,7 +12,7 @@
 
     <div id="bb5-site-wrapper" class="{% block layout_css_class %}{% endblock %}">
 
-        {{ this.partial('partials/header.twig')|raw }}
+        {{ this.partial('BackBeeWebBundle::partials/header.html.twig')|raw }}
 
         <nav id="nav-primary-wrapper" class="nav navbar-wrapper collapse navbar-collapse">
             <div class="container">

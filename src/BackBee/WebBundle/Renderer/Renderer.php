@@ -34,7 +34,7 @@ use BackBee\Utils\File\File;
 use BackBee\Utils\StringUtils;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bridge\Twig\TwigEngine;
+use Symfony\Bundle\TwigBundle\TwigEngine;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 /**
@@ -879,7 +879,7 @@ class Renderer extends AbstractRenderer
         if (null === $this->templateFile) {
             $this->templateFile = $this->getLayoutFile($this->getCurrentPage()->getLayout());
         }
-
+//        @todo gvf
 //        @TODO GVF
 //        if (!$this->isValidTemplateFile($this->templateFile, true)) {
 //            throw new RendererException(
@@ -1069,6 +1069,12 @@ class Renderer extends AbstractRenderer
 //        $this->getApplication()->debug(sprintf('Rendering file `%s`.', $this->templateFile));
         if (false === $isPartial) {
             $this->triggerEvent();
+        }
+
+//        ditu workaround
+        if (0!==strpos($this->templateFile,'BackBeeWebBundle')){
+
+        $this->templateFile = 'BackBeeWebBundle::'. strtolower(str_replace('.twig', '.html.twig', $this->templateFile));
         }
 
         return $this->twig->render(

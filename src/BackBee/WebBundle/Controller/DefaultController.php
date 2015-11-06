@@ -15,9 +15,9 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
  */
 class DefaultController extends Controller
 {
-    public function indexAction($name)
+    public function indexAction()
     {
-        return $this->render('BackBeeCoreDomainBundle:Default:index.html.twig', array('name' => $name));
+        return $this->render('BackBeeWebBundle::Home.html.twig', array());
     }
 
     /**

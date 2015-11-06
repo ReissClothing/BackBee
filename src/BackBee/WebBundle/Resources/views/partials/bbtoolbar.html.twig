@@ -4,8 +4,13 @@
 {% endif %}
 {# @TODO gvf #}
 {#{% if bb.token != null %}#}
-    <link href="{{ this.getResourceUrl('toolbar/dist/css/bb-ui' ~ isMin ~ '.css') }}" rel="stylesheet">
-    <link href="{{ this.getResourceUrl('toolbar/dist/css/vendor' ~ isMin ~ '.css') }}" rel="stylesheet">
+        {% stylesheets
+        '%kernel.root_dir%/Resources/public/css/bb-ui.css'
+        filter='cssrewrite'
+        %}
+<link rel="stylesheet" href="{{ asset_url }}"/>
+{% endstylesheets %}
+        {#'@BackBeeWebBundle/Resources/public/css/vendor-toolbar.css'#}
 {#{% else %}#}
     {#<link href="{{ this.getResourceUrl('toolbar/dist/css/bb-ui-login' ~ isMin ~ '.css') }}" rel="stylesheet">#}
 {#{% endif %}#}

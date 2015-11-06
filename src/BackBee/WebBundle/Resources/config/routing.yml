@@ -1,3 +1,8 @@
+bb.test:
+    path: /test
+    defaults:
+        _controller: BackBeeWebBundle:Default:index
+
 # BackBee resources
 bb.classcontent_thumbnail:
     path: /%bbapp.routing.resource_uri_prefix%/%classcontent_thumbnail.base_folder%/{filename}

@@ -1,7 +1,7 @@
 
     <title>{{ error_title is defined ? error_title : this.getCurrentPage().getTitle() }} | BackBee CMS</title>
 
-    {% include 'partials/head-meta.twig' %}
+    {% include 'BackBeeWebBundle::partials/head-meta.html.twig' %}
 
     <link rel="apple-touch-icon-precomposed" href="{{ this.getUri('/img/apple-touch-icon-57x57.png') }}">
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{{ this.getUri('/img/apple-touch-icon-72x72.png') }}">
