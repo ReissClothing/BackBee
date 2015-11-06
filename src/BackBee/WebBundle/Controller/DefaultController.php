@@ -88,10 +88,10 @@ class DefaultController extends Controller
             $response = new Response($this->get('renderer')->render($page));
 //        }
 
-        if ($sendResponse) {
-            $response->send();
-        } else {
+//        if ($sendResponse) {
+//            return $response->send();
+//        } else {
             return $response;
-        }
+//        }
     }
 }
