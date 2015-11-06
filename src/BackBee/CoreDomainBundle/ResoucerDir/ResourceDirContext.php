@@ -1,6 +1,6 @@
 <?php
 /**
- * @author Gonzalo Vilaseca <gonzalo.vilaseca@reiss.com>
+ * @author Gonzalo Vilaseca <gvf.vilaseca@reiss.com>
  * @date 04/11/15
  * @copyright Copyright (c) Reiss Clothing Ltd.
  *
@@ -11,7 +11,7 @@
 use BackBee\CoreDomain\Exception\BBException;
 
 /**
- * @author Gonzalo Vilaseca <gonzalo.vilaseca@reiss.com>
+ * @author Gonzalo Vilaseca <gvf.vilaseca@reiss.com>
  */
 class ResourceDirContext
 {
@@ -88,7 +88,7 @@ class ResourceDirContext
             $this->addResourceDir($this->getBaseRepository() . '/Ressources');
         }
 
-// @TODO gonzalo
+// @TODO gvf
 //        if ($this->hasContext()) {
 //            if (is_dir($this->getRepository() . '/Resources')) {
 //                $this->addResourceDir($this->getRepository() . '/Resources');
@@ -106,7 +106,7 @@ class ResourceDirContext
     {
         if (null === $this->repositoryDir) {
             $this->$repositoryDir = $this->baseRepositoryDir;
-            // @TODO gonzalo
+            // @TODO gvf
 //            if ($this->hasContext()) {
 //                $this->$repositoryDir .= DIRECTORY_SEPARATOR.$this->context;
 //            }

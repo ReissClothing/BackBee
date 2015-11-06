@@ -25,7 +25,7 @@ namespace BackBee\CoreDomain\Workflow;
 
 use BackBee\Exception\InvalidArgumentException;
 use BackBee\CoreDomain\Security\Acl\Domain\AbstractObjectIdentifiable;
-use BackBee\Site\Layout;
+use BackBee\CoreDomain\Site\Layout;
 
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
@@ -87,7 +87,7 @@ class State extends AbstractObjectIdentifiable implements \JsonSerializable
     /**
      * The optional layout to be applied for state.
      *
-     * @var \BackBee\Site\Layout
+     * @var \BackBee\CoreDomain\Site\Layout
      * @ORM\ManyToOne(targetEntity="BackBee\CoreDomain\Site\Layout", inversedBy="_states", fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(name="layout", referencedColumnName="uid")
      */
@@ -152,7 +152,7 @@ class State extends AbstractObjectIdentifiable implements \JsonSerializable
      *
      * @param int $code
      *
-     * @return \BackBee\Workflow\State
+     * @return \BackBee\CoreDomain\Workflow\State
      *
      * @throws \BackBee\Exception\InvalidArgumentException
      */
@@ -181,7 +181,7 @@ class State extends AbstractObjectIdentifiable implements \JsonSerializable
     /**
      * Returns the layout if defined, NULL otherwise.
      *
-     * @return \BackBee\Site\Layout
+     * @return \BackBee\CoreDomain\Site\Layout
      * @codeCoverageIgnore
      */
     public function getLayout()
@@ -220,7 +220,7 @@ class State extends AbstractObjectIdentifiable implements \JsonSerializable
      *
      * @param type $label
      *
-     * @return \BackBee\Workflow\State
+     * @return \BackBee\CoreDomain\Workflow\State
      * @codeCoverageIgnore
      */
     public function setLabel($label)
@@ -233,9 +233,9 @@ class State extends AbstractObjectIdentifiable implements \JsonSerializable
     /**
      * Sets the layout associated to this state.
      *
-     * @param \BackBee\Site\Layout $layout
+     * @param \BackBee\CoreDomain\Site\Layout $layout
      *
-     * @return \BackBee\Workflow\State
+     * @return \BackBee\CoreDomain\Workflow\State
      */
     public function setLayout(Layout $layout = null)
     {

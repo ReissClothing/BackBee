@@ -878,7 +878,7 @@ abstract class AbstractContent implements ObjectIdentifiableInterface, Renderabl
     /**
      * Returns a string that represents shorten namespace of current classname.
      *
-     * Example: BackBee\ClassContent\Element\Text => Element/Text
+     * Example: BackBee\CoreDomain\ClassContent\Element\Text => Element/Text
      *
      * @return string
      */

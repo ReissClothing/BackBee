@@ -18,6 +18,7 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new BackBee\CoreDomainBundle\BackBeeCoreDomainBundle(),
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
+            new BackBee\WebBundle\BackBeeWebBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

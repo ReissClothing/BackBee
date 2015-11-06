@@ -1,0 +1,73 @@
+<!-- JS Alert -->
+<noscript>
+    <p><span lang="fr">JavaScript désactivé - Ce site requiert l'activation de JavaScript.</span><br><span lang="en">JavaScript is deactivated - This site requires JavaScript.</span></p>
+</noscript>
+<!-- -->
+
+
+<!--[if lt IE 8]>
+<div class="browser-ie-alert">
+<p lang="fr">Ce site requiert Microsoft Internet Explorer 8 minimum. SVP, mettez-le à jour.</p>
+<p lang="en">This website requires Microsoft Internet Explorer browser 8 minimum; please update.</p>
+</div>
+<![endif]-->
+
+
+<!-- SHORTCUTS -->
+<div id="access-shortcuts-wrapper">
+    <ul class="list-inline">
+        <li><a href="#content">Aller au contenu</a></li>
+        <li><a href="#nav-primary">Aller à la navigation</a></li>
+    </ul>
+</div>
+<!-- END SHORTCUTS -->
+
+<!-- BEGIN HEADER -->
+<header id="header" class="header header-wrapper">
+  <!-- -->
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-4 col-xs-6">
+                <p class="logo-wrapper">
+                    <a href="{{ bb.routing.getUri('/') }}" title="Home"><img src="{{ this.getResourceUrl('img/logo.png') }}" alt="Accueil" class="logo"></a>
+                </p>
+            </div>
+            <div class="col-sm-8 hidden-xs header-toolbar-wrapper">
+            <!-- -->
+                <ul class="list-inline header-toolbar">
+                    {# need to be developped
+                    <li>
+                        <div class="section-main-search">
+                            <form role="search" class="form form-custom form-inline">
+                                <fieldset>
+                                    <legend class="sr-only">Recherche</legend>
+
+                                    <div class="input-group">
+                                        <label class="sr-only" for="fq-search-sitewide"><span>Rechercher</span></label>
+                                        <input type="text" placeholder="Rechercher" class="form-control" id="fq-search-sitewide">
+                                        <div class="input-group-btn">
+                                            <button type="submit" class="btn">
+                                                <i class="fa fa-search"></i><span class="sr-only">Lancer la recherche</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </li>
+                    #}
+                    <li class="separator"></li>
+                    {{ this.socialNetwork()|raw }}
+                </ul>
+            <!-- /-->
+            </div>
+            <div class="col-xs-6 visible-xs">
+                <button type="button" class="btn-toggle navbar-toggle collapsed" data-toggle="collapse" data-target="#nav-primary-wrapper">
+                    <span class="sr-only">Menu</span>
+                </button>
+            </div>
+        </div>
+    </div>
+<!-- -->
+</header>
+<!-- END HEADER -->

@@ -25,19 +25,19 @@ namespace BackBee\CoreDomain\NestedNode;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
 use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\Security\Acl\Model\DomainObjectInterface;
 use BackBee\CoreDomain\ClassContent\AbstractClassContent;
 use BackBee\CoreDomain\ClassContent\ContentSet;
-use BackBee\Exception\InvalidArgumentException;
 //use BackBee\Installer\Annotation as BB;
 use BackBee\MetaData\MetaDataBag;
 use BackBee\CoreDomain\Renderer\RenderableInterface;
 use BackBee\CoreDomain\Security\Acl\Domain\AbstractObjectIdentifiable;
-use BackBee\Site\Layout;
+use BackBee\CoreDomain\Site\Layout;
 use BackBee\CoreDomain\Site\Site;
 use BackBee\Utils\Numeric;
-use BackBee\Workflow\State;
+use BackBee\CoreDomain\Workflow\State;
 
 /**
  * Page object in BackBee.
@@ -59,7 +59,7 @@ use BackBee\Workflow\State;
  *
  * @copyright   Lp digital system
  * @author      c.rouillon <charles.rouillon@lp-digital.fr>
- * @ORM\Entity(repositoryClass="BackBee\NestedNode\Repository\PageRepository")
+ * @ORM\Entity(repositoryClass="BackBee\CoreDomain\NestedNode\Repository\PageRepository")
  * @ORM\Table(name="page",indexes={
  *     @ORM\Index(name="IDX_STATE_PAGE", columns={"state"}),
  *     @ORM\Index(name="IDX_SELECT_PAGE", columns={"level", "state", "publishing", "archiving", "modified"}),
@@ -141,7 +141,7 @@ class Page extends AbstractObjectIdentifiable implements RenderableInterface, Do
     /**
      * The layout associated to the page.
      *
-     * @var \BackBee\Site\Layout
+     * @var \BackBee\CoreDomain\Site\Layout
      * @ORM\ManyToOne(targetEntity="BackBee\CoreDomain\Site\Layout", inversedBy="_pages", fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(name="layout_uid", referencedColumnName="uid")
      */
@@ -266,7 +266,7 @@ class Page extends AbstractObjectIdentifiable implements RenderableInterface, Do
     /**
      * The optional workflow state.
      *
-     * @var \BackBee\Workflow\State
+     * @var \BackBee\CoreDomain\Workflow\State
      * @ORM\ManyToOne(targetEntity="BackBee\CoreDomain\Workflow\State", fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(name="workflow_state", referencedColumnName="uid")
      */
@@ -700,6 +700,7 @@ class Page extends AbstractObjectIdentifiable implements RenderableInterface, Do
      * @return boolean
      * @codeCoverageIgnore
      */
+//  @todo gvf GVF todo change naming to something isActive, canGoLive, canBeDisplayed or more generic
     public function isRenderable()
     {
         return $this->isOnline();

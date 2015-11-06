@@ -36,7 +36,7 @@ use BackBee\CoreDomain\Site\Site;
  * @copyright   Lp digital system
  * @author      c.rouillon <charles.rouillon@lp-digital.fr>
  *
- * @ORM\Entity(repositoryClass="BackBee\NestedNode\Repository\SectionRepository")
+ * @ORM\Entity(repositoryClass="BackBee\CoreDomain\NestedNode\Repository\SectionRepository")
  * @ORM\Table(name="section",indexes={@ORM\Index(name="IDX_TREE_SECTION", columns={"uid", "root_uid", "leftnode", "rightnode"})})
  * @ORM\HasLifecycleCallbacks
  */

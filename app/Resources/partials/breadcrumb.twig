@@ -1,0 +1,12 @@
+<div class="breadcrumb-wrapper">
+    <div class="container">
+        <ul class="breadcrumb">
+            {% for item in ancestors %}
+                <li><a href="{{ bb.routing.getUri(item.getUrl()) }}">{{ item.getTitle() }}</a></li>
+            {% endfor %}
+            {% if current is not null %}
+                <li class="active"><a href="{{ bb.routing.getUri(current.getUrl()) }}">{{ current.getTitle() }}</a></li>
+            {% endif %}
+        </ul>
+    </div>
+</div>

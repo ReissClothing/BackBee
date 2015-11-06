@@ -1,0 +1,15 @@
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>{{ error_title is defined ? error_title : this.getCurrentPage().getTitle() }} | BackBee CMS</title>
+
+    {% include 'partials/head-meta.twig' %}
+
+    <link rel="apple-touch-icon-precomposed" href="{{ this.getUri('/img/apple-touch-icon-57x57.png') }}">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{{ this.getUri('/img/apple-touch-icon-72x72.png') }}">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{{ this.getUri('/img/apple-touch-icon-114x114.png') }}">
+
+    <link rel="shortcut icon" href="{{ this.getUri('/favicon.ico') }}">
+
+    {% include 'partials/head-css.twig' %}
+    {% include 'partials/head-js.twig' %}
+</head>

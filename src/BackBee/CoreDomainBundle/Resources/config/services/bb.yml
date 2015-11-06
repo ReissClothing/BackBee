@@ -24,4 +24,4 @@ services:
             - 0ab498464671a28d34c8b1511867e9d7
         calls:
             - [setLabel, ['Reiss']]
-            - [setServerName, ['symfony.dev']]
+            - [setServerName, ['backbee-beta.dev']]

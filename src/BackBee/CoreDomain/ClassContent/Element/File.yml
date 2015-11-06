@@ -1,0 +1,14 @@
+File:
+  repository: \BackBee\ClassContent\Repository\Element\FileRepository
+  traits: [BackBee\ClassContent\Traits\Element\FileJsonSerializeTrait]
+  properties:
+    name: File
+    description: An attached file
+  elements:
+    path: !!scalar
+    originalname: !!scalar
+  parameters:
+    stat: ~
+  fixture:
+    path: picture
+    originalname: word

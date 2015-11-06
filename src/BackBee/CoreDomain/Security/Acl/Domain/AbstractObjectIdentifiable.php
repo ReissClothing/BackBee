@@ -33,7 +33,7 @@ use Symfony\Component\Security\Core\Util\ClassUtils;
  * The main domain objects in BackBee application are :
  *
  * * \BackBee\CoreDomain\Site\Site
- * * \BackBee\Site\Layout
+ * * \BackBee\CoreDomain\Site\Layout
  * * \BackBee\Site\NestedNode
  * * \BackBee\Site\AbstractClassContent
  *

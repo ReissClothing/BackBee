@@ -1,0 +1,8 @@
+Date:
+  properties:
+    name: Date
+    description: An attached date
+  elements:
+    value: !!scalar
+  fixture:
+    value: dateTime

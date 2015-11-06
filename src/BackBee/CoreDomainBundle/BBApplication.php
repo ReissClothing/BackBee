@@ -42,7 +42,7 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
  *
  * @copyright   Lp digital system
  * @author      c.rouillon <charles.rouillon@lp-digital.fr>
- * @author      Gonzalo Vilaseca <gonzalo.vilaseca@reiss.com>
+ * @author      Gonzalo Vilaseca <gvf.vilaseca@reiss.com>
  */
 class BBApplication
 {

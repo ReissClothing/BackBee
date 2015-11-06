@@ -1,0 +1,11 @@
+parameters:
+        bbapp.renderer.class: BackBee\WebBundle\Renderer\Renderer
+services:
+#    back_bee_web.example:
+#        class: BackBee\WebBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]
+    renderer:
+        class:      %bbapp.renderer.class%
+        arguments:
+            - @templating
+            - @doctrine.orm.entity_manager

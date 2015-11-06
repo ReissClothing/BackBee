@@ -10,7 +10,8 @@ parameters:
     bbapp.controller.class: BackBee\Controller\FrontController
 #    bbapp.media.controller.class: BackBee\Controller\MediaController
 #    bbapp.resource.controller.class: BackBee\Controller\ResourceController
-    bbapp.renderer.class: BackBee\Renderer\Renderer
+# twig
+#    bbapp.renderer.class: BackBee\Renderer\Renderer
     bbapp.event.dispatcher.class: BackBee\Event\Dispatcher
     bbapp.urlgenerator.class: BackBee\CoreDomainBundle\Rewriting\UrlGenerator
     bbapp.translator.class: BackBee\Translation\Translator
@@ -82,9 +83,9 @@ services:
 #    ed:
 #        alias: event.dispatcher
 
-    request:
-        class: %bbapp.request.class%
-        factory: [%bbapp.request.class%, createFromGlobals]
+#    request:
+#        class: %bbapp.request.class%
+#        factory: [%bbapp.request.class%, createFromGlobals]
 
 #    controller:
 #        class:      %bbapp.controller.class%
@@ -97,13 +98,6 @@ services:
 #    resource.controller:
 #        class:      %bbapp.resource.controller.class%
 #        arguments: [@bbapp]
-
-#    renderer:
-#        class:      %bbapp.renderer.class%
-#pasarle la configuracion bbapp.config.renderer
-#        arguments:  [@bbapp]
-#        tags:
-#            - { name: "dumpable", dispatch_event: false }
 
 #    rewriting.urlgenerator:
 #        class:      %bbapp.urlgenerator.class%

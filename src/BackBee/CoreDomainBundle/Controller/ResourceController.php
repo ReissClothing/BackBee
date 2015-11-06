@@ -37,7 +37,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
  *
  * @copyright   Lp digital system
  * @author      e.chau <eric.chau@lp-digital.fr>
- * @author      Gonzalo Vilaseca <gonzalo.vilaseca@gmail.com>
+ * @author      Gonzalo Vilaseca <gvf.vilaseca@gmail.com>
  */
 class ResourceController extends Controller
 {

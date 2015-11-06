@@ -1,0 +1,52 @@
+<!-- BEGIN FOOTER -->
+<footer id="footer" class="footer footer-wrapper" role="contentinfo">
+    <div class="footer-social">
+        <div class="container">
+          <!-- -->
+          <div class="row">
+                <div class="col-sm-3">
+                    <p class="logo-wrapper">
+                        <a href="{{ bb.routing.getUri('/') }}" title="Accueil">
+                            <img src="{{ this.getResourceUrl('img/logo.png') }}" alt="Accueil" class="logo">
+                        </a>
+                    </p>
+                </div>
+                <div class="col-sm-9 footer-toolbar-wrapper">
+                <div class="footer-toolbar">
+                    <p class="ttl">Follow us</p>
+                    <ul class="list-inline">
+                        {{ this.socialNetwork()|raw }}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- /-->
+    </div>
+</div><!--/.footer-social-->
+<!--/-->
+    <div class="footer-nav">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    {{ this.navbar('footer')|raw }}
+                </div>
+            </div>
+        </div>
+    </div><!--/.footer-nav-->
+    <!--/.-->
+    <div class="footer-term">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <!-- -->
+                    <ul class="list-inline">
+                        <li><a href="http://www.backbee.com">BackBee.com</a></li>
+                    </ul>
+                    <!-- /-->
+                </div>
+            </div>
+        </div>
+    </div><!--/.footer-term-->
+</footer>
+<!-- END FOOTER -->
+{% include 'partials/footer-js.twig' %}

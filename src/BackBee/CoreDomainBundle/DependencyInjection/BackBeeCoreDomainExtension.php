@@ -30,5 +30,6 @@ class BackBeeCoreDomainExtension extends Extension
         $loader->load('services.yml');
         $loader->load('routing.yml');
         $loader->load('rest.yml');
+        $loader->load('site.yml');
     }
 }

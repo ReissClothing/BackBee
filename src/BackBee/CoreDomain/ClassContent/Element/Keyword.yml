@@ -1,0 +1,11 @@
+Keyword:
+  repository: \BackBee\ClassContent\Repository\Element\KeywordRepository
+  properties:
+    name: Keyword
+    description: An attached keywords
+  elements:
+    value: !!scalar
+  fixture:
+    value: word
+  parameters:
+    objectkeyword: []

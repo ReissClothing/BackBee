@@ -23,10 +23,10 @@
 
 namespace BackBee\CoreDomain\Site;
 
-use BackBee\Exception\InvalidArgumentException;
 use BackBee\CoreDomain\Security\Acl\Domain\AbstractObjectIdentifiable;
 use BackBee\Utils\Numeric;
 use Doctrine\Common\Collections\ArrayCollection;
+use InvalidArgumentException;
 use JMS\Serializer\Annotation as Serializer;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -514,7 +514,7 @@ class Layout extends AbstractObjectIdentifiable
      *
      * @param string $label
      *
-     * @return \BackBee\Site\Layout
+     * @return \BackBee\CoreDomain\Site\Layout
      */
     public function setLabel($label)
     {
@@ -530,7 +530,7 @@ class Layout extends AbstractObjectIdentifiable
      *
      * @param string $path
      *
-     * @return \BackBee\Site\Layout
+     * @return \BackBee\CoreDomain\Site\Layout
      */
     public function setPath($path)
     {
@@ -545,7 +545,7 @@ class Layout extends AbstractObjectIdentifiable
      *
      * @param mixed $data
      *
-     * @return \BackBee\Site\Layout
+     * @return \BackBee\CoreDomain\Site\Layout
      */
     public function setData($data)
     {
@@ -569,7 +569,7 @@ class Layout extends AbstractObjectIdentifiable
      *
      * @param mixed $data
      *
-     * @return \BackBee\Site\Layout
+     * @return \BackBee\CoreDomain\Site\Layout
      */
     public function setDataObject($data)
     {
@@ -587,7 +587,7 @@ class Layout extends AbstractObjectIdentifiable
      *
      * @param string $picpath
      *
-     * @return \BackBee\Site\Layout
+     * @return \BackBee\CoreDomain\Site\Layout
      */
     public function setPicPath($picpath)
     {
@@ -603,7 +603,7 @@ class Layout extends AbstractObjectIdentifiable
      *
      * @param \BackBee\CoreDomain\Site\Site $site
      *
-     * @return \BackBee\Site\Layout
+     * @return \BackBee\CoreDomain\Site\Layout
      */
     public function setSite(Site $site)
     {
@@ -618,7 +618,7 @@ class Layout extends AbstractObjectIdentifiable
      * @param string $var    the parameter name to set, if NULL all the parameters array wil be set
      * @param mixed  $values the parameter value or all the parameters if $var is NULL
      *
-     * @return \BackBee\Site\Layout
+     * @return \BackBee\CoreDomain\Site\Layout
      */
     public function setParam($var = null, $values = null)
     {
@@ -699,11 +699,11 @@ class Layout extends AbstractObjectIdentifiable
     /**
      * Add state.
      *
-     * @param \BackBee\Workflow\State $state
+     * @param \BackBee\CoreDomain\Workflow\State $state
      *
-     * @return \BackBee\Site\Layout
+     * @return \BackBee\CoreDomain\Site\Layout
      */
-    public function addState(\BackBee\Workflow\State $state)
+    public function addState(\BackBee\CoreDomain\Workflow\State $state)
     {
         $this->_states[] = $state;
 
@@ -712,9 +712,9 @@ class Layout extends AbstractObjectIdentifiable
     /**
      * Remove state.
      *
-     * @param \BackBee\Workflow\State $state
+     * @param \BackBee\CoreDomain\Workflow\State $state
      */
-    public function removeState(\BackBee\Workflow\State $state)
+    public function removeState(\BackBee\CoreDomain\Workflow\State $state)
     {
         $this->_states->removeElement($state);
     }

@@ -46,7 +46,7 @@ use JMS\Serializer\Annotation as Serializer;
  * @copyright   Lp digital system
  * @author      c.rouillon <charles.rouillon@lp-digital.fr>
  *
- * @ORM\Entity(repositoryClass="BackBee\Site\Repository\SiteRepository")
+ * @ORM\Entity(repositoryClass="BackBee\CoreDomain\Site\Repository\SiteRepository")
  * @ORM\Table(name="site", indexes={
  *     @ORM\Index(name="IDX_SERVERNAME", columns={"server_name"}),
  *     @ORM\Index(name="IDX_LABEL", columns={"label"})})
@@ -130,7 +130,7 @@ class Site extends AbstractObjectIdentifiable
      *
      * @Serializer\Expose
      * @Serializer\SerializedName("layouts")
-     * @Serializer\Type("ArrayCollection<string, BackBee\Site\Layout>")
+     * @Serializer\Type("ArrayCollection<string, BackBee\CoreDomain\Site\Layout>")
      */
     protected $_layouts;
 
@@ -218,7 +218,7 @@ class Site extends AbstractObjectIdentifiable
     }
 
     /**
-     * @param \BackBee\Site\Layout $layout
+     * @param \BackBee\CoreDomain\Site\Layout $layout
      */
     public function addLayout(Layout $layout)
     {

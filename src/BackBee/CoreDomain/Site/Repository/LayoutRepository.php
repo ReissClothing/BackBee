@@ -24,7 +24,7 @@
 namespace BackBee\CoreDomain\Site\Repository;
 
 use BackBee\BBApplication;
-use BackBee\Site\Layout;
+use BackBee\CoreDomain\Site\Layout;
 use BackBee\Utils\File\File;
 
 use Doctrine\ORM\EntityRepository;

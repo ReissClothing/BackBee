@@ -1,0 +1,39 @@
+<!doctype html>
+<html class="no-js" lang="en">
+    <head>
+        {{ this.partial('partials/head.twig')|raw }}
+    </head>
+
+    <!--[if lt IE 7]> <body class="lt-ie10 lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+    <!--[if IE 7]>    <body class="lt-ie10 lt-ie9 lt-ie8"> <![endif]-->
+    <!--[if IE 8]>    <body class="lt-ie10 lt-ie9"> <![endif]-->
+    <!--[if IE 9]>    <body class="lt-ie10"> <![endif]-->
+    <!--[if gt IE 8 | !(IE)]><!-->
+    <body>
+    <!--<![endif]-->
+        {{ this.bbtoolbar()|raw }}
+
+        <div id="fb-root"></div>
+
+        <div id="bb5-site-wrapper" class="{% block layout_css_class %}{% endblock %}">
+
+            {{ this.partial('partials/header.twig')|raw }}
+
+            <nav id="nav-primary-wrapper" class="nav navbar-wrapper collapse navbar-collapse">
+                <div class="container">
+                    {{ this.navbar('header')|raw }}
+                </div>
+            </nav>
+
+            {% block beforeMainContent %}
+                {{ this.breadcrumb()|raw }}
+            {% endblock %}
+
+            <div class="main container" role="main" itemprop="mainContentOfPage">
+                {% block content %}{% endblock %}
+            </div>
+
+            {{ this.partial('partials/footer.twig')|raw }}
+        </div>
+    </body>
+</html>

@@ -1,0 +1,19 @@
+{% extends "Main.twig" %}
+
+{% block layout_css_class %}page-is-home{% endblock %}
+
+{% block content %}
+    <div class="contentcol row">
+        <div class="col-sm-12 content-area" id="content">
+            {{ this.container().first()|raw }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block beforeMainContent %}
+    <div class="container-fluid no-padding">
+        <div class="col-sm-12">
+            {{ this.container().next()|raw }}
+        </div>
+    </div>
+{% endblock %}

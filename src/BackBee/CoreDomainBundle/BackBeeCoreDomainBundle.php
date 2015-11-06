@@ -26,6 +26,7 @@ class BackBeeCoreDomainBundle extends Bundle
         return [
             ['BackBee\CoreDomain\Site', sprintf('%s/../CoreDomain/Site', $this->getPath())],
             ['BackBee\CoreDomain\NestedNode', sprintf('%s/../CoreDomain/NestedNode', $this->getPath())],
+            ['BackBee\CoreDomain\NestedNode\Repository', sprintf('%s/../CoreDomain/NestedNode/Repository', $this->getPath())],
             ['BackBee\CoreDomain\Workflow', sprintf('%s/../CoreDomain/Workflow', $this->getPath())],
             ['BackBee\CoreDomain\ClassContent', sprintf('%s/../CoreDomain/ClassContent', $this->getPath())],
             ['BackBee\CoreDomain\Security', sprintf('%s/../CoreDomain/Security', $this->getPath())],

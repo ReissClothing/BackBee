@@ -1,0 +1,17 @@
+services:
+    bbapp.site_context:
+        class: BackBee\CoreDomainBundle\Site\SiteContext
+        arguments:
+            - @bbapp.site.resolver
+
+    bbapp.site.resolver:
+        class: BackBee\CoreDomainBundle\Site\SiteResolver
+        arguments:
+            - @bbapp.site_repository
+
+    bbapp.site_repository:
+        class: Doctrine\ORM\EntityRepository
+        factory_service: doctrine.orm.default_entity_manager
+        factory_method: getRepository
+        arguments:
+            - BackBee\CoreDomain\Site\Site

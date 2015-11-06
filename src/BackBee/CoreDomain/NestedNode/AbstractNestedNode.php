@@ -39,7 +39,7 @@ use BackBee\Utils\Numeric;
  *
  * * \BackBee\CoreDomain\NestedNode\Page        The page tree of a website
  * * \BackBee\NestedNode\Mediafolder The folder tree of the library
- * * \BackBee\NestedNode\KeyWord     The keywords trees
+ * * \BackBee\CoreDomain\NestedNode\KeyWord     The keywords trees
  *
  * @category    BackBee
  *
@@ -63,14 +63,14 @@ abstract class AbstractNestedNode extends AbstractObjectIdentifiable
 
     /**
      * The root node, cannot be NULL.
-     * @var \BackBee\NestedNode\AbstractNestedNode
+     * @var \BackBee\CoreDomain\NestedNode\AbstractNestedNode
      * @Serializer\Exclude
      */
     protected $_root;
 
     /**
      * The parent node.
-     * @var \BackBee\NestedNode\AbstractNestedNode
+     * @var \BackBee\CoreDomain\NestedNode\AbstractNestedNode
      */
     protected $_parent;
 
@@ -168,7 +168,7 @@ abstract class AbstractNestedNode extends AbstractObjectIdentifiable
     /**
      * Returns the root node.
      *
-     * @return \BackBee\NestedNode\AbstractNestedNode
+     * @return \BackBee\CoreDomain\NestedNode\AbstractNestedNode
      */
     public function getRoot()
     {
@@ -178,7 +178,7 @@ abstract class AbstractNestedNode extends AbstractObjectIdentifiable
     /**
      * Returns the parent node, NULL if this node is root.
      *
-     * @return \BackBee\NestedNode\AbstractNestedNode|NULL
+     * @return \BackBee\CoreDomain\NestedNode\AbstractNestedNode|NULL
      */
     public function getParent()
     {
@@ -292,7 +292,7 @@ abstract class AbstractNestedNode extends AbstractObjectIdentifiable
     /**
      * Is this node is an ancestor of the provided one ?
      *
-     * @param  \BackBee\NestedNode\AbstractNestedNode $node
+     * @param  \BackBee\CoreDomain\NestedNode\AbstractNestedNode $node
      * @param  Boolean                         $strict Optional, if TRUE (default) this node is excluded of ancestors list
      *
      * @return Boolean                         TRUE if this node is an anscestor or provided node, FALSE otherwise
@@ -309,7 +309,7 @@ abstract class AbstractNestedNode extends AbstractObjectIdentifiable
     /**
      * Is this node is a descendant of the provided one ?
      *
-     * @param  \BackBee\NestedNode\AbstractNestedNode $node
+     * @param  \BackBee\CoreDomain\NestedNode\AbstractNestedNode $node
      * @param  Boolean                         $strict Optional, if TRUE (default) this node is excluded of descendants list
      *
      * @return Boolean                         TRUE if this node is a descendant or provided node, FALSE otherwise
@@ -348,9 +348,9 @@ abstract class AbstractNestedNode extends AbstractObjectIdentifiable
     /**
      * Sets the root node.
      *
-     * @param  \BackBee\NestedNode\AbstractNestedNode $root
+     * @param  \BackBee\CoreDomain\NestedNode\AbstractNestedNode $root
      *
-     * @return \BackBee\NestedNode\AbstractNestedNode
+     * @return \BackBee\CoreDomain\NestedNode\AbstractNestedNode
      */
     public function setRoot(AbstractNestedNode $root)
     {
@@ -362,9 +362,9 @@ abstract class AbstractNestedNode extends AbstractObjectIdentifiable
     /**
      * Sets the parent node.
      *
-     * @param  \BackBee\NestedNode\AbstractNestedNode $parent
+     * @param  \BackBee\CoreDomain\NestedNode\AbstractNestedNode $parent
      *
-     * @return \BackBee\NestedNode\AbstractNestedNode
+     * @return \BackBee\CoreDomain\NestedNode\AbstractNestedNode
      */
     public function setParent(AbstractNestedNode $parent)
     {
@@ -376,7 +376,7 @@ abstract class AbstractNestedNode extends AbstractObjectIdentifiable
     /**
      * Sets the left position.
      * @param  int                                         $leftnode
-     * @return \BackBee\NestedNode\AbstractNestedNode
+     * @return \BackBee\CoreDomain\NestedNode\AbstractNestedNode
      * @throws \BackBee\Exception\InvalidArgumentException Occurs if the value can not be cast to positive integer
      */
     public function setLeftnode($leftnode)
@@ -394,7 +394,7 @@ abstract class AbstractNestedNode extends AbstractObjectIdentifiable
      * Sets the right position.
      *
      * @param  int                                         $rightnode
-     * @return \BackBee\NestedNode\AbstractNestedNode
+     * @return \BackBee\CoreDomain\NestedNode\AbstractNestedNode
      * @throws \BackBee\Exception\InvalidArgumentException Occurs if the value can not be cast to positive integer
      */
     public function setRightnode($rightnode)
@@ -412,7 +412,7 @@ abstract class AbstractNestedNode extends AbstractObjectIdentifiable
      * Sets the level.
      *
      * @param  type                                        $level
-     * @return \BackBee\NestedNode\AbstractNestedNode
+     * @return \BackBee\CoreDomain\NestedNode\AbstractNestedNode
      * @throws \BackBee\Exception\InvalidArgumentException Occurs if the value can not be cast to positive integer
      */
     public function setLevel($level)
@@ -430,7 +430,7 @@ abstract class AbstractNestedNode extends AbstractObjectIdentifiable
      * Sets the creation date.
      *
      * @param  \DateTime                       $created
-     * @return \BackBee\NestedNode\AbstractNestedNode
+     * @return \BackBee\CoreDomain\NestedNode\AbstractNestedNode
      */
     public function setCreated(\DateTime $created)
     {
@@ -443,7 +443,7 @@ abstract class AbstractNestedNode extends AbstractObjectIdentifiable
      * Sets the last modified date.
      *
      * @param  \DateTime                       $modified
-     * @return \BackBee\NestedNode\AbstractNestedNode
+     * @return \BackBee\CoreDomain\NestedNode\AbstractNestedNode
      */
     public function setModified($modified)
     {
