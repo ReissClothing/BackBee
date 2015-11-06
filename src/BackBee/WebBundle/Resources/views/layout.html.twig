@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>
+<html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>
+<html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js"> <!--<![endif]-->
+{# @todo gvf put common in twig extension#}
+{#{% set settings = sylius_settings_all('sylius_general') %}#}
+<head>
+   {% block head %}
+       <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    {% endblock head %}
+    {% block stylesheets %}
+        {#<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">#}
+        {#<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" type="text/css" />#}
+        {#<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.css" type="text/css" />#}
+        {#<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.css" type="text/css" />#}
+
+        {% stylesheets 'bundles/backbeeweb/css/toolbar.css' filter='cssrewrite' %}
+        <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
+        {% endstylesheets %}
+
+        {% stylesheets 'bundles/backbeeweb/css/gen.css' filter='cssrewrite' %}
+        <!--[if lte IE 8]>
+        <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
+        <![endif]-->
+        {% endstylesheets %}
+
+        {% stylesheets 'bundles/backbeeweb/css/gen-ie8.css' filter='cssrewrite' %}
+        <!--[if gt IE 8 | !(IE)]><!-->
+        <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
+        <![endif]-->
+
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+        {% endstylesheets %}
+
+    {% endblock %}
+</head>
+<body>
+    {% block body %}{% endblock %}
+    {% block javascripts %}
+        {% javascripts '@BackBeeWebBundle/Resources/public/js/modernizr.custom.min.js' %}
+        <script src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+    {% endblock %}
+</body>
+</html>
