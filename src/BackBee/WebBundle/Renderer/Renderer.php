@@ -427,7 +427,8 @@ class Renderer extends AbstractRenderer
      */
     public function getResourceUrl($pathinfo, Site $site = null)
     {
-        return $this->getUri($pathinfo, null, $site, RouteCollection::RESOURCE_URL);
+//        return $this->getUri($pathinfo, null, $site, RouteCollection::RESOURCE_URL);
+        return $this->getUri($pathinfo, null, $site);
     }
 
     /**
@@ -1070,7 +1071,7 @@ class Renderer extends AbstractRenderer
             $this->triggerEvent();
         }
 
-        $this->twig->render(
+        return $this->twig->render(
             $this->templateFile,
             array_merge($this->getAssignedVars(), $this->getBBVariable(), $this->getParam(),['this'=> $this])
         );

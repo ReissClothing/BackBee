@@ -510,7 +510,9 @@ abstract class AbstractRenderer implements RendererInterface
      */
     public function getUri($pathinfo = null, $defaultExt = null, Site $site = null, $url_type = null)
     {
-        return $this->getApplication()->getRouting()->getUri($pathinfo, $defaultExt, $site, $url_type);
+        return 'https://symfony.dev/app_dev.php'.$pathinfo;
+//        @TODO gvf
+//        return $this->getApplication()->getRouting()->getUri($pathinfo, $defaultExt, $site, $url_type);
     }
 
     public function getRelativeUrl($uri)
