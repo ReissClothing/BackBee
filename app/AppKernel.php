@@ -35,4 +35,28 @@ class AppKernel extends Kernel
     {
         $loader->load($this->getRootDir().'/config/config_'.$this->getEnvironment().'.yml');
     }
+
+    /**
+     * In case you prefer to use /dev/shm just setenv USESHM to yes
+     */
+    public function getCacheDir()
+    {
+//        if ($this->shouldUseSharedMemory()) {
+            return '/dev/shm/reiss/cache/' . $this->environment;
+//        }
+
+        return $this->rootDir . '/cache/' . $this->environment;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getLogDir()
+    {
+//        if ($this->shouldUseSharedMemory()) {
+            return '/dev/shm/reiss/logs/' . $this->environment;
+//        }
+
+        return $this->rootDir . '/logs/' . $this->environment;
+    }
 }

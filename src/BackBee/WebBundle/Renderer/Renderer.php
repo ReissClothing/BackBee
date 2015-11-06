@@ -1071,7 +1071,7 @@ class Renderer extends AbstractRenderer
             $this->triggerEvent();
         }
 
-//        ditu workaround
+//        dirty workaround
         if (0!==strpos($this->templateFile,'BackBeeWebBundle')){
 
         $this->templateFile = 'BackBeeWebBundle::'. strtolower(str_replace('.twig', '.html.twig', $this->templateFile));
