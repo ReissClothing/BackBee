@@ -22,11 +22,14 @@
     {% endjavascripts %}
 
 <div id="{{ wrapper }}"
-    data-api="{{ this.getUri('/rest/2/') }}"
-    data-base-url="{{ this.getUri('/') }}"
+     {# TODO gvf leave just version and get it from js#}
+    {#data-api="{{ path('/rest/2/', {'version': 2}) }}"#}
+    data-api="{{ path('bb.rest.api.dummy', {'version': 2}) }}"
+    data-base-url="{{ path('bb.default') }}"
     data-toolbar-selector="true"
      {# @TODO gvf #}
     {#{% if bb.token != null %}#}
+        {# @todo gvf#}
         data-autostart
         data-site-uid="{{ this.getCurrentPage().getSite().getUid() }}"
         data-page-uid="{{ this.getCurrentPage().getUid() }}"

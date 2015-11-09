@@ -734,6 +734,15 @@ bb.rest.keyword.patch:
         version: \d+
         _method: PATCH
 
+# @todo gvf this is used in JS I guess to get base api url, should be removed
+bb.rest.api.dummy:
+    path: /rest/{version}/
+    defaults:
+        _controller: BackBeeWebBundle:Default:default
+    requirements:
+        version: \d+
+        _method: GET
+
 # BackBee rss
 bb.rss:
     path: /rss/{uri}
@@ -744,8 +753,8 @@ bb.rss:
         uri: .+
 
 # Default route
-default:
+bb.default:
     path: /{uri}
     defaults:
         _controller: BackBeeWebBundle:Default:default
-        uri: null
+        uri: ''

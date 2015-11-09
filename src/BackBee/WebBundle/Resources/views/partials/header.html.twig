@@ -30,7 +30,11 @@
             <div class="col-sm-4 col-xs-6">
                 <p class="logo-wrapper">
                     {#@todo gvf#}
-                    {#<a href="{{ bb.routing.getUri('/') }}" title="Home"><img src="{{ this.getResourceUrl('img/logo.png') }}" alt="Accueil" class="logo"></a>#}
+                    <a href="{{ path('bb.default') }}" title="Home">
+                        {% image '@BackBeeWebBundle/Resources/public/images/logo.png' %}
+                        <img src="{{ asset_url }}" alt="Accueil" class="logo">
+                        {% endimage %}
+                    </a>
                 </p>
             </div>
             <div class="col-sm-8 hidden-xs header-toolbar-wrapper">

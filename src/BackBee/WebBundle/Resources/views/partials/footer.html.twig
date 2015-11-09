@@ -6,10 +6,11 @@
           <div class="row">
                 <div class="col-sm-3">
                     <p class="logo-wrapper">
-                        {# @todo gvf#}
-                        {#<a href="{{ bb.routing.getUri('/') }}" title="Accueil">#}
+                        <a href="{{ path('bb.default') }}" title="Accueil">
                         <a href="" title="Accueil">
-                            <img src="{{ this.getResourceUrl('img/logo.png') }}" alt="Accueil" class="logo">
+                            {% image '@BackBeeWebBundle/Resources/public/images/logo.png' %}
+                            <img src="{{ asset_url }}" alt="Accueil" class="logo">
+                            {% endimage %}
                         </a>
                     </p>
                 </div>

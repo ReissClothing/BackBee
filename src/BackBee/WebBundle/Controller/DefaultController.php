@@ -47,7 +47,7 @@ class DefaultController extends Controller
             ->getRepository('BackBee\CoreDomain\NestedNode\Page')
             ->findOneBy(array(
                 '_site'  => $site,
-                '_url'   => '/' . $uri,
+                '_url'   => $uri,
                 '_state' => Page::getUndeletedStates(),
             ));
 // @TODO gvf

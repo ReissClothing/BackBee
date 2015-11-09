@@ -3,10 +3,15 @@
 
     {% include 'BackBeeWebBundle::partials/head-meta.html.twig' %}
 
-    <link rel="apple-touch-icon-precomposed" href="{{ this.getUri('/img/apple-touch-icon-57x57.png') }}">
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{{ this.getUri('/img/apple-touch-icon-72x72.png') }}">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{{ this.getUri('/img/apple-touch-icon-114x114.png') }}">
+    {# @todo gvf why get uri? does it prepend something?#}
+    {#<link rel="apple-touch-icon-precomposed" href="{{ this.getUri('/img/apple-touch-icon-57x57.png') }}">#}
+    <link rel="apple-touch-icon-precomposed" href="/apple-touch-icon-57x57.png">
+    {#<link rel="apple-touch-icon-precomposed" sizes="72x72" href="{{ this.getUri('/img/apple-touch-icon-72x72.png') }}">#}
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/img/apple-touch-icon-72x72.png">
+    {#<link rel="apple-touch-icon-precomposed" sizes="114x114" href="{{ this.getUri('/img/apple-touch-icon-114x114.png') }}">#}
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/img/apple-touch-icon-114x114.png">
 
-    <link rel="shortcut icon" href="{{ this.getUri('/favicon.ico') }}">
+    {#<link rel="shortcut icon" href="{{ this.getUri('/favicon.ico') }}">#}
+    <link rel="shortcut icon" href="/favicon.ico">
 
 
