@@ -4,19 +4,22 @@
 {% endif %}
 {# @TODO gvf #}
 {#{% if bb.token != null %}#}
+{# @todo gvf pensar manera de que esto se ponga en el stylesheets del layout, asi no lo hace, idem para js#}
         {% stylesheets
         'bundles/backbeeweb/css/bb-ui.css'
         filter='cssrewrite'
         %}
 <link rel="stylesheet" href="{{ asset_url }}"/>
-{% endstylesheets %}
+    {% endstylesheets %}
         {#'@BackBeeWebBundle/Resources/public/css/vendor-toolbar.css'#}
 {#{% else %}#}
     {#<link href="{{ this.getResourceUrl('toolbar/dist/css/bb-ui-login' ~ isMin ~ '.css') }}" rel="stylesheet">#}
 {#{% endif %}#}
 
 {% if disableToolbar == false %}
-<script src="{{ this.getResourceUrl('toolbar/dist/require.js') }}"></script>
+    {% javascripts '@BackBeeWebBundle/Resources/public/js/require.js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
 
 <div id="{{ wrapper }}"
     data-api="{{ this.getUri('/rest/2/') }}"
@@ -44,6 +47,8 @@
         </div>
     </div>
     
-    <script src="{{ this.getResourceUrl('toolbar/dist/config' ~ isMin ~ '.js') }}"></script>
+    {% javascripts '@BackBeeWebBundle/Resources/public/js/toolbar-config.js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
 </div>
 {% endif %}

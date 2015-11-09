@@ -1,18 +1,24 @@
 <!-- JS -->
 <!-- jQuery stuff -->
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+{# @TODO gvf what is this used for?#}
 <script>window.jQuery || document.write('<script src="{{ this.getResourceUrl('js/libs/jquery-1.11.3.min.js') }}"><\/script>')</script>
 <script>$.uiBackCompat = false;</script> <!-- 1.9 API not loaded -->
 <!-- -->
-<script src="{{ this.getResourceUrl('js/helper.boilerplate-mobile.js') }}"></script>
-<!-- OWL js-->
-<script src="{{ this.getResourceUrl('js/lib/owl.carousel.min.js') }}"></script>
-<!-- Custom stuff -->
-<script src="{{ this.getResourceUrl('js/script.js') }}"></script>
 
-<script src="{{ this.getResourceUrl('js/lib/bootstrap.min.js') }}"></script>
+{% javascripts
+'@BackBeeWebBundle/Resources/public/js/helper.boilerplate-mobile.js'
+'@BackBeeWebBundle/Resources/public/js/lib/owl.carousel.min.js'
+'@BackBeeWebBundle/Resources/public/js/lib/bootstrap.min.js'
+'@BackBeeWebBundle/Resources/public/js/script.js'
+%}
+<script src="{{ asset_url }}"></script>
+{% endjavascripts %}
 
-<!--[if (gte IE 6)&(lte IE 8)]>
-<script type="text/javascript" src="{{ this.getResourceUrl('js/lib/selectivizr-min.js') }}"></script>
-<![endif]-->
+<![if (gte IE 6)&(lte IE 8)]>
+{% javascripts '@BackBeeWebBundle/Resources/public/js/lib/selectivizr-min.js' %}
+<script src="{{ asset_url }}"></script>
+{% endjavascripts %}
+<![endif]>
 <!-- END JS -->
