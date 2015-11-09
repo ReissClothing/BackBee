@@ -1,0 +1,13 @@
+{% if bb.token != null or image.image.path != '' %}
+<div {{ this.bbcontent(null, {class: 'bb-clickable-thumbnail'})|raw }}>
+    <a href="{{ link_image.value }}" target="_blank">
+        {{ this.render(image, 'no-figcaption', {'class': 'figure block-fullwidth'})|raw }}
+    </a>
+
+    {% if text_caption != '' %}
+        <p>
+            <a href="{{ link_caption.value is not empty ? link_caption.value : link_image.value }}" target="_blank"><span {{this.bbcontent(text_caption)|raw }}>{{ text_caption }}</span></a>
+        </p>
+    {% endif %}
+</div>
+{% endif %}

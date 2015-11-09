@@ -1,0 +1,12 @@
+Related:
+    properties:
+        name: Linked articles
+        description: "A block that display linked articles. Contains: ContentSet, Article"
+        category: [!Article]
+    elements:
+        left:
+            type: BackBee\StandardBundle\ClassContent\Article\RelatedContainer
+        middle:
+            type: BackBee\StandardBundle\ClassContent\Article\RelatedContainer
+        right:
+            type: BackBee\StandardBundle\ClassContent\Article\RelatedContainer

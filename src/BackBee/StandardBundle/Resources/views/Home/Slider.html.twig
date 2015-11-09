@@ -1,0 +1,49 @@
+<div {{ this.bbcontent(null, {class: 'row'})|raw }}>
+    <div class="col-sm-12">
+        {% set slide_id = 'slider_' ~ random() %}
+        <div id="{{ slide_id }}" class="owl-carousel slider-wrapper slider-fw slider_loader">
+            <div class="slider-list slider-has-pagination">
+                {% for slide in slides %}
+                    {% include 'Home/Slide.twig' with {'slide': slide} %}
+                {% else %}
+                    {% include 'Home/DefaultSlide.twig' %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+
+        var initSlider = function () {
+            var slider = $('#{{ slide_id }} .slider-list'),
+                items = slider.parent('.slider-wrapper').find('.owl-item');
+                slider.owlCarousel({
+                    pagination: true,
+                    singleItem: true,
+                    navigation: true,
+                    autoPlay: 6000,
+                    lazyLoad: true,
+                    navigationText: [
+                        '<i class="fa fa-angle-left"></i>',
+                        '<i class="fa fa-angle-right"></i>'
+                    ],
+                    afterInit: function () {
+                        slider.parent('.slider-wrapper').removeClass('slider-loader');
+                        done = true;
+                    },
+                    beforeMove: function () {
+                        items.eq(this.owl.currentItem)
+                                .find('.figcaption .ttl')
+                                .removeClass('animated fadeIn');
+                    },
+                    afterMove: function () {
+                        items.eq(this.owl.currentItem)
+                                .find('.figcaption .ttl')
+                                .addClass('animated fadeIn');
+                    }
+                });
+        };
+
+        document.addEventListener('DOMContentLoaded', initSlider);
+    </script>
+</div>
+

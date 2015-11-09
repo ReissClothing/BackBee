@@ -1,0 +1,9 @@
+<li {{ this.bbcontent()|raw }}>
+    {{ this.render(image, 'no-figcaption', {'class': 'figure block-left'})|raw }}
+    <p class="metadata-wrapper">
+        <time itemprop="dateCreated" class="time">{{ this.getObject().getCreated()|date("Y-m-d") }}</time>
+    </p>
+    <p class="chapo">
+        <a href="{{ url }}" {{ this.bbcontent(title)|raw }} >{{ title.value|raw }}</a>
+    </p>
+</li>

@@ -1,0 +1,5 @@
+<div {{ this.bbcontent(null, {'class': 'col-md-4'})|raw }}>
+    {% for article in this.getObject().getData() %}
+        {{ this.render(article, 'related')|raw }}
+    {% endfor %}
+</div>

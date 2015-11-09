@@ -19,6 +19,7 @@ class AppKernel extends Kernel
             new BackBee\CoreDomainBundle\BackBeeCoreDomainBundle(),
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
             new BackBee\WebBundle\BackBeeWebBundle(),
+            new BackBee\StandardBundle\BackBeeStandardBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

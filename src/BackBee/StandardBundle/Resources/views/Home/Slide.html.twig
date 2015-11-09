@@ -1,0 +1,18 @@
+<div class="slider-item">
+    <figure class="figure">
+        {{ this.render(slide.media, 'slider')|raw }}
+        {% if slide.link is defined and slide.link.url is not empty and slide.link.title is not empty%}
+            <figcaption class="figcaption">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <h2 class="ttl">
+                                <a href="{{ slide.link.url }}" target="{{ slide.link.target }}">{{ slide.link.title|raw }}</a>
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+            </figcaption>
+        {% endif %}
+    </figure>
+</div>

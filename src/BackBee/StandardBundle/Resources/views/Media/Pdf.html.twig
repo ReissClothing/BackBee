@@ -1,0 +1,5 @@
+{% if bb.token != null %}
+    <p {{ this.bbcontent(null, {'class': 'pdf-link'})|raw }}>
+        <a href="{{ file.path ? this.getImageUrl(file.path)|raw : '' }}" target="_blank">{{ title|default('PDF Block') }}</a>
+    </p>
+{% endif %}

@@ -1,0 +1,6 @@
+ListArticleContainer:
+    extends: \BackBee\StandardBundle\ClassContent\Block\Autoblock
+    properties:
+        name : Article Container
+        description: "Automated article listing"
+        category: [!Article]

@@ -1,0 +1,6 @@
+<div {{ this.bbcontent(null, {'class': 'col-sm-12'})|raw }}>
+    {% set content = contents|first %}
+    {% if false != content %}
+        {{ this.render(content, 'home_full')|raw }}
+    {% endif %}
+</div>

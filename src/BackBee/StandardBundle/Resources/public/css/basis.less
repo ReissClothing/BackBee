@@ -1,0 +1,233 @@
+// compress: true 
+/* Lp digital - v1.3 June 2015*/  
+//
+// BASIS stylesheet: Demo template BackBee 
+// 
+// LESS Basis CSS
+// 
+// 
+
+
+// Importing Custom VAR + Custom RESET + Custom Fonts
+// Importing Minimun Bootstrap3 components
+
+// See VAR-iables at the end
+
+//PATCH Bootstrap
+@boot-path: '../lib/bootstrap/less/';
+// Core variables and mixins
+@import '@{boot-path}variables.less';
+
+// VAR-iables
+// Variables
+// --------------------------------------------------
+
+//== Color Schemes
+//## Gray and brand colors for use across Bootstrap.
+@black:                  #161616;
+@gray-darker:            lighten(#000, 13.5%); // #222
+@gray-dark:              lighten(#000, 20%);   // #333
+@gray:                   lighten(#000, 33.5%); // #555
+@gray-light:             lighten(#000, 46.7%); // #777
+@gray-lighter:           lighten(#000, 93.5%); // #eee
+@white:                  #fff;
+//
+@silver-light:          #f5f5f5; //silver lighter
+@silver:                @gray-lighter;
+@silver-medium:         #DBDBDB; //silver medium
+@silver-dark:           @gray-dark; //silver dark
+// colors
+@brand-primary:         #00BFFF;
+@brand-success:         #5cb85c;
+@brand-info:            #4673AF;
+@brand-warning:         #f0ad4e;
+@brand-danger:          #FF5A26;
+
+
+//
+//## Settings for some of the most global styles.
+// 1 - General
+// 2 - Header
+// 3 - Nav
+// 4 - Footer
+// 5 - Typo
+// 0 - Grid
+
+// 1 - GENERAL
+@body-bg-clr:				#efefef; 
+@header-bg-clr:				#1c1c1c; 
+//
+@text-color:                @gray-dark; 
+@link-color:                @brand-primary; 
+@link-hover-color:          darken(@link-color, 15%); 
+//
+@box-bg-clr:                #fff; 
+@box-padding:               1em; 
+@box-margin:				0 0 @grid-gutter-width 0;
+//
+@z-header:					900; //zindex header
+
+// 2 - HEADER
+@header-logo-vertical-margin: 20px;
+//
+@header-bg-clr:               #1c1c1c; 
+@header-txt-clr:              #fff;
+//
+@header-link-clr:             #fff; // font color
+@header-link-clr-hover:       @brand-primary;
+@header-link-bg-clr:          transparent; // background
+@header-link-bg-clr-hover:    @header-bg-clr; 
+
+// 3 - NAV
+@nav-bg-clr:                  @header-bg-clr;
+@nav-txt-clr:                 #fff;
+@nav-link-clr:                #fff;
+@nav-link-clr-hover:          @brand-primary;
+@nav-link-bg:                 transparent;
+@nav-link-bg-hover:           transparent;
+@navbar-height:               40px;
+
+// 4 - FOOTER
+@footer-bg-clr:               @header-bg-clr;
+@footer-txt-clr:              #ddd;
+@footer-link-clr:             #ddd;
+@footer-link-clr-hover:       @brand-primary;
+@footer-link-bg:              tan;
+@footer-link-bg-hover:        darken(tan,7%);
+
+
+// 5 - TYPO 
+// Import Google fonts:
+// - Lato:400,700,400italic,700italic
+// - Roboto:700
+// - Oswald:400
+@import url(http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic); 
+@import url(http://fonts.googleapis.com/css?family=Roboto:700);
+@import url(http://fonts.googleapis.com/css?family=Oswald:400);
+//
+@font-size:                   1em;
+@font-default:                'Lato', sans-serif;
+@font-title:                  'Oswald', sans-serif;
+@font-nav:                    'Roboto', sans-serif;
+@font-alt:                     Arial, Helvetica, sans-serif;
+
+
+// 0 - GRID
+//
+//## Define your custom responsive grid.
+//
+//** Number of columns in the grid.
+@grid-columns:              12;
+//** Padding between columns. Gets divided in half for the left and right.
+@grid-gutter-width:         32px;
+
+//== Container sizes
+//
+//## Define the maximum width of `.container` for different screen sizes.
+
+// Small screen / tablet
+@container-tablet:             ((720px + @grid-gutter-width));
+//** For `@screen-sm-min` and up.
+@container-sm:                 @container-tablet;
+
+// Medium screen / desktop 
+// Npx is the GRID width requested by the STUDIO
+@container-desktop:            ((968px + @grid-gutter-width));
+//** For `@screen-md-min` and up.
+@container-md:                 @container-desktop;
+
+// Large screen / wide desktop / 1140px
+@container-large-desktop:      ((1140px + @grid-gutter-width));
+//** For `@screen-lg-min` and up.
+@container-lg:                 @container-large-desktop;
+
+// END VAR-iables
+
+//
+@border-color:              #ccc;
+@border-radius-base:        3px;
+@border-radius-large:       3px;
+@border-radius-small:       2px;
+
+
+@margin-bottom-default: 0.75em;
+
+
+@import '@{boot-path}mixins.less';
+
+// Reset
+@import (less) "style_reset.css";
+@import "@{boot-path}print.less";
+
+// Core CSS
+// Scaffolding Min required
+* {
+  .box-sizing(border-box);
+}
+*:before,
+*:after {
+  .box-sizing(border-box);
+}
+@import "@{boot-path}type.less";
+@import "@{boot-path}grid.less";
+@import "@{boot-path}tables.less";
+@import "@{boot-path}forms.less";
+@import "@{boot-path}buttons.less";
+
+
+// Components
+@import "@{boot-path}component-animations.less"; 
+@import "@{boot-path}dropdowns.less";
+@import "@{boot-path}button-groups.less";
+@import "@{boot-path}input-groups.less";
+@import "@{boot-path}pagination.less";
+@import "@{boot-path}pager.less";
+@import "@{boot-path}alerts.less";
+@import "@{boot-path}progress-bars.less";
+@import "@{boot-path}badges.less";
+@import "@{boot-path}navs.less";
+@import "@{boot-path}navbar.less";
+@import "@{boot-path}breadcrumbs.less";
+@import "@{boot-path}close.less";
+
+// Components w/ JavaScript
+@import "@{boot-path}modals.less";
+@import "@{boot-path}popovers.less";
+@import "@{boot-path}tooltip.less";
+
+
+// Utility classes
+@import "@{boot-path}utilities.less";
+@import "@{boot-path}responsive-utilities.less";
+
+//FONT
+@import (less) "../lib/fontawesome/css/font-awesome.min.css";
+@import (less) "../lib/fontawesome/less/variables.less";
+
+// CSS Transitions
+//@import (less) "animate.min.css";
+
+// Carrousel OWL
+@import (less) "owl.carousel.css";
+@import (less) "owl.theme.css";
+@import (less) "owl.transitions.css";
+
+
+// CSS3 Animations
+/*
+
+Animate.less
+Cross-browser LESS animation library for Bootstrap
+Licensed under the ☺ license (http://licence.visualidiot.com/)
+Documenation: https://github.com/machito/animate.less
+-------------------------------------------------------
+Copyright © 2012 Michael Castilla
+Email: yo@machito.co
+Twitter: https://twitter.com/micr0bitz
+
+*/
+@animationLessTime: 1s;
+@animationLessLocation: '../lib/animate.less-master/source';
+// 
+@import "@{animationLessLocation}/animated.less"; 
+@import "@{animationLessLocation}/fadeIn.less"; 

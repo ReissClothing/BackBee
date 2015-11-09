@@ -1,0 +1,22 @@
+<div {{ this.bbcontent(null, {'class': 'box-wrapper box-listing-news'})|raw }}>
+    <div class="content content-txt-img">
+        <div class="content-header">
+            <p {{ this.bbcontent(title, {'class': 'ttl'})|raw }}>{{ title.value|raw }}</p>
+        </div>
+        <div class="content-inner-pad">
+            <ul class="list-unstyled">
+                {% for content in contents %}
+                    {% if item.getParamValue('exclude_from_autoblock') is empty %}
+                        {{ this.render(content, 'latest')|raw }}
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="content-footer">
+            <p>
+                {% set url = parentNode is null ? '#' : this.getUri(parentNode.getUrl) %}
+                <a {{ this.bbcontent(link)|raw }} href="{{ url }}">{{ link.value|raw }}</a>
+            </p>
+        </div>
+    </div>
+</div>

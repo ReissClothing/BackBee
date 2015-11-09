@@ -1,0 +1,24 @@
+<div {{ this.bbcontent(null, {class: 'content'})|raw }}>
+    {% set id = 'iframe_' ~ random() %}
+    <figure id="{{ id }}" class="figure">
+        {{ videoframe.value|raw }}
+    </figure>
+
+    <script>
+
+        var resize = function () {
+            $('#{{ id }} iframe').resizeEmbed();
+        };
+
+        if (window.$ !== undefined) {
+            if ($.fn.resizeEmbed === undefined) {
+                $.fn.resizeEmbed = window.resizeEmbed;
+            }
+
+            resize();
+        }
+
+        document.addEventListener('DOMContentLoaded', resize);
+
+    </script>
+</div>

@@ -1,0 +1,13 @@
+<article {{ this.bbcontent(null, {'class': 'push-item content content-txt-img content-news content-emphasis'})|raw }}>
+    <a href="{{ url }}" class="visible-md visible-lg">
+        {{ this.render(image, 'no-figcaption', {'class': 'figure block-fullwidth'})|raw }}
+    </a>
+    <div class="content-inner-pad">
+        <h2 itemprop="headline">
+            <a href="{{ url }}">{{ title.value|truncate(82)|raw }}</a>
+        </h2>
+        <p class="metadata-wrapper">
+            <strong class="metadata-tag">{{ tag }}</strong>
+        </p>
+    </div>
+</article>

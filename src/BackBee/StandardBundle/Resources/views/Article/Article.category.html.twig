@@ -1,0 +1,30 @@
+<li {{ this.bbcontent(null)|raw }}>
+
+    {% set rmAutoblock = this.getObject().getParamValue('rendermode_autoblock')|first %}
+
+    <article class="push-item content content-txt-img content-news" itemscope itemtype="http://schema.org/BlogPosting">
+        {% if rmAutoblock == 'block-right' %}
+            <a href="{{ url }}">
+                {{ this.render(image, 'no-figcaption', {'class': 'figure ' ~ rmAutoblock})|raw }}
+            </a>
+        {% endif %}
+        <div class="content-inner-pad">
+            <h2 itemprop="headline">
+                <a href="{{ url }}" {{ this.bbcontent(title)|raw }} >{{ title.value|raw }}</a>
+            </h2>
+            <p class="metadata-wrapper">
+                <b class="metadata-tag">{{ tag }}</b>
+                {% if signature != '' %}
+                    <b class="metadata-author">By {{ signature|raw }}</b>
+                {% endif %}
+                <time class="time" itemprop="datePublished">{{ this.getObject().getCreated()|date("Y-m-d") }}</time>
+            </p>
+            {% if rmAutoblock == 'block-fullwidth' %}
+                <a href="{{ url }}">
+                    {{ this.render(image, 'no-figcaption', {'class': 'figure ' ~ rmAutoblock})|raw }}
+                </a>
+            {% endif %}
+            <p {{ this.bbcontent(abstract, {'class': 'chapo'})|raw }} itemprop="description">{{ abstract.value|raw }}</p>
+        </div>
+    </article>
+</li>

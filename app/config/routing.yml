@@ -2,6 +2,6 @@ back_bee_web:
     resource: "@BackBeeWebBundle/Resources/config/routing.yml"
     prefix:   /
 
-back_bee_temp:
-    resource: "@BackBeeCoreDomainBundle/Resources/config/routing.yml"
-    prefix:   /
+#back_bee_temp:
+#    resource: "@BackBeeCoreDomainBundle/Resources/config/routing.yml"
+#    prefix:   /

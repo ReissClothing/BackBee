@@ -1,0 +1,28 @@
+<div {{ this.bbcontent(null, {'class': 'box-wrapper'})|raw }}>
+    <div class="fb-page" data-height="{{ height }}" data-href="{{ link }}" data-hide-cover="{{ hide_cover }}" data-show-posts="{{ show_post }}">
+        <div class="fb-xfbml-parse-ignore">
+            <blockquote cite="{{ link }}">
+                <a href="#">Loading...</a>
+            </blockquote>
+        </div>
+    </div>
+    <script>
+        if (window.$ !== undefined) {
+            var fb = $('#fb-root');
+
+            fb.html('');
+            fb.removeClass('fb-reset');
+
+            delete window.FB;
+            $('#facebook-jssdk').remove();
+        }
+
+        (function(d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = "//connect.facebook.net/fr_FR/sdk.js#xfbml=1&version=v2.3&rd={{ random() }}";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    </script>
+</div>

@@ -1,0 +1,29 @@
+<div {{ this.bbcontent()|raw }}>
+
+    <article class="article box-wrapper" itemscope itemtype="http://schema.org/Article">
+
+        <h1 {{ this.bbcontent(title)|raw }} itemprop="headline">{{ title.value|raw }}</h1>
+
+        <p class="metadata-wrapper">
+            {% if tag is not null %}
+            <strong class="metadata-tag">{{ tag }}</strong>
+            {% endif %}
+            {% if signature != '' %}
+                <b class="metadata-author">By {{ signature|raw }}</b>
+            {% endif %}
+            <time class="time" itemprop="datePublished">{{ this.getObject().getCreated()|date("Y-m-d") }}</time>
+        </p>
+
+        <div itemtype="http://schema.org/ImageObject" itemprop="primaryImageOfPage">
+            {{ this.render(image, null, {'class': 'figure block-fullwidth'})|raw }}
+        </div>
+
+        <p {{ this.bbcontent(abstract, {'class': 'chapo'})|raw }} itemprop="description">{{ abstract.value|raw }}</p>
+
+        {{ this.render(body)|raw }}
+
+    </article>
+
+    {{ this.render(related)|raw }}
+
+</div>

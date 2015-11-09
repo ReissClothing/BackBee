@@ -23,13 +23,8 @@
 
 namespace BackBee\CoreDomainBundle\AutoLoader;
 
-use BackBee\BBApplication;
-use BackBee\DependencyInjection\ContainerInterface;
-use BackBee\DependencyInjection\Dumper\DumpableServiceInterface;
-use BackBee\DependencyInjection\Dumper\DumpableServiceProxyInterface;
-use BackBee\Event\Dispatcher;
-use BackBee\Exception\BBException;
-use BackBee\Stream\ClassWrapper\Exception\ClassWrapperException;
+//use BackBee\Exception\BBException;
+use BackBee\CoreDomainBundle\Stream\ClassWrapper\Exception\ClassWrapperException;
 
 if (false === defined('NAMESPACE_SEPARATOR')) {
     define('NAMESPACE_SEPARATOR', '\\');
@@ -70,7 +65,7 @@ if (false === defined('NAMESPACE_SEPARATOR')) {
  * @copyright   Lp digital system
  * @author      c.rouillon <charles.rouillon@lp-digital.fr>
  */
-class AutoLoader implements DumpableServiceInterface, DumpableServiceProxyInterface
+class AutoLoader
 {
     /**
      * Current BackBee application.
@@ -131,45 +126,10 @@ class AutoLoader implements DumpableServiceInterface, DumpableServiceProxyInterf
     /**
      * Class constructor.
      *
-     * @param \BackBee\BBApplication    $application Optionnal BackBee Application
-     * @param \BackBee\Event\Dispatcher $dispatcher  Optionnal events dispatcher
      */
-    public function __construct(BBApplication $application = null, Dispatcher $dispatcher = null)
+    public function __construct()
     {
         $this->_availableWrappers = stream_get_wrappers();
-
-        $this->setApplication($application);
-        $this->setEventDispatcher($dispatcher);
-
-        $this->_is_restored = false;
-    }
-
-    /**
-     * Sets the BackBee Application.
-     *
-     * @param \BackBee\BBApplication $application
-     *
-     * @return \BackBee\AutoLoader\AutoLoader The current autoloader
-     */
-    public function setApplication(BBApplication $application = null)
-    {
-        $this->_application = $application;
-
-        return $this;
-    }
-
-    /**
-     * Sets the events dispatcher.
-     *
-     * @param \BackBee\Event\Dispatcher $dispatcher
-     *
-     * @return \BackBee\AutoLoader\AutoLoader The current autoloader
-     */
-    public function setEventDispatcher(Dispatcher $dispatcher = null)
-    {
-        $this->_dispatcher = $dispatcher;
-
-        return $this;
     }
 
     /**
@@ -207,7 +167,8 @@ class AutoLoader implements DumpableServiceInterface, DumpableServiceProxyInterf
                     } catch (\RuntimeException $e) {
                         // The include php file is not valid
                         throw new Exception\SyntaxErrorException($e->getMessage(), null, $e->getPrevious());
-                    } catch (BBException $e) {
+//                    } catch (BBException $e) {
+                    } catch (\Exception $e) {
                         // Nothing to do
                     }
                 }
@@ -356,26 +317,6 @@ class AutoLoader implements DumpableServiceInterface, DumpableServiceProxyInterf
     }
 
     /**
-     * Returns the current BackBee application if defined, NULL otherwise.
-     *
-     * @return \BackBee\BBApplication | NULL
-     */
-    public function getApplication()
-    {
-        return $this->_application;
-    }
-
-    /**
-     * Returns the events dispatcher if defined, NULL otherwise.
-     *
-     * @return \BackBee\Event\Dispatcher | NULL
-     */
-    public function getEventDispatcher()
-    {
-        return $this->_dispatcher;
-    }
-
-    /**
      * Returns the wrappers registered for provided namespaces and protocols.
      *
      * @param string|array $namespace The namespaces to look for
@@ -453,43 +394,6 @@ class AutoLoader implements DumpableServiceInterface, DumpableServiceProxyInterf
     }
 
     /**
-     * Registers namespace parts to look for class name.
-     *
-     * @param string       $namespace The namespace
-     * @param string|array $paths     One or an array of associated locations
-     *
-     * @return \BackBee\AutoLoader\AutoLoader The current instance of the autoloader class
-     */
-    public function registerNamespace($namespace, $paths)
-    {
-        if (false === isset($this->_namespaces[$namespace])) {
-            $this->_namespaces[$namespace] = array();
-        }
-
-        $this->_namespaces[$namespace] = array_merge($this->_namespaces[$namespace], (array) $paths);
-
-        return $this;
-    }
-
-    /**
-     * Registers listeners namespace parts to look for class name.
-     *
-     * @param string $path
-     *
-     * @return \BackBee\AutoLoader\AutoLoader The current instance of the autoloader class
-     */
-    public function registerListenerNamespace($path)
-    {
-        if (false === isset($this->_namespaces['BackBee\Event\Listener'])) {
-            $this->_namespaces['BackBee\Event\Listener'] = array();
-        }
-
-        array_unshift($this->_namespaces['BackBee\Event\Listener'], $path);
-
-        return $this;
-    }
-
-    /**
      * Registers stream wrappers.
      *
      * @param string $namespace The namespace
@@ -510,62 +414,5 @@ class AutoLoader implements DumpableServiceInterface, DumpableServiceProxyInterf
         $this->registerStreams();
 
         return $this;
-    }
-
-    /**
-     * Returns the namespace of the class proxy to use or null if no proxy is required.
-     *
-     * @return string|null the namespace of the class proxy to use on restore or null if no proxy required
-     */
-    public function getClassProxy()
-    {
-        return;
-    }
-
-    /**
-     * Dumps current service state so we can restore it later by calling DumpableServiceInterface::restore()
-     * with the dump array produced by this method.
-     *
-     * @return array contains every datas required by this service to be restored at the same state
-     */
-    public function dump(array $options = array())
-    {
-        return array(
-            'namespaces_locations' => $this->_namespaces,
-            'wrappers_namespaces'  => $this->_streamWrappers,
-            'has_event_dispatcher' => null !== $this->_dispatcher,
-        );
-    }
-
-    /**
-     * Restore current service to the dump's state.
-     *
-     * @param array $dump the dump provided by DumpableServiceInterface::dump() from where we can
-     *                    restore current service
-     */
-    public function restore(ContainerInterface $container, array $dump)
-    {
-        if (true === $dump['has_event_dispatcher']) {
-            $this->setEventDispatcher($container->get('event.dispatcher'));
-        }
-
-        $this->register();
-
-        $this->_namespaces = $dump['namespaces_locations'];
-        $this->_streamWrappers = $dump['wrappers_namespaces'];
-
-        if (0 < count($dump['wrappers_namespaces'])) {
-            $this->registerStreams();
-        }
-
-        $this->_is_restored = true;
-    }
-
-    /**
-     * @return boolean true if current service is already restored, otherwise false
-     */
-    public function isRestored()
-    {
-        return $this->_is_restored;
     }
 }

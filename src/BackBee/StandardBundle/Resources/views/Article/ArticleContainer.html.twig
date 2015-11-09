@@ -1,0 +1,18 @@
+<div {{ this.bbcontent(null, {'class': 'box-wrapper'})|raw }}>
+
+    {% set currentPage = this.getCurrentPage() %}
+    {% set tag = '' %}
+    {% if currentPage is not null %}
+        {% set tag = currentPage.getAltTitle() is not empty ? currentPage.getAltTitle() : currentPage.getTitle() %}
+    {% endif %}
+
+    <h1>{{ tag }}</h1>
+
+    <div class="push-list">
+        {% for item in contents %}
+            {% if item.getParamValue('exclude_from_autoblock') is empty %}
+                {{ this.render(item, 'category')|raw }}
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>

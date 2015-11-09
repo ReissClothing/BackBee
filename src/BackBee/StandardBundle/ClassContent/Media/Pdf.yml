@@ -1,0 +1,26 @@
+Pdf:
+    properties:
+        name: Pdf file
+        description: A pdf file
+        labelized-by: title->value
+        category: [Media]
+    traits: [BackBee\ClassContent\Traits\Element\FileJsonSerializeTrait]
+    elements:
+        title:
+            type: BackBee\CoreDomain\ClassContent\Element\Text
+            label: Titre
+            maxentry: 1
+            default:
+                value: ""
+        description:
+            type: BackBee\CoreDomain\ClassContent\Element\Text
+            label: Description
+            maxentry: 1
+            default:
+                value: ""
+        file:
+            type: BackBee\ClassContent\Element\File
+            label: fichier
+            extra:
+                dropzone:
+                    acceptedFiles: '.pdf'

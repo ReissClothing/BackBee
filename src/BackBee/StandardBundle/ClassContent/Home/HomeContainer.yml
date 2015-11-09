@@ -1,0 +1,11 @@
+HomeContainer:
+    properties:
+        name: home container
+        description: ""
+        category: [!Home]
+    elements:
+        container:
+            type: BackBee\StandardBundle\ClassContent\Container\OneColumn
+    parameters:
+        container_title: ~
+        container_bottom: ~

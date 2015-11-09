@@ -1,3 +1,3 @@
-back_bee_core_domain_homepage:
-    path:     /hello/{name}
-    defaults: { _controller: BackBeeCoreDomainBundle:Default:index }
+#back_bee_core_domain_homepage:
+#    path:     /hello/{name}
+#    defaults: { _controller: BackBeeCoreDomainBundle:Default:index }

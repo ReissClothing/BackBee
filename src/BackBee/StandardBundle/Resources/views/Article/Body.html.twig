@@ -1,0 +1,5 @@
+<div {{  this.bbcontent()|raw }} itemprop="articleBody">
+	{% for item in this.getObject() %}
+	    {{ this.render(item)|raw }}
+	{% endfor %}
+</div>

@@ -1,0 +1,64 @@
+Article:
+    properties:
+        name: Article
+        description: "An article contains a title, an author, an abstract, a primary image and a body"
+        category: [Article]
+        indexation: [[permid], [title->value]]
+        labelized-by: title->value
+        iconized-by: image->image->path
+    elements:
+        title:
+            type: BackBee\CoreDomain\ClassContent\Element\Text
+            label: Title
+            default:
+                value: Your title here...
+            maxentry: 1
+            parameters:
+                rte: lite
+        permid: !!scalar
+        abstract:
+            type: BackBee\CoreDomain\ClassContent\Element\Text
+            label: Abstract
+            default:
+                value: '<span class="first-letter">Y</span>our abstract here'
+            maxentry: 1
+            parameters:
+                rte: lite
+        body:
+            type: BackBee\StandardBundle\ClassContent\Article\Body
+        image:
+            type: BackBee\StandardBundle\ClassContent\Media\Image
+        keywords:
+            type: BackBee\ClassContent\Element\Keyword
+            label: Keywords
+            maxentry: 0
+        related:
+            type: BackBee\StandardBundle\ClassContent\Article\Related
+        signature: !!scalar
+        permid: !!scalar
+    parameters:
+
+        link:
+            type: "linkSelector"
+            label: "Link"
+            value: []
+
+        keyword_selector:
+            type: keywordSelector
+            label: 'Select a keyword'
+            value: []
+
+        rendermode_autoblock:
+            type: select
+            label: 'Rendermode in autoblock'
+            options:
+                block-fullwidth: 'Image full width'
+                block-right: 'Image right'
+                no-image: 'No image'
+            value: ['block-fullwidth']
+
+        exclude_from_autoblock:
+            type: checkbox
+            options:
+                exclude: 'Exclude from autoblock'
+            value: []

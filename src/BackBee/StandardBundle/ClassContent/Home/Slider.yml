@@ -1,0 +1,14 @@
+Slider:
+    properties:
+        name: "Slider"
+        description: "Slider containing image, text and link slides"
+        category: [Home]
+    parameters:
+        medias:
+            type: mediaSelector
+            label: Medias
+            value: []
+        links:
+            type: linkSelector
+            label: Links
+            value: []

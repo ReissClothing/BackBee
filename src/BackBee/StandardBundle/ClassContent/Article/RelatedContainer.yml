@@ -1,0 +1,9 @@
+RelatedContainer:
+    extends: \BackBee\CoreDomain\ClassContent\ContentSet
+    properties:
+        name: Linked article container
+        description: "A block that display linked article. Contains: ContentSet, Article"
+        category: [!Article]
+    parameters:
+        rendermode: related
+        accept: [BackBee\StandardBundle\ClassContent\Article\Article]

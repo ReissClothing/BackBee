@@ -1,0 +1,10 @@
+<div {{ this.bbcontent(null, {'class': 'container main_containt'})|raw }}>
+
+    {% if this.getObject().getParamValue('container_title') != '' %}
+        <div class="bloc-title-2 triangle-b">
+          <div class="border-bx2 border-color color-txt-1">{{ this.getObject().getParamValue('container_title') }}</div>
+        </div>
+    {% endif %}
+
+    {{ this.render(container)|raw }}
+</div>

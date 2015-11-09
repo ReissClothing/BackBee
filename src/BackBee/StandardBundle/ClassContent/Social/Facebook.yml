@@ -1,0 +1,26 @@
+Facebook:
+    properties:
+        name: Facebook block
+        description: Facebook block
+        category: [Social]
+    parameters:
+        link:
+            type: "text"
+            value: ~
+            label: "Link"
+        height:
+            type: "text"
+            value: "300"
+            label: "Height (px)"
+        hide_cover:
+            type: "checkbox"
+            options:
+                'hide_cover': 'Hide cover'
+            value: []
+            inline: true
+        show_post:
+            type: "checkbox"
+            options:
+                'show_post': 'Show post'
+            value: ["show_post"]
+            inline: true

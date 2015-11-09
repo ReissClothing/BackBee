@@ -1,0 +1,7 @@
+{% if bb.token != null or image.path != '' %}
+    <figure {{ this.bbcontent()|raw }}>
+        <img {{ this.bbcontent(image)|raw }}
+            src="{{ image.path ? this.getImageUrl(image.path)|raw : '' }}"
+            alt="{{ title }}" style="width: 100%" itemprop="contentURL">
+    </figure>
+{% endif %}
