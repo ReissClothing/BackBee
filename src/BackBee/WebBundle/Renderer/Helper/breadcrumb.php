@@ -4,14 +4,11 @@ namespace BackBee\WebBundle\Renderer\Helper;
 
 class breadcrumb extends AbstractHelper
 {
-
     public function __invoke($showCurrentItem = true)
     {
-        $application = $this->_renderer->getApplication();
-        $repository = $application->getEntityManager()->getRepository('BackBee\CoreDomain\NestedNode\Page');
+        $repository = $this->_renderer->getEntityManager()->getRepository('BackBee\CoreDomain\NestedNode\Page');
 
         $currentPage = $this->_renderer->getCurrentPage();
-        $ancestors = array();
 
         if (null !== $currentPage) {
             $ancestors = $repository->getAncestors($currentPage);
