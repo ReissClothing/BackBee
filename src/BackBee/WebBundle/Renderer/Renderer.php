@@ -35,6 +35,7 @@ use BackBee\Utils\StringUtils;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\TwigBundle\TwigEngine;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 /**
@@ -101,6 +102,10 @@ class Renderer extends AbstractRenderer
      * @var EntityManagerInterface
      */
     private $entityManager;
+    /**
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
 
     /**
      * Constructor.
@@ -109,12 +114,13 @@ class Renderer extends AbstractRenderer
      * @param array|null    $config
      * @param boolean       $autoloadRendererApdater
      */
-    public function __construct(TwigEngine $twig, EntityManagerInterface $entityManager)
+    public function __construct(TwigEngine $twig, EntityManagerInterface $entityManager, EventDispatcherInterface $eventDispatcher)
     {
-        parent::__construct();
+        parent::__construct($eventDispatcher);
         $this->twig = $twig;
         // It is only used in the metadata helper, so this needs to be refactored!
         $this->entityManager = $entityManager;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -909,6 +915,7 @@ class Renderer extends AbstractRenderer
             $this->templateFile = $template;
             if (null === $this->templateFile && null !== $this->_object) {
                 $this->templateFile = $this->getTemplateFile($this->_object, $mode);
+                // Aqui entra solo si se activa el standard bundle
                 if (false === $this->templateFile) {
                     $this->templateFile = $this->getTemplateFile($this->_object, $this->getMode());
                 }
@@ -918,11 +925,11 @@ class Renderer extends AbstractRenderer
                 }
             }
 
-            if (false === $this->isValidTemplateFile($this->templateFile)) {
-                throw new RendererException(sprintf(
-                        'Unable to find file \'%s\' in path (%s)', $template, implode(', ', $this->_scriptdir)
-                ), RendererException::SCRIPTFILE_ERROR);
-            }
+//            if (false === $this->isValidTemplateFile($this->templateFile)) {
+//                throw new RendererException(sprintf(
+//                        'Unable to find file \'%s\' in path (%s)', $template, implode(', ', $this->_scriptdir)
+//                ), RendererException::SCRIPTFILE_ERROR);
+//            }
         } catch (RendererException $e) {
             $render = '';
 
@@ -950,14 +957,13 @@ class Renderer extends AbstractRenderer
             return $render;
         }
 
-        $application = $this->getApplication();
         // Assign vars and parameters
         if (null !== $this->_object) {
             $draft = $this->_object->getDraft();
             $aClassContentClassname = 'BackBee\CoreDomain\ClassContent\AbstractClassContent';
             if ($this->_object instanceof $aClassContentClassname && !$this->_object->isLoaded()) {
                 // trying to refresh unloaded content
-                $em = $application->getEntityManager();
+                $em = $this->getEntityManager();
 
                 $classname = get_class($this->_object);
                 $uid = $this->_object->getUid();
@@ -976,13 +982,13 @@ class Renderer extends AbstractRenderer
             $this->setParam($this->_object->getAllParams());
         }
 
-        if (null !== $application) {
-            $application->debug(sprintf(
-                'Rendering content `%s(%s)`.',
-                get_class($this->_object),
-                $this->_object->getUid()
-            ));
-        }
+//        if (null !== $application) {
+//            $application->debug(sprintf(
+//                'Rendering content `%s(%s)`.',
+//                get_class($this->_object),
+//                $this->_object->getUid()
+//            ));
+//        }
 
         return $this->renderTemplate();
     }
@@ -1012,20 +1018,22 @@ class Renderer extends AbstractRenderer
      * @param  string         $mode
      * @return string|boolean string if successfully found a valid file name, else false
      */
+//    @gvf this is used only when activating the standard bundle
     private function getTemplateFile(RenderableInterface $object, $mode = null)
     {
-        $tmpStorage = $this->templateFile;
-        $template = $this->getTemplatePath($object);
-        foreach ($this->manageableExt->keys() as $ext) {
-            $this->templateFile = $template.(null !== $mode ? '.'.$mode : '').$ext;
-            if ($this->isValidTemplateFile($this->templateFile)) {
-                $filename = $this->templateFile;
-                $this->templateFile = $tmpStorage;
+//        $tmpStorage = $this->templateFile;
+        $this->templateFile = strtolower($this->getTemplatePath($object).'.twig');
+//        foreach ($this->manageableExt->keys() as $ext) {
+//            $this->templateFile = $template.(null !== $mode ? '.'.$mode : '').$ext;
+//            if ($this->isValidTemplateFile($this->templateFile)) {
+//                $filename = $this->templateFile;
+//                $this->templateFile = $tmpStorage;
 
-                return $filename;
-            }
-        }
+                return $this->templateFile ;
+//            }
+//        }
 
+//        @todo gvf esto me imagino que busca el parent template si no hay uno especifico
         if ($parentClassname = get_parent_class($object)) {
             $parent = new \ReflectionClass($parentClassname);
             if (!$parent->isAbstract()) {
@@ -1077,10 +1085,12 @@ class Renderer extends AbstractRenderer
         $this->templateFile = 'BackBeeWebBundle::'. strtolower(str_replace('.twig', '.html.twig', $this->templateFile));
         }
 
-        return $this->twig->render(
+        $a =  $this->twig->render(
             $this->templateFile,
             array_merge($this->getAssignedVars(), $this->getBBVariable(), $this->getParam(),['this'=> $this])
         );
+
+        return $a;
     }
 
     /**

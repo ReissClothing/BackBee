@@ -25,15 +25,15 @@ Article:
             parameters:
                 rte: lite
         body:
-            type: BackBee\StandardBundle\ClassContent\Article\Body
+            type: BackBee\CoreDomain\ClassContent\Article\Body
         image:
-            type: BackBee\StandardBundle\ClassContent\Media\Image
+            type: BackBee\CoreDomain\ClassContent\Media\Image
         keywords:
             type: BackBee\ClassContent\Element\Keyword
             label: Keywords
             maxentry: 0
         related:
-            type: BackBee\StandardBundle\ClassContent\Article\Related
+            type: BackBee\CoreDomain\ClassContent\Article\Related
         signature: !!scalar
         permid: !!scalar
     parameters:

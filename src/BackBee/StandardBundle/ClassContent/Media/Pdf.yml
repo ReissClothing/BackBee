@@ -19,7 +19,7 @@ Pdf:
             default:
                 value: ""
         file:
-            type: BackBee\ClassContent\Element\File
+            type: BackBee\CoreDomain\ClassContent\Element\File
             label: fichier
             extra:
                 dropzone:

@@ -168,8 +168,9 @@ class AutoLoader
                         // The include php file is not valid
                         throw new Exception\SyntaxErrorException($e->getMessage(), null, $e->getPrevious());
 //                    } catch (BBException $e) {
-                    } catch (\Exception $e) {
-                        // Nothing to do
+//                     @TODO gvf why silence the exception??
+//                    } catch (\Exception $e) {
+//                         Nothing to do
                     }
                 }
 
@@ -299,14 +300,14 @@ class AutoLoader
 
         list($namespace, $classname) = $this->normalizeClassname($classpath);
 
-        if ($this->autoloadThrowWrappers($namespace, $classname) || $this->autoloadThrowFilesystem($namespace, $classname)) {
-            if (NAMESPACE_SEPARATOR == substr($classpath, 0, 1)) {
-                $classpath = substr($classpath, 1);
-            }
+        if ($this->autoloadThrowWrappers($namespace, $classname)) {
+//            if (NAMESPACE_SEPARATOR == substr($classpath, 0, 1)) {
+//                $classpath = substr($classpath, 1);
+//            }
 
-            if (null !== $this->getEventDispatcher() && is_subclass_of($classpath, 'BackBee\CoreDomain\ClassContent\AbstractClassContent')) {
-                $this->getEventDispatcher()->triggerEvent('include', new $classpath());
-            }
+//            if (null !== $this->getEventDispatcher() && is_subclass_of($classpath, 'BackBee\CoreDomain\ClassContent\AbstractClassContent')) {
+//                $this->getEventDispatcher()->triggerEvent('include', new $classpath());
+//            }
 
             return;
         }

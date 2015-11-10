@@ -1,5 +1,5 @@
 HomeArticleContainer:
-    extends: \BackBee\StandardBundle\ClassContent\Block\Autoblock
+    extends: \BackBee\CoreDomain\ClassContent\Block\Autoblock
     properties:
         name: Home article container
         description: "Home article container"

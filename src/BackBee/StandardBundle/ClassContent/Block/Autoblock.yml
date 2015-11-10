@@ -15,7 +15,7 @@ AutoBlock:
         start:
             value: 0
         content_to_show:
-            value: [BackBee\StandardBundle\ClassContent\Article\Article]
+            value: [BackBee\CoreDomain\ClassContent\Article\Article]
         limit:
             type: text
             value: 10

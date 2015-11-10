@@ -24,13 +24,14 @@
 namespace BackBee\CoreDomainBundle\ClassContent\Listener;
 
 use BackBee\CoreDomain\ClassContent\AbstractClassContent;
-use BackBee\ClassContent\Element\File as ElementFile;
+use BackBee\CoreDomainBundle\ClassContent\Element\File as ElementFile;
 use BackBee\ClassContent\Exception\ClassContentException;
 use BackBee\CoreDomain\ClassContent\Revision;
 use BackBee\CoreDomainBundle\Event\Event;
 use BackBee\Exception\BBException;
 use BackBee\Security\Exception\SecurityException;
 use BackBee\Utils\File\File;
+use Doctrine\ORM\Event\LifecycleEventArgs;
 
 /**
  * Listener to ClassContent events :
@@ -42,15 +43,15 @@ use BackBee\Utils\File\File;
  * @copyright   Lp digital system
  * @author      c.rouillon <charles.rouillon@lp-digital.fr>
  */
-class ClassContentListener
+class AbstractClassContentListener
 {
     private $exceptionOnUnknownClassname;
 
-    public function __construct($exceptionOnUnknownClassname)
-    {
-
-        $this->exceptionOnUnknownClassname = strtolower($exceptionOnUnknownClassname);
-    }
+//    public function __construct($exceptionOnUnknownClassname)
+//    {
+//
+//        $this->exceptionOnUnknownClassname = strtolower($exceptionOnUnknownClassname);
+//    }
     /**
      * Add discriminator values to class MetaData when a content class is loaded
      * Occur on classcontent.include events.
@@ -79,9 +80,11 @@ class ClassContentListener
      * 
      * @param Event $event
      */
-    public function onPostload(Event $event)
+    public function postload(LifecycleEventArgs $event)
     {
-        $event->getTarget()->postLoad();
+        if (is_a($event->getObject(), 'BackBee\CoreDomain\ClassContent\AbstractClassContent')) {
+            $event->getObject()->postLoad();
+        }
     }
 
     /**

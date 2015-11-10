@@ -23,13 +23,13 @@
 
 namespace BackBee\CoreDomain\ClassContent;
 
-use BackBee\AutoLoader\Exception\ClassNotFoundException;
 use BackBee\ClassContent\Exception\InvalidContentTypeException;
 use BackBee\ClassContent\Exception\MalformedParameterException;
 use BackBee\ClassContent\Exception\UnknownPropertyException;
 use BackBee\CoreDomain\Renderer\RenderableInterface;
 use BackBee\CoreDomain\Security\Acl\Domain\ObjectIdentifiableInterface;
 
+use BackBee\CoreDomainBundle\AutoLoader\Exception\ClassNotFoundException;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\Util\ClassUtils;
 
@@ -47,7 +47,7 @@ abstract class AbstractContent implements ObjectIdentifiableInterface, Renderabl
     /**
      * BackBee's class content classname must be prefixed by this.
      */
-    const CLASSCONTENT_BASE_NAMESPACE = 'BackBee\ClassContent\\';
+    const CLASSCONTENT_BASE_NAMESPACE = 'BackBee\CoreDomain\ClassContent\\';
 
     /**
      * Supported formats by ::jsonSerialize.
@@ -1109,11 +1109,18 @@ abstract class AbstractContent implements ObjectIdentifiableInterface, Renderabl
      */
     public function getTemplateName()
     {
+        $a = str_replace(
+            [self::CLASSCONTENT_BASE_NAMESPACE, NAMESPACE_SEPARATOR],
+            ['', DIRECTORY_SEPARATOR],
+            get_class($this)
+        );
         return str_replace(
             [self::CLASSCONTENT_BASE_NAMESPACE, NAMESPACE_SEPARATOR],
             ['', DIRECTORY_SEPARATOR],
             get_class($this)
         );
+
+
     }
 
     /**
@@ -1308,6 +1315,14 @@ abstract class AbstractContent implements ObjectIdentifiableInterface, Renderabl
      */
     public static function getFullClassname($classname)
     {
+
+//      @todo gvf hack should be done in migration
+        if (0 === strpos($classname, 'BackBee\\ClassContent\\ContentSet')){
+            $classname = str_replace('ClassContent', 'CoreDomain\\ClassContent', $classname);
+        }elseif(0 === strpos($classname, 'BackBee\\ClassContent')) {
+            $classname = str_replace('ClassContent', 'StandardBundle\\ClassContent', $classname);
+        }
+
         if (is_object($classname)) {
             if (!$classname instanceof AbstractClassContent) {
                 throw new \InvalidArgumentException('First parameter must be a string or an AbstractClassContent object.');
@@ -1320,7 +1335,9 @@ abstract class AbstractContent implements ObjectIdentifiableInterface, Renderabl
             if (0 !== strpos($classname, self::CLASSCONTENT_BASE_NAMESPACE)) {
                 $classname = self::CLASSCONTENT_BASE_NAMESPACE.$classname;
             }
-            class_exists($classname);
+            if (!class_exists($classname)) {
+                return self::onUnknownClassname($classname.' does not exist');
+            }
         } catch (ClassNotFoundException $ex) {
             return self::onUnknownClassname($classname.' is not a short classname of an AbstractClassContent instance.', $ex);
         }

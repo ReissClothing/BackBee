@@ -17,9 +17,15 @@ services:
             - { name: "kernel.event_listener", event: "nestednode.page.onflush", method: onFlushPage }
 
     classcontent_listener:
-        class: BackBee\ClassContent\Listener\ClassContentListener
+        class: BackBee\CoreDomainBundle\ClassContent\Listener\AbstractClassContentListener
         tags:
             - { name: "kernel.event_listener", event: "classcontent.include", method: onInclude }
+
+    classcontent.postload:
+        class: BackBee\CoreDomainBundle\ClassContent\Listener\AbstractClassContentListener
+        tags:
+#            - { name: doctrine.orm.entity_listener}
+            - { name: doctrine.event_listener, event: postLoad}
 
 #classcontent.postload:
 #    listeners:

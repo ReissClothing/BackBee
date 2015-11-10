@@ -37,12 +37,15 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @copyright   Lp digital system
  * @author      c.rouillon <charles.rouillon@lp-digital.fr>
- * @ORM\Entity(repositoryClass="BackBee\ClassContent\Repository\ClassContentRepository")
+// *              @todo gvf repo should be an interface in code and be resolved to a class in bundle
+ * @ORM\Entity(repositoryClass="BackBee\CoreDomainBundle\ClassContent\Repository\ClassContentRepository")
  * @ORM\Table(name="content")
  * @ORM\HasLifecycleCallbacks
  */
 class ContentSet extends AbstractClassContent implements \Iterator, \Countable
 {
+//    @todo gvf remove;
+    private $hackflag = true;
     /**
      * Internal position in iterator.
      *
@@ -501,6 +504,17 @@ class ContentSet extends AbstractClassContent implements \Iterator, \Countable
      */
     public function getData($var = null, $forceArray = false)
     {
+        if ($this->hackflag) {
+            foreach ($this->_data as $index => $data) {
+                foreach ($data as $key => $value) {
+                    if ('BackBee\ClassContent\ContentSet' == $key) {
+                        unset($this->_data[$index][$key]);
+                        $this->_data[$index]['BackBee\CoreDomain\ClassContent\ContentSet'] = $value;
+                    }
+                }
+            }
+            $this->hackflag = false;
+        }
         try {
             return parent::getData($var, $forceArray);
         } catch (UnknownPropertyException $e) {

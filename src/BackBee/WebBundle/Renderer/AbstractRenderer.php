@@ -26,11 +26,12 @@ namespace BackBee\WebBundle\Renderer;
 use BackBee\CoreDomain\NestedNode\Page;
 use BackBee\CoreDomain\Renderer\Exception\RendererException;
 use BackBee\CoreDomain\Renderer\RenderableInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\Security\Core\Util\ClassUtils;
 
 use BackBee\BBApplication;
-use BackBee\Renderer\Event\RendererEvent;
+use BackBee\CoreDomain\Renderer\Event\RendererEvent;
 use BackBee\CoreDomain\Site\Layout;
 use BackBee\CoreDomain\Site\Site;
 use BackBee\Utils\File\File;
@@ -129,6 +130,10 @@ abstract class AbstractRenderer implements RendererInterface
     private $__vars = array();
     private $__overloaded = 0;
     protected $__render;
+    /**
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
 
     /**
      * Class constructor.
@@ -137,7 +142,7 @@ abstract class AbstractRenderer implements RendererInterface
      * @param array        $config      Optional configurations overriding
      */
 //    public function __construct(BBApplication $application = null, $config = null)
-    public function __construct()
+    public function __construct( EventDispatcherInterface $eventDispatcher)
     {
 //        if (null !== $application) {
 //            $this->application = $application;
@@ -203,6 +208,7 @@ abstract class AbstractRenderer implements RendererInterface
 //        }
 
         $this->helpers = new ParameterBag();
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function __call($method, $argv)
@@ -984,16 +990,9 @@ abstract class AbstractRenderer implements RendererInterface
 
     protected function triggerEvent($name = 'render', $object = null, $render = null)
     {
-        if (null === $this->application) {
-            return;
-        }
-
-        $dispatcher = $this->application->getEventDispatcher();
-        if (null !== $dispatcher) {
             $object = null !== $object ? $object : $this->getObject();
             $event = new RendererEvent($object, null === $render ? $this : array($this, $render));
-            $dispatcher->triggerEvent($name, $object, null, $event);
-        }
+            $this->eventDispatcher->dispatch($name, $event);
     }
 
     protected function cache()

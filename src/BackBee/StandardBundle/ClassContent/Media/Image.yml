@@ -26,5 +26,5 @@ Image:
             default:
                 value: "Picture credits: author name/source"
         image:
-            type: BackBee\StandardBundle\ClassContent\Element\Image
+            type: BackBee\CoreDomain\ClassContent\Element\Image
             label: Image

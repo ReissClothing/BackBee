@@ -15,7 +15,7 @@ ClickableThumbnail:
             parameters:
                 rte: lite
         image:
-            type: BackBee\StandardBundle\ClassContent\Media\Image
+            type: BackBee\CoreDomain\ClassContent\Media\Image
             label: Image
         text_caption:
             type: BackBee\CoreDomain\ClassContent\Element\Text

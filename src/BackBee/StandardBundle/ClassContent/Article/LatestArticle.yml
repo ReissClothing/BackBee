@@ -1,5 +1,5 @@
 LatestArticle:
-    extends: \BackBee\ClassContent\Block\Autoblock
+    extends: \BackBee\CoreDomain\ClassContent\Block\Autoblock
     properties:
         name : Latest Articles
         description: "List the latest articles"

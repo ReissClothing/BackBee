@@ -5,8 +5,8 @@ Related:
         category: [!Article]
     elements:
         left:
-            type: BackBee\StandardBundle\ClassContent\Article\RelatedContainer
+            type: BackBee\CoreDomain\ClassContent\Article\RelatedContainer
         middle:
-            type: BackBee\StandardBundle\ClassContent\Article\RelatedContainer
+            type: BackBee\CoreDomain\ClassContent\Article\RelatedContainer
         right:
-            type: BackBee\StandardBundle\ClassContent\Article\RelatedContainer
+            type: BackBee\CoreDomain\ClassContent\Article\RelatedContainer

@@ -84,8 +84,8 @@ class Yaml extends AbstractClassWrapper
 //        ];
 //        @todo gvf do it dynamically
         $this->_classcontentdir = [
-            '/www/src/BackBee/StandardBundle/ClassContent',
-            '/www/src/BackBee/CoreDomain/ClassContent',
+            '/var/www/src/BackBee/StandardBundle/ClassContent',
+            '/var/www/src/BackBee/CoreDomain/ClassContent',
 //            '/var/www/vendor/backbee/demo-bundle/ClassContent',
         ];
 
@@ -372,8 +372,9 @@ class Yaml extends AbstractClassWrapper
         }
 
 //@todo gvf
+//        seguir por aqui, cambiar la excepcion, no encuentra el fichero yml
 //        throw new BBException(sprintf('Class \'%s\' not found', $this->namespace.NAMESPACE_SEPARATOR.$this->classname));
-        throw new \Exception(sprintf('Class \'%s\' not found', $this->namespace.NAMESPACE_SEPARATOR.$this->classname));
+        throw new \Exception(sprintf('Couldn\'t find file %s for class definition \'%s\'', $this->_path, $this->namespace.NAMESPACE_SEPARATOR.$this->classname));
     }
 
     /**

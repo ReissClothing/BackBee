@@ -16,11 +16,11 @@ class BackBeeStandardBundle extends Bundle
         $streamLoader = new AutoLoader();
         $streamLoader->register();
 //        @todo gvf harcoded params figure out a way to have it dynamically search
-        $streamLoader->registerStreamWrapper('BackBee\StandardBundle\ClassContent', 'bb.class', 'BackBee\CoreDomainBundle\Stream\ClassWrapper\Adapter\Yaml');
+        $streamLoader->registerStreamWrapper('BackBee\CoreDomain\ClassContent', 'bb.class', 'BackBee\CoreDomainBundle\Stream\ClassWrapper\Adapter\Yaml');
     }
 
-//    public function getParent()
-//    {
-//        return 'BackBeeWebBundle';
-//    }
+    public function getParent()
+    {
+        return 'BackBeeWebBundle';
+    }
 }

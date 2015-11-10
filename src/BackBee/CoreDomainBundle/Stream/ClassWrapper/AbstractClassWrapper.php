@@ -112,7 +112,7 @@ abstract class AbstractClassWrapper implements StreamWrapperInterface
      *
      * @var string
      */
-    protected $repository = 'BackBee\ClassContent\Repository\ClassContentRepository';
+    protected $repository = 'BackBee\CoreDomainBundle\ClassContent\Repository\ClassContentRepository';
 
     /**
      * The elements of the class content.
@@ -126,7 +126,7 @@ abstract class AbstractClassWrapper implements StreamWrapperInterface
      *
      * @var string
      */
-    protected $namespace = "BackBee\ClassContent";
+    protected $namespace = 'BackBee\CoreDomain\ClassContent';
 
     /**
      * the user parameters of the class content.

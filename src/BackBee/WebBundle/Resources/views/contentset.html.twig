@@ -1,4 +1,5 @@
 <div {{ this.bbcontent()|raw }}>
+    {{ dump(this.getObject()) }}
     {% for content in this.getObject().getData() %}
         {{ this.render(content, this.getMode(), null, null, this.getIgnoreIfNotAvailable())|raw }}
     {% endfor %}

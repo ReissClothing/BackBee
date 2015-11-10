@@ -6,4 +6,4 @@ RelatedContainer:
         category: [!Article]
     parameters:
         rendermode: related
-        accept: [BackBee\StandardBundle\ClassContent\Article\Article]
+        accept: [BackBee\CoreDomain\ClassContent\Article\Article]

@@ -5,7 +5,7 @@ HomeContainer:
         category: [!Home]
     elements:
         container:
-            type: BackBee\StandardBundle\ClassContent\Container\OneColumn
+            type: BackBee\CoreDomain\ClassContent\Container\OneColumn
     parameters:
         container_title: ~
         container_bottom: ~
