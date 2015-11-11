@@ -24,7 +24,9 @@
 namespace BackBee\CoreDomainBundle\AutoLoader;
 
 //use BackBee\Exception\BBException;
+use BackBee\CoreDomainBundle\Event\Event;
 use BackBee\CoreDomainBundle\Stream\ClassWrapper\Exception\ClassWrapperException;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 if (false === defined('NAMESPACE_SEPARATOR')) {
     define('NAMESPACE_SEPARATOR', '\\');
@@ -122,14 +124,19 @@ class AutoLoader
      * @var boolean
      */
     private $_is_restored;
+    /**
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
 
     /**
      * Class constructor.
      *
      */
-    public function __construct()
+    public function __construct(EventDispatcherInterface $eventDispatcher)
     {
         $this->_availableWrappers = stream_get_wrappers();
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -301,13 +308,14 @@ class AutoLoader
         list($namespace, $classname) = $this->normalizeClassname($classpath);
 
         if ($this->autoloadThrowWrappers($namespace, $classname)) {
-//            if (NAMESPACE_SEPARATOR == substr($classpath, 0, 1)) {
-//                $classpath = substr($classpath, 1);
-//            }
+            if (NAMESPACE_SEPARATOR == substr($classpath, 0, 1)) {
+                $classpath = substr($classpath, 1);
+            }
 
-//            if (null !== $this->getEventDispatcher() && is_subclass_of($classpath, 'BackBee\CoreDomain\ClassContent\AbstractClassContent')) {
-//                $this->getEventDispatcher()->triggerEvent('include', new $classpath());
-//            }
+            if (is_subclass_of($classpath, 'BackBee\CoreDomain\ClassContent\AbstractClassContent')) {
+                $event = new Event(new $classpath());
+                $this->eventDispatcher->dispatch('classcontent.include', $event);
+            }
 
             return;
         }
@@ -355,7 +363,7 @@ class AutoLoader
     public function glob($pattern)
     {
         // $pattern = 'Media'.DIRECTORY_SEPARATOR.'*'
-        $wrappers = $this->getStreamWrapperClassname('BackBee\ClassContent', 'bb.class');
+        $wrappers = $this->getStreamWrapperClassname('BackBee\CoreDomain\ClassContent', 'bb.class');
         if (0 == count($wrappers)) {
             return false;
         }

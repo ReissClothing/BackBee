@@ -698,7 +698,7 @@ class ClassContentRepository extends EntityRepository
      *
      * @param \BackBee\BBApplication $application
      *
-     * @return \BackBee\ClassContent\Repository\Element\fileRepository
+     * @return \BackBee\CoreDomainBundle\ClassContent\Repository\Element\fileRepository
      */
     public function setDirectories(BBApplication $application = null)
     {
@@ -710,7 +710,7 @@ class ClassContentRepository extends EntityRepository
      *
      * @param type $temporaryDir
      *
-     * @return \BackBee\ClassContent\Repository\Element\fileRepository
+     * @return \BackBee\CoreDomainBundle\ClassContent\Repository\Element\fileRepository
      */
     public function setTemporaryDir($temporaryDir = null)
     {
@@ -722,7 +722,7 @@ class ClassContentRepository extends EntityRepository
      *
      * @param type $storageDir
      *
-     * @return \BackBee\ClassContent\Repository\Element\fileRepository
+     * @return \BackBee\CoreDomainBundle\ClassContent\Repository\Element\fileRepository
      */
     public function setStorageDir($storageDir = null)
     {
@@ -734,7 +734,7 @@ class ClassContentRepository extends EntityRepository
      *
      * @param type $mediaDir
      *
-     * @return \BackBee\ClassContent\Repository\Element\fileRepository
+     * @return \BackBee\CoreDomainBundle\ClassContent\Repository\Element\fileRepository
      */
     public function setMediaDir($mediaDir = null)
     {

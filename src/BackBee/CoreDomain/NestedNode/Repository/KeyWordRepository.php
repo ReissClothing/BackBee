@@ -23,7 +23,7 @@
 
 namespace BackBee\CoreDomain\NestedNode\Repository;
 
-use BackBee\ClassContent\Element\Keyword;
+use BackBee\CoreDomain\ClassContent\Element\Keyword;
 use BackBee\CoreDomain\NestedNode\Page;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Exception;

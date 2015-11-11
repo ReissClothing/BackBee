@@ -23,7 +23,7 @@
 
 namespace BackBee\WebBundle\Renderer\Helper;
 
-use BackBee\ClassContent\Element\Date;
+use BackBee\CoreDomain\ClassContent\Element\Date;
 
 /**
  * @category    BackBee

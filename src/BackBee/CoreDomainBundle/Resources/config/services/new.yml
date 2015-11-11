@@ -18,14 +18,16 @@ services:
 
     classcontent_listener:
         class: BackBee\CoreDomainBundle\ClassContent\Listener\AbstractClassContentListener
+        arguments:
+            - @service_container
         tags:
             - { name: "kernel.event_listener", event: "classcontent.include", method: onInclude }
-
-    classcontent.postload:
-        class: BackBee\CoreDomainBundle\ClassContent\Listener\AbstractClassContentListener
-        tags:
-#            - { name: doctrine.orm.entity_listener}
             - { name: doctrine.event_listener, event: postLoad}
+# defined above
+#    classcontent.postload:
+#        class: BackBee\CoreDomainBundle\ClassContent\Listener\AbstractClassContentListener
+#        tags:
+#            - { name: doctrine.orm.entity_listener}
 
 #classcontent.postload:
 #    listeners:
@@ -33,24 +35,24 @@ services:
 #
 #classcontent.update:
 #    listeners:
-#        - [BackBee\ClassContent\Listener\ClassContentListener, onUpdate]
+#        - [BackBee\CoreDomain\ClassContent\Listener\ClassContentListener, onUpdate]
 #
 #classcontent.onflush:
 #    listeners:
-#        - [BackBee\ClassContent\Listener\ClassContentListener, onFlushContent]
-#        - [BackBee\ClassContent\Listener\RevisionListener, onFlushContent]
-#        - [BackBee\ClassContent\Listener\IndexationListener, onFlushContent]
+#        - [BackBee\CoreDomain\ClassContent\Listener\ClassContentListener, onFlushContent]
+#        - [BackBee\CoreDomain\ClassContent\Listener\RevisionListener, onFlushContent]
+#        - [BackBee\CoreDomain\ClassContent\Listener\IndexationListener, onFlushContent]
 #        - [@cache.listener, onFlushContent]
 #        - [BackBee\Event\Listener\MetaDataListener, onFlushContent]
 #        - [BackBee\Event\Listener\RewritingListener, onFlushContent]
 #
 #classcontent.preremove:
 #    listeners:
-#        - [BackBee\ClassContent\Listener\ClassContentListener, onPreRemove]
+#        - [BackBee\CoreDomain\ClassContent\Listener\ClassContentListener, onPreRemove]
 #
 #classcontent.prerender:
 #    listeners:
-#        - [BackBee\ClassContent\Listener\RevisionListener, onPrerenderContent]
+#        - [BackBee\CoreDomain\ClassContent\Listener\RevisionListener, onPrerenderContent]
 #        - [@cache.listener, onPreRenderContent]
 #
 #classcontent.postrender:
@@ -59,11 +61,11 @@ services:
 #
 #rest.controller.classcontentcontroller.getaction.postcall:
 #  listeners:
-#    - [BackBee\ClassContent\Listener\ClassContentListener, onPostCall]
+#    - [BackBee\CoreDomain\ClassContent\Listener\ClassContentListener, onPostCall]
 #
 #element.file.postremove:
 #    listeners:
-#        - [BackBee\ClassContent\Listener\ClassContentListener, onRemoveElementFile]
+#        - [BackBee\CoreDomain\ClassContent\Listener\ClassContentListener, onRemoveElementFile]
 #
 #nestednode.page.prerender:
 #    listeners:
@@ -80,7 +82,7 @@ services:
 #nestednode.page.onflush:
 #    listeners:
 #        - [BackBee\Event\Listener\MetaDataListener, onFlushPage]
-#        - [BackBee\ClassContent\Listener\IndexationListener, onFlushPage]
+#        - [BackBee\CoreDomain\ClassContent\Listener\IndexationListener, onFlushPage]
 #        - [BackBee\Event\Listener\RewritingListener, onFlushPage]
 #        - [@cache.listener, onFlushPage]
 #
@@ -98,11 +100,11 @@ services:
 #
 #revision.postload:
 #    listeners:
-#        - [BackBee\ClassContent\Listener\RevisionListener, onPostLoad]
+#        - [BackBee\CoreDomain\ClassContent\Listener\RevisionListener, onPostLoad]
 #
 #revision.onflush:
 #    listeners:
-#        - [BackBee\ClassContent\Listener\RevisionListener, onFlushElementFile]
+#        - [BackBee\CoreDomain\ClassContent\Listener\RevisionListener, onFlushElementFile]
 #
 #element.keyword.render:
 #    listeners:
@@ -136,7 +138,7 @@ services:
 #bbapplication.init:
 #    listeners:
 #        - [BackBee\DependencyInjection\Listener\ContainerListener, onApplicationInit]
-#        - [BackBee\ClassContent\Listener\ClassContentListener, onApplicationInit]
+#        - [BackBee\CoreDomain\ClassContent\Listener\ClassContentListener, onApplicationInit]
 #
 #
 #

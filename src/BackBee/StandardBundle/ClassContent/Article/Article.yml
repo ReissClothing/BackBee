@@ -29,7 +29,7 @@ Article:
         image:
             type: BackBee\CoreDomain\ClassContent\Media\Image
         keywords:
-            type: BackBee\ClassContent\Element\Keyword
+            type: BackBee\CoreDomain\ClassContent\Element\Keyword
             label: Keywords
             maxentry: 0
         related:

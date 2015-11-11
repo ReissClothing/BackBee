@@ -26,6 +26,7 @@ namespace BackBee\WebBundle\Renderer;
 use BackBee\CoreDomain\NestedNode\Page;
 use BackBee\CoreDomain\Renderer\Exception\RendererException;
 use BackBee\CoreDomain\Renderer\RenderableInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\Security\Core\Util\ClassUtils;
@@ -133,7 +134,11 @@ abstract class AbstractRenderer implements RendererInterface
     /**
      * @var EventDispatcherInterface
      */
-    private $eventDispatcher;
+    protected $eventDispatcher;
+    /**
+     * @var EntityManagerInterface
+     */
+    protected $entityManager;
 
     /**
      * Class constructor.
@@ -142,7 +147,7 @@ abstract class AbstractRenderer implements RendererInterface
      * @param array        $config      Optional configurations overriding
      */
 //    public function __construct(BBApplication $application = null, $config = null)
-    public function __construct( EventDispatcherInterface $eventDispatcher)
+    public function __construct(EventDispatcherInterface $eventDispatcher, EntityManagerInterface $entityManager)
     {
 //        if (null !== $application) {
 //            $this->application = $application;
@@ -209,6 +214,7 @@ abstract class AbstractRenderer implements RendererInterface
 
         $this->helpers = new ParameterBag();
         $this->eventDispatcher = $eventDispatcher;
+        $this->entityManager = $entityManager;
     }
 
     public function __call($method, $argv)
@@ -446,10 +452,10 @@ abstract class AbstractRenderer implements RendererInterface
             foreach ($var as $key => $value) {
                 if ($value instanceof AbstractClassContent) {
                     // trying to load subcontent
-                    $subcontent = $this->getApplication()
-                            ->getEntityManager()
-                            ->getRepository(ClassUtils::getRealClass($value))
-                            ->load($value, $this->getApplication()->getBBUserToken());
+                    $subcontent = $this->entityManager->getRepository(ClassUtils::getRealClass($value))
+//                        @TODO gvf
+//                            ->load($value, $this->getApplication()->getBBUserToken());
+                            ->load($value);
                     if (null !== $subcontent) {
                         $value = $subcontent;
                     }

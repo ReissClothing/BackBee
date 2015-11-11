@@ -53,7 +53,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @copyright   Lp digital system
  * @author      c.rouillon <charles.rouillon@lp-digital.fr>
  *
- * @ORM\Entity(repositoryClass="BackBee\ClassContent\Repository\RevisionRepository")
+ * @ORM\Entity(repositoryClass="BackBee\CoreDomainBundle\ClassContent\Repository\RevisionRepository")
  * @ORM\Table(name="revision", indexes={
  *     @ORM\Index(name="IDX_CONTENT", columns={"content_uid"}),
  *     @ORM\Index(name="IDX_REVISION_CLASSNAME_1", columns={"classname"}),

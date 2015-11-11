@@ -1,0 +1,4 @@
+{% set options = this.getObject().getParamValue('options') %}
+<div {{ this.bbcontent()|raw }}>
+    {{ options[value] is defined ? options[value] : '' }}
+</div>

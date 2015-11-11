@@ -3,11 +3,12 @@
         {% set slide_id = 'slider_' ~ random() %}
         <div id="{{ slide_id }}" class="owl-carousel slider-wrapper slider-fw slider_loader">
             <div class="slider-list slider-has-pagination">
-                {% for slide in slides %}
-                    {% include 'Home/Slide.twig' with {'slide': slide} %}
-                {% else %}
-                    {% include 'Home/DefaultSlide.twig' %}
-                {% endfor %}
+                {#@TODO gvf#}
+                {#{% for slide in slides %}#}
+                    {#{% include 'Home/Slide.twig' with {'slide': slide} %}#}
+                {#{% else %}#}
+                    {% include 'BackBeeStandardBundle::Home/DefaultSlide.html.twig' %}
+                {#{% endfor %}#}
             </div>
         </div>
     </div>

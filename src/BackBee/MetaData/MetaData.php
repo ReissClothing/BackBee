@@ -25,8 +25,8 @@ namespace BackBee\MetaData;
 
 use BackBee\CoreDomain\ClassContent\AbstractClassContent;
 use BackBee\CoreDomain\ClassContent\ContentSet;
-use BackBee\ClassContent\Element\File;
-use BackBee\ClassContent\Element\Keyword;
+use BackBee\CoreDomain\ClassContent\Element\File;
+use BackBee\CoreDomain\ClassContent\Element\Keyword;
 use BackBee\CoreDomain\ClassContent\Element\Text;
 use BackBee\CoreDomain\NestedNode\Page;
 
@@ -251,7 +251,7 @@ class MetaData implements \IteratorAggregate, \Countable, \JsonSerializable
                                         $newcontent = $content->item($m[3]);
                                     } elseif (3 < count($m) && $content instanceof ContentSet) {
                                         $index = intval($m[3]);
-                                        $classname = 'BackBee\ClassContent\\'.str_replace('/', NAMESPACE_SEPARATOR, $m[1]);
+                                        $classname = 'BackBee\CoreDomain\ClassContent\\'.str_replace('/', NAMESPACE_SEPARATOR, $m[1]);
                                         foreach ($content as $subcontent) {
                                             if (get_class($subcontent) == $classname) {
                                                 if (0 === $index) {

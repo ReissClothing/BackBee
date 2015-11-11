@@ -98,14 +98,6 @@ class Renderer extends AbstractRenderer
      * @var \Twig_Environment
      */
     private $twig;
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
 
     /**
      * Constructor.
@@ -116,11 +108,9 @@ class Renderer extends AbstractRenderer
      */
     public function __construct(TwigEngine $twig, EntityManagerInterface $entityManager, EventDispatcherInterface $eventDispatcher)
     {
-        parent::__construct($eventDispatcher);
+        parent::__construct($eventDispatcher, $entityManager);
         $this->twig = $twig;
         // It is only used in the metadata helper, so this needs to be refactored!
-        $this->entityManager = $entityManager;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -865,17 +855,20 @@ class Renderer extends AbstractRenderer
             $layout = $this->getObject()->getLayout();
             $zones = $layout->getZones();
             $zoneIndex = 0;
-
-            foreach ($contentSet->getData() as $content) {
+            $b= $contentSet->getData();
+            foreach ($b as $content) {
                 if (array_key_exists($zoneIndex, $zones)) {
                     $zone = $zones[$zoneIndex];
                     $isMain = null !== $zone && property_exists($zone, 'mainZone') && true === $zone->mainZone;
-                    $this->container()->add($this->render($content, $this->getMode(), array(
+                    $a = $this->container();
+                    $c= $this->render($content, $this->getMode(), array(
                         'class' => 'rootContentSet',
                         'isRoot' => true,
                         'indexZone' => $zoneIndex++,
                         'isMainZone' => $isMain,
-                    ), null, $this->_ignoreIfRenderModeNotAvailable));
+                    ), null, $this->_ignoreIfRenderModeNotAvailable);
+//                    @TODO gvf
+                    $b= $a->add($c);
                 }
             }
         }
@@ -1084,6 +1077,9 @@ class Renderer extends AbstractRenderer
 
         $this->templateFile = 'BackBeeWebBundle::'. strtolower(str_replace('.twig', '.html.twig', $this->templateFile));
         }
+
+        $x = $this->getObject();
+        $y = $x->getData();
 
         $a =  $this->twig->render(
             $this->templateFile,

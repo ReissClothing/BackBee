@@ -844,7 +844,7 @@ class Page extends AbstractObjectIdentifiable implements RenderableInterface, Do
             } elseif ($zone->defaultClassContent) {
                 // New default content push
                 $contentset->push($this->createNewDefaultContent(
-                    'BackBee\ClassContent\\'.$zone->defaultClassContent,
+                    'BackBee\CoreDomain\ClassContent\\'.$zone->defaultClassContent,
                     $zone->mainZone
                 ));
             }

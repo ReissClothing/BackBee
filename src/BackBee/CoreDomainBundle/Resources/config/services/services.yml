@@ -57,8 +57,8 @@ parameters:
     bbapp.config.configurator.class: BackBee\Config\Configurator
     bbapp.config.persistor.class: BackBee\Config\Persistor
     bbapp.bundle.loader.class: BackBee\Bundle\BundleLoader
-    bbapp.classcontent.category_manager.class: BackBee\ClassContent\CategoryManager
-    bbapp.classcontent.manager.class: BackBee\ClassContent\ClassContentManager
+    bbapp.classcontent.category_manager.class: BackBee\CoreDomain\ClassContent\CategoryManager
+    bbapp.classcontent.manager.class: BackBee\CoreDomain\ClassContent\ClassContentManager
     bbapp.classcontent.exception_on_unknown_classname: true  # true: always throw an exception on class content unknown
                                                              # false:  always ignore class content unknown
                                                              # debug: throw an exception on class content unknown if debug mode is activated
@@ -145,15 +145,15 @@ services:
 #        arguments:  ["@bbapp", "@config.configurator"]
 
 #    classcontent.iconizer.thumbnail:
-#        class:      BackBee\ClassContent\Iconizer\ThumbnailIconizer
+#        class:      BackBee\CoreDomain\ClassContent\Iconizer\ThumbnailIconizer
 #        arguments:  [@bbapp]
 #
 #    classcontent.iconizer.property:
-#        class:      BackBee\ClassContent\Iconizer\PropertyIconizer
+#        class:      BackBee\CoreDomain\ClassContent\Iconizer\PropertyIconizer
 #        arguments:  [@routing]
 #
 #    classcontent.iconizer.chained:
-#        class:      BackBee\ClassContent\Iconizer\ChainIconizer
+#        class:      BackBee\CoreDomain\ClassContent\Iconizer\ChainIconizer
 #        arguments:  [["@classcontent.iconizer.property", "@classcontent.iconizer.thumbnail"]]
 #
 #    classcontent.category_manager:

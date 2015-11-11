@@ -7,15 +7,16 @@
             <p {{ this.bbcontent(text, {'class': 'ttl'})|raw }}>{{ text.value|raw }}</p>
         </div>
         <div class="content-footer">
-            {% if link.url is not empty %}
-                <p>
-                    {% set title = link.title %}
-                    {% if link.title is empty %}
-                        {% set title = link.url %}
-                    {% endif %}
-                    <a href="{{ link.url }}" target="{{ link.target }}">{{ title }}</a>
-                </p>
-            {% endif %}
+            {#@todo gvf#}
+            {#{% if link.url is not empty %}#}
+                {#<p>#}
+                    {#{% set title = link.title %}#}
+                    {#{% if link.title is empty %}#}
+                        {#{% set title = link.url %}#}
+                    {#{% endif %}#}
+                    {#<a href="{{ link.url }}" target="{{ link.target }}">{{ title }}</a>#}
+                {#</p>#}
+            {#{% endif %}#}
         </div>
     </div>
 </div>

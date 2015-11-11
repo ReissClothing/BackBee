@@ -41,15 +41,22 @@ class DefaultController extends Controller
 //            ? ('false' !== $this->application->getRequest()->get('bb5-redirect'))
 //            : true
 //        ;
-
-        $page = $this->getDoctrine()
-            ->getManager()
-            ->getRepository('BackBee\CoreDomain\NestedNode\Page')
-            ->findOneBy(array(
-                '_site'  => $site,
-                '_url'   => $uri,
-                '_state' => Page::getUndeletedStates(),
-            ));
+        if (empty($uri)) {
+            $page = $this->getDoctrine()
+                ->getManager()
+                ->getRepository('BackBee\CoreDomain\NestedNode\Page')
+                ->getRoot($site)
+            ;
+        } else {
+            $page = $this->getDoctrine()
+                ->getManager()
+                ->getRepository('BackBee\CoreDomain\NestedNode\Page')
+                ->findOneBy(array(
+                    '_site'  => $site,
+                    '_url'   => $uri,
+                    '_state' => Page::getUndeletedStates(),
+                ));
+        }
 // @TODO gvf
 //        if (null !== $page && false === $page->isOnline()) {
 //            $page = (null === $this->application->getBBUserToken()) ? null : $page;

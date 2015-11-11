@@ -656,7 +656,7 @@ class Layout extends AbstractObjectIdentifiable
             $options['accept'] = $zone->accept;
 
             $func = function (&$item, $key) {
-                        $item = ('' == $item) ? null : 'BackBee\ClassContent\\'.$item;
+                        $item = ('' == $item) ? null : 'BackBee\CoreDomain\ClassContent\\'.$item;
                     };
 
             array_walk($options['accept'], $func);

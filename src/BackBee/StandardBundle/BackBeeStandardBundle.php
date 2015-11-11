@@ -13,7 +13,8 @@ class BackBeeStandardBundle extends Bundle
      */
     public function boot()
     {
-        $streamLoader = new AutoLoader();
+
+        $streamLoader = new AutoLoader($this->container->get('event_dispatcher'));
         $streamLoader->register();
 //        @todo gvf harcoded params figure out a way to have it dynamically search
         $streamLoader->registerStreamWrapper('BackBee\CoreDomain\ClassContent', 'bb.class', 'BackBee\CoreDomainBundle\Stream\ClassWrapper\Adapter\Yaml');

@@ -4,7 +4,7 @@ Pdf:
         description: A pdf file
         labelized-by: title->value
         category: [Media]
-    traits: [BackBee\ClassContent\Traits\Element\FileJsonSerializeTrait]
+    traits: [BackBee\CoreDomain\ClassContent\Traits\Element\FileJsonSerializeTrait]
     elements:
         title:
             type: BackBee\CoreDomain\ClassContent\Element\Text

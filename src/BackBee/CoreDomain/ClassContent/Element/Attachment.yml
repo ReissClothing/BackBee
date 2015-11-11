@@ -1,5 +1,5 @@
 Attachment:
-  extends: \BackBee\ClassContent\Element\File
+  extends: \BackBee\CoreDomain\ClassContent\Element\File
   properties:
     name: Attachment
     description: An attachment

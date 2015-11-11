@@ -1320,7 +1320,9 @@ abstract class AbstractContent implements ObjectIdentifiableInterface, Renderabl
         if (0 === strpos($classname, 'BackBee\\ClassContent\\ContentSet')){
             $classname = str_replace('ClassContent', 'CoreDomain\\ClassContent', $classname);
         }elseif(0 === strpos($classname, 'BackBee\\ClassContent')) {
-            $classname = str_replace('ClassContent', 'StandardBundle\\ClassContent', $classname);
+            $classname = str_replace('ClassContent', 'CoreDomain\\ClassContent', $classname);
+        }elseif(0 === strpos($classname, 'BackBee\StandardBundle\ClassContent\\')) {
+            $classname = str_replace('BackBee\StandardBundle\ClassContent', 'BackBee\CoreDomain\ClassContent', $classname);
         }
 
         if (is_object($classname)) {

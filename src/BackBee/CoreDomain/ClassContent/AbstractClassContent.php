@@ -29,6 +29,10 @@ use BackBee\ClassContent\Exception\ClassContentException;
 use BackBee\AutoLoader\Exception\ClassNotFoundException;
 use BackBee\CoreDomain\NestedNode\Page;
 
+//@todo gvf
+if (false === defined('NAMESPACE_SEPARATOR')) {
+    define('NAMESPACE_SEPARATOR', '\\');
+}
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -47,7 +51,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @copyright   Lp digital system
  * @author      c.rouillon <charles.rouillon@lp-digital.fr>
- * @ORM\Entity(repositoryClass="BackBee\ClassContent\Repository\ClassContentRepository")
+ * @ORM\Entity(repositoryClass="BackBee\CoreDomainBundle\ClassContent\Repository\ClassContentRepository")
  * @ORM\Table(
  *   name="content",
  *   indexes={
@@ -1024,4 +1028,55 @@ abstract class AbstractClassContent extends AbstractContent
 
         return $data;
     }
+
+//  @TODO gvf  ADDED FOR DOCTRINE!! at least the setsubcontent and parent
+//
+//    /**
+//     * @param boolean $isloaded
+//     */
+//    public function setIsloaded($isloaded)
+//    {
+//        $this->isloaded = $isloaded;
+//    }
+//
+//    /**
+//     * @param ArrayCollection $subcontent
+//     */
+//    public function setSubcontent($subcontent)
+//    {
+//        $this->_subcontent = $subcontent;
+//    }
+//
+//    /**
+//     * @param ArrayCollection $parentcontent
+//     */
+//    public function setParentcontent($parentcontent)
+//    {
+//        $this->_parentcontent = $parentcontent;
+//    }
+//
+//    /**
+//     * @param ArrayCollection $revisions
+//     */
+//    public function setRevisions($revisions)
+//    {
+//        $this->_revisions = $revisions;
+//    }
+//
+//    /**
+//     * @param ArrayCollection $indexation
+//     */
+//    public function setIndexation($indexation)
+//    {
+//        $this->_indexation = $indexation;
+//    }
+//
+//    /**
+//     * @param array $subcontentmap
+//     */
+//    public function setSubcontentmap($subcontentmap)
+//    {
+//        $this->subcontentmap = $subcontentmap;
+//    }
+
 }

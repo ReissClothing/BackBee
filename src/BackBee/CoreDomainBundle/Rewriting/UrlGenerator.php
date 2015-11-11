@@ -24,7 +24,7 @@
 namespace BackBee\CoreDomainBundle\Rewriting;
 
 use BackBee\CoreDomain\ClassContent\AbstractClassContent;
-use BackBee\ClassContent\AbstractContent;
+use BackBee\CoreDomain\ClassContent\AbstractContent;
 use BackBee\CoreDomain\NestedNode\Page;
 use BackBee\Rewriting\Exception\RewritingException;
 use BackBee\Utils\StringUtils;
@@ -170,7 +170,7 @@ class UrlGenerator implements UrlGeneratorInterface
 
             if (array_key_exists('_content_', $this->schemes)) {
                 foreach (array_keys($this->schemes['_content_']) as $descriminator) {
-                    $this->descriminators[] = 'BackBee\ClassContent\\'.$descriminator;
+                    $this->descriminators[] = 'BackBee\CoreDomain\ClassContent\\'.$descriminator;
 
                     if (null !== $this->application->getEventDispatcher()) {
                         $this

@@ -31,7 +31,9 @@ use BackBee\CoreDomainBundle\Event\Event;
 use BackBee\Exception\BBException;
 use BackBee\Security\Exception\SecurityException;
 use BackBee\Utils\File\File;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\LifecycleEventArgs;
+use JMS\Serializer\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Listener to ClassContent events :
@@ -46,12 +48,23 @@ use Doctrine\ORM\Event\LifecycleEventArgs;
 class AbstractClassContentListener
 {
     private $exceptionOnUnknownClassname;
+    /**
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
+    /**
+     * @var
+     */
+    private $entityManager;
 
-//    public function __construct($exceptionOnUnknownClassname)
-//    {
-//
+//    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct( $entityManager)
+    {
+
 //        $this->exceptionOnUnknownClassname = strtolower($exceptionOnUnknownClassname);
-//    }
+        $this->entityManager = $entityManager;
+    }
+
     /**
      * Add discriminator values to class MetaData when a content class is loaded
      * Occur on classcontent.include events.
@@ -60,24 +73,21 @@ class AbstractClassContentListener
      */
     public function onInclude(Event $event)
     {
-        $dispatcher = $event->getDispatcher();
-        if (null !== $dispatcher->getApplication()) {
-            $em = $dispatcher->getApplication()->getEntityManager();
-            $shortClassname = AbstractClassContent::getShortClassname($event->getTarget());
-            $fullClassname = AbstractClassContent::getFullClassname($event->getTarget());
-            foreach (class_parents($fullClassname) as $classname) {
-                $em->getClassMetadata($classname)->addDiscriminatorMapClass($shortClassname, $fullClassname);
+        $shortClassname = AbstractClassContent::getShortClassname($event->getTarget());
+        $fullClassname  = AbstractClassContent::getFullClassname($event->getTarget());
+        foreach (class_parents($fullClassname) as $classname) {
+//            @gvf todo container injection
+            $this->entityManager->get('doctrine.orm.default_entity_manager')->getClassMetadata($classname)->addDiscriminatorMapClass($shortClassname, $fullClassname);
 
-                if ('BackBee\CoreDomain\ClassContent\AbstractClassContent' === $classname) {
-                    break;
-                }
+            if ('BackBee\CoreDomain\ClassContent\AbstractClassContent' === $classname) {
+                break;
             }
         }
     }
 
     /**
      * Occurs on classcontent.postload events.
-     * 
+     *
      * @param Event $event
      */
     public function postload(LifecycleEventArgs $event)
@@ -89,7 +99,7 @@ class AbstractClassContentListener
 
     /**
      * Occurs on classcontent.onflush events.
-     * 
+     *
      * @param Event $event
      */
     public function onFlushContent(Event $event)
@@ -99,15 +109,15 @@ class AbstractClassContentListener
             return;
         }
 
-        $dispatcher = $event->getDispatcher();
+        $dispatcher  = $event->getDispatcher();
         $application = $dispatcher->getApplication();
-        $em = $application->getEntityManager();
-        $uow = $em->getUnitOfWork();
+        $em          = $application->getEntityManager();
+        $uow         = $em->getUnitOfWork();
         if ($uow->isScheduledForInsert($content) || $uow->isScheduledForUpdate($content)) {
             if (null !== $content->getProperty('labelized-by')) {
                 $elements = explode('->', $content->getProperty('labelized-by'));
-                $element = null;
-                $value = $content;
+                $element  = null;
+                $value    = $content;
                 foreach ($elements as $element) {
                     if (null !== $value) {
                         $value = $value->getData($element);
@@ -215,12 +225,12 @@ class AbstractClassContentListener
 
     /**
      * Occurs on element.file.postremove events.
-     * 
+     *
      * @param Event $event
      */
     public function onRemoveElementFile(Event $event)
     {
-        $dispatcher = $event->getDispatcher();
+        $dispatcher  = $event->getDispatcher();
         $application = $dispatcher->getApplication();
 
         try {
@@ -239,13 +249,13 @@ class AbstractClassContentListener
 
             @unlink($filename);
         } catch (\Exception $e) {
-            $application->warning('Unable to delete file: '.$e->getMessage());
+            $application->warning('Unable to delete file: ' . $e->getMessage());
         }
     }
 
     /**
      * Occurs on rest.controller.classcontentcontroller.getAction.postcall events.
-     * 
+     *
      * @param Event $event
      */
     public function onPostCall(Event $event)
@@ -256,8 +266,8 @@ class AbstractClassContentListener
         }
 
         $application = $event->getApplication();
-        $renderer = $application->getRenderer();
-        $content = json_decode($response->getContent());
+        $renderer    = $application->getRenderer();
+        $content     = json_decode($response->getContent());
 
         $result = false;
         if ($content instanceof \StdClass) {
@@ -273,7 +283,7 @@ class AbstractClassContentListener
         }
 
         $rendermodeParam = $content->parameters->rendermode;
-        $classname =  AbstractClassContent::getClassnameByContentType($content->type);
+        $classname       = AbstractClassContent::getClassnameByContentType($content->type);
 
         $modes = ['default' => 'Default mode'];
         foreach ($renderer->getAvailableRenderMode(new $classname()) as $mode) {
@@ -288,11 +298,12 @@ class AbstractClassContentListener
     /**
      * Occurs on event ``bbapplication.init`` to set AbstractContent::$ignoreUnknownClassname according to bbapp parameters.
      * @TODO gvf this should be moved from here
+     *
      * @param Event $event
      */
     public function onApplicationInit(Event $event)
     {
         // @TODO if app is in debug mode pass the mode, this might be done outside in extension probably
-            AbstractClassContent::throwExceptionOnUnknownClassname($this->exceptionOnUnknownClassname);
+        AbstractClassContent::throwExceptionOnUnknownClassname($this->exceptionOnUnknownClassname);
     }
 }

@@ -588,7 +588,7 @@ class ContentSet extends AbstractClassContent implements \Iterator, \Countable
         }
 
         if (true === array_key_exists('accept', $options)) {
-            $this->_accept = array_map(['BackBee\ClassContent\AbstractContent', 'getShortClassname'], (array) $options['accept']);
+            $this->_accept = array_map(['BackBee\CoreDomain\ClassContent\AbstractContent', 'getShortClassname'], (array) $options['accept']);
         }
 
         if (true === array_key_exists('default', $options)) {
