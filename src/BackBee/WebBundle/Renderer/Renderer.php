@@ -1081,9 +1081,14 @@ class Renderer extends AbstractRenderer
         $x = $this->getObject();
         $y = $x->getData();
 
+        $v1=$this->getAssignedVars();
+        $v2=$this->getBBVariable();
+        $v3=$this->getParam();
+        $vars = array_merge($v1, $v2 ,$v3 ,['this'=> $this]);
+
         $a =  $this->twig->render(
             $this->templateFile,
-            array_merge($this->getAssignedVars(), $this->getBBVariable(), $this->getParam(),['this'=> $this])
+            $vars
         );
 
         return $a;

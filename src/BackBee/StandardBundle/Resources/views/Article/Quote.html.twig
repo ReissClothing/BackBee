@@ -8,15 +8,15 @@
         </div>
         <div class="content-footer">
             {#@todo gvf#}
-            {#{% if link.url is not empty %}#}
-                {#<p>#}
-                    {#{% set title = link.title %}#}
-                    {#{% if link.title is empty %}#}
-                        {#{% set title = link.url %}#}
-                    {#{% endif %}#}
-                    {#<a href="{{ link.url }}" target="{{ link.target }}">{{ title }}</a>#}
-                {#</p>#}
-            {#{% endif %}#}
+            {% if link.url is defined %}
+                <p>
+                    {% set title = link.title %}
+                    {% if link.title is empty %}
+                        {% set title = link.url %}
+                    {% endif %}
+                    <a href="{{ path('bb.default', {'uri': link.url}) }}" target="{{ link.target }}">{{ title }}</a>
+                </p>
+            {% endif %}
         </div>
     </div>
 </div>

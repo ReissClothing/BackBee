@@ -2,3 +2,38 @@ services:
 #    back_bee_standard.example:
 #        class: BackBee\StandardBundle\Example
 #        arguments: [@service_id, "plain_value", %parameter%]
+    block.autoblock.render_listener:
+        class: BackBee\StandardBundle\Event\Listener\AutoblockListener
+        arguments:
+            - @doctrine.orm.default_entity_manager
+        tags:
+            - { name: "kernel.event_listener", event: "block.autoblock.render", method: onRender }
+
+    social.facebook.prerender_listener:
+        class: BackBee\StandardBundle\Event\Listener\SocialListener
+        tags:
+            - { name: "kernel.event_listener", event: "social.facebook.prerender", method: onPreRenderFacebook }
+
+    social.twitter.prerender_listener:
+        class: BackBee\StandardBundle\Event\Listener\SocialListener
+        tags:
+            - { name: "kernel.event_listener", event: "social.twitter.prerender", method: onPreRenderTwitter }
+
+    article.article.render_listener:
+        class: BackBee\StandardBundle\Event\Listener\ArticleListener
+        tags:
+            - { name: "kernel.event_listener", event: "article.article.render", method: onRender }
+
+    article.quote.render_listener:
+        class: BackBee\StandardBundle\Event\Listener\QuoteListener
+        arguments:
+            - @doctrine.orm.default_entity_manager
+        tags:
+            - { name: "kernel.event_listener", event: "article.quote.render", method: onRender }
+
+    home.slider.render_listener:
+        class: BackBee\StandardBundle\Event\Listener\SliderListener
+        arguments:
+            - @doctrine.orm.default_entity_manager
+        tags:
+            - { name: "kernel.event_listener", event: "home.slider.render", method: onRender }

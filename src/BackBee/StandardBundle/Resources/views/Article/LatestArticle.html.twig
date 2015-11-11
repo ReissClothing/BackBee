@@ -5,19 +5,17 @@
         </div>
         <div class="content-inner-pad">
             <ul class="list-unstyled">
-                {#@todo gvf#}
-                {#{% for content in contents %}#}
-                    {#{% if item.getParamValue('exclude_from_autoblock') is empty %}#}
-                        {#{{ this.render(content, 'latest')|raw }}#}
-                    {#{% endif %}#}
-                {#{% endfor %}#}
+                {% for content in contents %}
+                    {% if item.getParamValue('exclude_from_autoblock') is empty %}
+                        {{ this.render(content, 'latest')|raw }}
+                    {% endif %}
+                {% endfor %}
             </ul>
         </div>
         <div class="content-footer">
             <p>
-                {#@todo gvf#}
-                {#{% set url = parentNode is null ? '#' : this.getUri(parentNode.getUrl) %}#}
-                {#<a {{ this.bbcontent(link)|raw }} href="{{ url }}">{{ link.value|raw }}</a>#}
+                {% set url = parentNode is null ? '#' : parentNode.url %}
+                <a {{ this.bbcontent(link)|raw }} href="{{ path('bb.default', {'uri': url})  }}">{{ link.value|raw }}</a>
             </p>
         </div>
     </div>

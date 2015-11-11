@@ -994,11 +994,65 @@ abstract class AbstractRenderer implements RendererInterface
         return $layoutfile;
     }
 
-    protected function triggerEvent($name = 'render', $object = null, $render = null)
+    protected function triggerEvent($eventName = 'render', $object = null, $render = null)
     {
             $object = null !== $object ? $object : $this->getObject();
-            $event = new RendererEvent($object, null === $render ? $this : array($this, $render));
-            $this->eventDispatcher->dispatch($name, $event);
+//        $a =str_replace('BackBee\CoreDomain\\', '', get_class($object));
+//        $eventName = strtolower(str_replace(NAMESPACE_SEPARATOR, '.', $a).'.'.$name);
+//        $eventName = str_replace('classcontent.','',$eventName);
+        $event = new RendererEvent($object, null === $render ? $this : array($this, $render));
+//            $this->eventDispatcher->dispatch($eventName, $event);
+
+
+        if (is_a($object, 'BackBee\CoreDomain\ClassContent\AbstractClassContent')) {
+            $this->eventDispatcher->dispatch(strtolower('classcontent.'.$eventName), $event);
+
+            foreach (class_parents($object) as $class) {
+                if ($class === 'BackBee\CoreDomain\ClassContent\AbstractClassContent') {
+                    break;
+                }
+
+//                $this->dispatch($this->formatEventName($eventName, $class), $event);
+                $a = $this->formatEventName($eventName, $class);
+                $this->eventDispatcher->dispatch($a, $event);
+            }
+        }
+
+//        $this->dispatch($this->formatEventName($eventName, $entity), $event);
+        $b = $this->formatEventName($eventName, $object);
+        $this->eventDispatcher->dispatch($b, $event);
+    }
+
+    /**
+     * Format the name of an event.
+     *
+     * @param string $event_name
+     * @param object $entity
+     *
+     * @return string the formated event name
+     */
+    private function formatEventName($event_name, $entity)
+    {
+        if (is_object($entity)) {
+            $event_name = strtolower(str_replace(NAMESPACE_SEPARATOR, '.', get_class($entity)).'.'.$event_name);
+// @TODO gvf
+//            if ($entity instanceof \Doctrine\ORM\Proxy\Proxy) {
+//                $prefix = str_replace(
+//                    NAMESPACE_SEPARATOR,
+//                    '.',
+//                    $this->application->getEntityManager()->getConfiguration()->getProxyNamespace()
+//                );
+//                $prefix .= '.'.$entity::MARKER.'.';
+//
+//                $event_name = str_replace(strtolower($prefix), '', $event_name);
+//            }
+        } else {
+            $event_name = strtolower(str_replace(NAMESPACE_SEPARATOR, '.', $entity).'.'.$event_name);
+        }
+
+        $event_name = str_replace(array('backbee.', 'classcontent.', 'coredomain.'), array('', '', ''), $event_name);
+
+        return $event_name;
     }
 
     protected function cache()

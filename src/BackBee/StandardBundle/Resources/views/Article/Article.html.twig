@@ -5,10 +5,9 @@
         <h1 {{ this.bbcontent(title)|raw }} itemprop="headline">{{ title.value|raw }}</h1>
 
         <p class="metadata-wrapper">
-            {#@todo gvf#}
-            {#{% if tag is not null %}#}
-            {#<strong class="metadata-tag">{{ tag }}</strong>#}
-            {#{% endif %}#}
+            {% if tag is not null %}
+            <strong class="metadata-tag">{{ tag }}</strong>
+            {% endif %}
             {% if signature != '' %}
                 <b class="metadata-author">By {{ signature|raw }}</b>
             {% endif %}

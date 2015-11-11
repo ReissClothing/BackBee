@@ -35,11 +35,11 @@ class Version20151110103614 extends AbstractMigration implements ContainerAwareI
     public function up(Schema $schema)
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $contentSets = $this->container->get('doctrine.orm.default_entity_manager')->getRepository('BackBee\CoreDomain\ClassContent\ContentSet')->findAll();
-        foreach ($contentSets as $contentSet) {
-            $data = $contentSet->_data;
-            $a =1;
-        }
+//        $contentSets = $this->container->get('doctrine.orm.default_entity_manager')->getRepository('BackBee\CoreDomain\ClassContent\ContentSet')->findAll();
+//        foreach ($contentSets as $contentSet) {
+//            $data = $contentSet->_data;
+//            $a =1;
+//        }
 
     }
 
