@@ -7,7 +7,6 @@
             <p {{ this.bbcontent(text, {'class': 'ttl'})|raw }}>{{ text.value|raw }}</p>
         </div>
         <div class="content-footer">
-            {#@todo gvf#}
             {% if link.url is defined %}
                 <p>
                     {% set title = link.title %}

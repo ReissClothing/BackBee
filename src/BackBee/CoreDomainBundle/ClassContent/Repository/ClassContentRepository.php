@@ -165,7 +165,16 @@ class ClassContentRepository extends EntityRepository
      *
      * @return array|Paginator
      */
-    public function getSelection($selector, $multipage = false, $recursive = true, $start = 0, $limit = null, $limitToOnline = true, $excludedFromSelection = false, $classnameArr = array(), $delta = 0)
+    public function getSelection(
+        $selector,
+        $multipage = false,
+        $recursive = true,
+        $start = 0,
+        $limit = null,
+        $limitToOnline = true,
+        $excludedFromSelection = false,
+        $classnameArr = array(),
+        $delta = 0)
     {
         $query = 'SELECT c.uid FROM content c';
         $join = array();

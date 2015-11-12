@@ -522,7 +522,7 @@ abstract class AbstractRenderer implements RendererInterface
      */
     public function getUri($pathinfo = null, $defaultExt = null, Site $site = null, $url_type = null)
     {
-        return 'https://symfony.dev/app_dev.php'.$pathinfo;
+        return 'https://symfony.dev/app_dev.php/'.$pathinfo;
 //        @TODO gvf
 //        return $this->getApplication()->getRouting()->getUri($pathinfo, $defaultExt, $site, $url_type);
     }
@@ -728,7 +728,7 @@ abstract class AbstractRenderer implements RendererInterface
      *                                                available if TRUE, use the default template otherwise
      * @return AbstractRenderer The current renderer
      */
-    public function setMode($mode = null, $ignoreIfRenderModeNotAvailable = true)
+    public function setMode($mode = null, $ignoreIfRenderModeNotAvailable = false)
     {
         $this->_mode = (null === $mode || '' === $mode ? null : $mode);
         $this->_ignoreIfRenderModeNotAvailable = $ignoreIfRenderModeNotAvailable;
@@ -1005,7 +1005,8 @@ abstract class AbstractRenderer implements RendererInterface
 
 
         if (is_a($object, 'BackBee\CoreDomain\ClassContent\AbstractClassContent')) {
-            $this->eventDispatcher->dispatch(strtolower('classcontent.'.$eventName), $event);
+            $r = strtolower('classcontent.'.$eventName);
+            $this->eventDispatcher->dispatch($r, $event);
 
             foreach (class_parents($object) as $class) {
                 if ($class === 'BackBee\CoreDomain\ClassContent\AbstractClassContent') {

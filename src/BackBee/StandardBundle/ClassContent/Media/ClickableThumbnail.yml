@@ -5,7 +5,7 @@ ClickableThumbnail:
         labelized-by: title->value
         iconized-by: image->path
         category: [Media]
-    traits: [BackBee\Traits\MediaImageNameTrait,BackBee\Traits\MediaImageJsonSerializeTrait]
+    traits: [BackBee\StandardBundle\Traits\MediaImageNameTrait,BackBee\StandardBundle\Traits\MediaImageJsonSerializeTrait]
     elements:
         title:
             type: BackBee\CoreDomain\ClassContent\Element\Text

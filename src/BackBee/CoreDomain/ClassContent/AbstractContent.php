@@ -63,7 +63,9 @@ abstract class AbstractContent implements ObjectIdentifiableInterface, Renderabl
      *
      * @var boolean
      */
-    private static $throwException = false;
+//     @todo gvf
+//    private static $throwException = false;
+    private static $throwException = true;
 
     /**
      * Unique identifier.
@@ -1294,6 +1296,8 @@ abstract class AbstractContent implements ObjectIdentifiableInterface, Renderabl
         if (is_object($classname)) {
             $classname = ClassUtils::getRealClass($classname);
         }
+        //@TODO gvf
+        $classname = str_replace('BackBee\ClassContent\\', 'BackBee\CoreDomain\ClassContent\\', $classname);
 
         try {
             if (!is_subclass_of($classname, 'BackBee\CoreDomain\ClassContent\AbstractClassContent')) {

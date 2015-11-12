@@ -19,14 +19,15 @@ bb.resources:
         filename: .+
 
 # BackBee media files
-bb.images:
-    path: /{type}/{filename}
-    defaults:
-        _action: mediaAction
-        _controller: BackBeeCoreDomainBundle:Media:media
-    requirements:
-        type: (%bbapp.routing.image_uri_prefix%|%bbapp.routing.media_uri_prefix%)
-        filename: .+
+# @todo gvf
+#bb.images:
+#    path: /{type}/{filename}
+#    defaults:
+#        _action: mediaAction
+#        _controller: BackBeeCoreDomainBundle:Media:media
+#    requirements:
+#        type: (%bbapp.routing.image_uri_prefix%|%bbapp.routing.media_uri_prefix%)
+#        filename: .+
 
 # BackBee REST API
 

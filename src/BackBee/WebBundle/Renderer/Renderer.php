@@ -397,7 +397,9 @@ class Renderer extends AbstractRenderer
      */
     public function getImageUrl($pathinfo, Site $site = null)
     {
-        return $this->getUri($pathinfo, null, $site, RouteCollection::IMAGE_URL);
+//        @TODO gvf
+//        return $this->getUri($pathinfo, null, $site, RouteCollection::IMAGE_URL);
+        return $this->getUri($pathinfo, null, $site);
     }
 
     /**
@@ -1015,9 +1017,9 @@ class Renderer extends AbstractRenderer
     private function getTemplateFile(RenderableInterface $object, $mode = null)
     {
 //        $tmpStorage = $this->templateFile;
-        $this->templateFile = strtolower($this->getTemplatePath($object).'.twig');
+        $template = ($this->getTemplatePath($object));
 //        foreach ($this->manageableExt->keys() as $ext) {
-//            $this->templateFile = $template.(null !== $mode ? '.'.$mode : '').$ext;
+            $this->templateFile = $template.(null !== $mode && $mode!='default' && $mode !== false? '.'.$mode : '').'.twig';
 //            if ($this->isValidTemplateFile($this->templateFile)) {
 //                $filename = $this->templateFile;
 //                $this->templateFile = $tmpStorage;
@@ -1085,7 +1087,7 @@ class Renderer extends AbstractRenderer
         $v2=$this->getBBVariable();
         $v3=$this->getParam();
         $vars = array_merge($v1, $v2 ,$v3 ,['this'=> $this]);
-
+//var_dump($this->templateFile);
         $a =  $this->twig->render(
             $this->templateFile,
             $vars
