@@ -1,3 +1,20 @@
+parameters:
+    social_network:
+        facebook:
+            link: "https://www.facebook.com/backbeeCMS"
+            fa_icon: "facebook"
+            title: "Facebook"
+
+        twitter:
+            link: "https://twitter.com/lpdigitalsystem"
+            widget_id: "606481211662475264"
+            fa_icon: "twitter"
+            title: "Twitter"
+
+        google:
+            link: "https://plus.google.com/101416676508957143369"
+            fa_icon: "google-plus"
+            title: "Google +"
 services:
 #    back_bee_standard.example:
 #        class: BackBee\StandardBundle\Example
@@ -11,11 +28,15 @@ services:
 
     social.facebook.prerender_listener:
         class: BackBee\StandardBundle\Event\Listener\SocialListener
+        arguments:
+            - %social_network%
         tags:
             - { name: "kernel.event_listener", event: "social.facebook.prerender", method: onPreRenderFacebook }
 
     social.twitter.prerender_listener:
         class: BackBee\StandardBundle\Event\Listener\SocialListener
+        arguments:
+            - %social_network%
         tags:
             - { name: "kernel.event_listener", event: "social.twitter.prerender", method: onPreRenderTwitter }
 

@@ -1,6 +1,6 @@
 {# @TODO gvf#}
 {#{% if bb.token != null or image.path != '' %}#}
     <span {{ this.bbcontent()|raw }}>
-        <img {{ this.bbcontent(image)|raw }} src="{{ 'media/' ~ image.path }}" alt="{{ title }}">
+        <img {{ this.bbcontent(image)|raw }} src="{{ '/media/' ~ image.path }}" alt="{{ title }}">
     </span>
 {#{% endif %}#}

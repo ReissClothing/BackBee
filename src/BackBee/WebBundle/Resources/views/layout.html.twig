@@ -23,18 +23,19 @@
         <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
         {% endstylesheets %}
 
-        {% stylesheets 'bundles/backbeeweb/css/gen.css' filter='cssrewrite' %}
-        <![if lte IE 8]>
+        {% stylesheets 'bundles/backbeeweb/css/gen-ie8.css' filter='cssrewrite' %}
+        <!--[if lte IE 8]>
         <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
-        <![endif]>
+        <![endif]-->
+
         {% endstylesheets %}
 
-        {% stylesheets 'bundles/backbeeweb/css/gen-ie8.css' filter='cssrewrite' %}
-        <![if gt IE 8 | !(IE)]>
+        {% stylesheets 'bundles/backbeeweb/css/gen.css' filter='cssrewrite' %}
+        <!--[if gt IE 8 | !(IE)]><!-->
         <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
-        <![endif]>
+        <!--<![endif]-->
 
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 
         {% endstylesheets %}
 

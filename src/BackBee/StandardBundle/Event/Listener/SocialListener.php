@@ -31,13 +31,18 @@ use Symfony\Component\EventDispatcher\Event;
  */
 class SocialListener
 {
+    private $socialNetworkConfig;
 
+    public function __construct($socialNetworkConfig)
+    {
+
+        $this->socialNetworkConfig = $socialNetworkConfig;
+    }
     public function onPreRenderFacebook(RendererEvent $event)
     {
-        $renderer = $event->getEventArgs();
-        self::$application = $event->getDispatcher()->getApplication();
+        $renderer = $event->getRenderer();
 
-        $config = self::getSocialConfig('facebook');
+        $config = $this->getSocialConfig('facebook');
 
         $content = $renderer->getObject();
 
@@ -59,10 +64,9 @@ class SocialListener
 
     public function onPreRenderTwitter(RendererEvent $event)
     {
-        $renderer = $event->getEventArgs();
-        self::$application = $event->getDispatcher()->getApplication();
+        $renderer = $event->getRenderer();
 
-        $config = self::getSocialConfig('twitter');
+        $config = $this->getSocialConfig('twitter');
 
         $content = $renderer->getObject();
 
@@ -79,7 +83,7 @@ class SocialListener
 
     private function getSocialConfig($key)
     {
-        $socialsNetworks = self::$application->getConfig()->getSection('social_network');
+        $socialsNetworks = $this->socialNetworkConfig;
         $config = null;
 
         if ($socialsNetworks !== null && isset($socialsNetworks[$key])) {

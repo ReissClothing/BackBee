@@ -30,26 +30,26 @@ bb.resources:
 #        filename: .+
 
 # BackBee REST API
-
+#@TODO _method to methods:
 # Resource Rest API
 bb.rest.resource.upload:
     path: /rest/{version}/resource/upload
+    methods: [POST]
     defaults:
         _action: uploadAction
         _controller: BackBee\Rest\Controller\ResourceController
     requirements:
         version: \d+
-        _method: POST
 
 # User Rest API
 bb.rest.user.current:
     path: /rest/{version}/user/current
+    methods: [GET]
     defaults:
         _action: getCurrentAction
         _controller: BackBee\Rest\Controller\UserController
     requirements:
         version: \d+
-        _method: GET
 
 bb.rest.user.get:
     path: /rest/{version}/user/{id}

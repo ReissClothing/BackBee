@@ -4,7 +4,7 @@
             <p class="text-center helptip">{{ bb.translator.trans('media.image.helptip') }}</p>
         {% endif %}
         <img {{ this.bbcontent(image)|raw }}
-            src="{{ 'media/' ~ image.path }}"
+            src="{{ '/media/' ~ image.path }}"
             alt="{{ title }}" style="width: 100%" itemprop="contentURL">
             <figcaption class="figure-caption" itemprop="description">
                 {% if copyrights != '' %}<p class="figure-copyright">{{ copyrights }}</p>{% endif %}

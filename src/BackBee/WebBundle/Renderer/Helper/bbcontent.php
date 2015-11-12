@@ -98,7 +98,7 @@ class bbcontent extends AbstractHelper
     private function isGranted()
     {
 //        @todo gvf
-        return true;
+        return false;
 
         $securityContext = $this->getRenderer()->getApplication()->getSecurityContext();
 
