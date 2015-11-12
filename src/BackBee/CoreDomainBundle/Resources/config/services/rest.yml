@@ -1,14 +1,14 @@
 parameters:
-    bbapp.rest.hydrator.class: BackBee\Rest\Hydration\RestHydrator
-    bbapp.rest.encoder_provider.class: BackBee\Rest\Encoder\ContainerEncoderProvider
+    bbapp.rest.hydrator.class: BackBee\ApiBundle\Hydration\RestHydrator
+    bbapp.rest.encoder_provider.class: BackBee\ApiBundle\Encoder\ContainerEncoderProvider
     bbapp.rest.encoder_json.class: Symfony\Component\Serializer\Encoder\JsonEncoder
     bbapp.rest.encoder_xml.class: Symfony\Component\Serializer\Encoder\XmlEncoder
 
-    bbapp.rest.listener_validation.class: BackBee\Rest\EventListener\ValidationListener
-    bbapp.rest.listener_pagination.class: BackBee\Rest\EventListener\PaginationListener
-    bbapp.rest.listener_param_converter.class: BackBee\Rest\EventListener\ParamConverterListener
-    bbapp.rest.listener_body.class: BackBee\Rest\EventListener\BodyListener
-    bbapp.rest.listener_exception.class: BackBee\Rest\EventListener\ExceptionListener
+    bbapp.rest.listener_validation.class: BackBee\ApiBundle\EventListener\ValidationListener
+    bbapp.rest.listener_pagination.class: BackBee\ApiBundle\EventListener\PaginationListener
+    bbapp.rest.listener_param_converter.class: BackBee\ApiBundle\EventListener\ParamConverterListener
+    bbapp.rest.listener_body.class: BackBee\ApiBundle\EventListener\BodyListener
+    bbapp.rest.listener_exception.class: BackBee\ApiBundle\EventListener\ExceptionListener
     bbapp.rest.listener_exception.mapping:
         Exception:
             code: 500
@@ -67,7 +67,7 @@ services:
             - [setPath, [%bbapp.rest_api.path%]]
 
 #    rest.listener.security:
-#        class: BackBee\Rest\EventListener\SecurityListener
+#        class: BackBee\ApiBundle\EventListener\SecurityListener
 #        arguments: [@security.context, @bb.expression_language, @security.trust_resolver, @security.role_hierarchy]
 #        calls:
 #            - [setMetadataFactory, [@rest.metadata.factory]]
@@ -76,7 +76,7 @@ services:
         class: Doctrine\Common\Annotations\AnnotationReader
 
     rest.metadata.annotation_driver:
-        class: BackBee\Rest\Mapping\Driver\AnnotationDriver
+        class: BackBee\ApiBundle\Mapping\Driver\AnnotationDriver
         arguments:  [@rest.metadata.annotation_reader]
 
     rest.metadata.factory:
@@ -86,5 +86,5 @@ services:
             - [setCache, [@rest.metadata.cache]]
 
     rest.metadata.cache:
-        class:     BackBee\Rest\Metadata\Cache\FileCache
+        class:     BackBee\ApiBundle\Metadata\Cache\FileCache
         arguments: ["%bbapp.cache.dir%/", %kernel.debug%]

@@ -1,0 +1,23 @@
+<li class="bb5-media-item"
+    data-uid="{{ item.uid }}"
+    data-type="{{ item.type }}"
+    data-folder="{{ item.folder_uid }}"
+    data-title="{{ item.title }}"
+    data-media="{{ item.media_id }}"
+    data-image="{{ item.image }}"
+>
+    <p>
+        <a href="javascript:;" title="{{ item.title }}">
+            <img src="{{ item.image }}" alt="{{ item.content.type }}">
+        </a>
+    </p>
+    <p>
+        <a href="javascript:;" title="{{ item.title }}">{{ item.title }}</a>
+    </p>
+    <p>Date de création: <strong>01/10/2013</strong></p>
+    <p>
+        <button class="btn btn-default-grey btn-sm fa fa-angle-up move-up move"></button>
+        <button class="btn btn-default-grey btn-sm fa fa-angle-down move-down move"></button>
+        <button class="btn btn-default-grey btn-sm fa fa-trash trash"></button>
+    </p>
+</li>

@@ -1,0 +1,15 @@
+<label for="{{ element.getKey() }}" class="label">{{ element.getLabel() }}</label>
+{% for key, item in element.getOptions() %}
+    <label class="checkbox{% if element.isInline() %}-inline{% endif %}">
+        <input type="checkbox"
+               name="{{ element.getKey() }}"
+               {% if element.isDisabled() %}disabled{% endif %}
+               value="{{ key }}"
+               {% if key in element.getValue() %}checked{% endif %}
+               style="margin-top:0px;";
+               >
+        {{ item }}
+    </label>
+{% endfor %}
+<span class="hidden updated"></span>
+<span class="form_error help-block {% if element.getError() == null %}hidden{% endif %}">{{ element.getError() }}</span>

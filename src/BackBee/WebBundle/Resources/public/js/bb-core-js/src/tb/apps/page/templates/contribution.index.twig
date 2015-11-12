@@ -1,0 +1,58 @@
+<div class="row">
+    <div class="col-bb5-21 bb5-border-right bb5-border-strong">
+        <p>
+            <button id="contribution-edit-page" type="button" class="btn btn-simple btn-xs btn-block">
+                <i class="fa fa-pencil-square-o"></i> {{ 'edit'|trans }}
+            </button>
+        </p>
+        <p>
+            <button id="contribution-seo-page" type="button" class="btn btn-simple btn-xs btn-block"><i class="fa fa-flag-o"></i> {{ 'page_seo'|trans }}</button>
+        </p>
+        <p>
+            <button id="contribution-clone-page" type="button" class="btn btn-simple btn-xs btn-block" {% if page.is_root == true %}disabled{% endif %}>
+                <i class="fa fa-file-o"></i> {{ 'duplicate'|trans }}
+            </button>
+        </p>
+        <p>
+            <button id="contribution-delete-page" type="button" class="btn btn-simple btn-xs btn-block" {% if page.is_root == true %}disabled{% endif %}>
+                <i class="fa fa-trash-o"></i> {{ 'delete'|trans }}
+            </button>
+        </p>
+    </div>
+    <div class="col-bb5-54 col-bb5-pad-x2">
+        <p>{{ 'page_status'|trans }} :
+            <select id="page-state-select" class="form-inline input-xs" name="state" {% if page.is_root == true %}disabled{% endif %} >
+                {% for state in states %}
+                    <option {% if page.state_code == state.code %}selected{% endif %} value="{{ state.code }}">{{ state.label }}</option>
+                {% endfor %}
+            </select>
+        </p>
+        <p>
+            <label class="checkbox-inline">
+                <input {% if page.is_hidden == false %}checked{% endif %} id="page-visibility-input" type="checkbox" name="menu_visibility" /> {{ 'available_in_menus'|trans }}
+            </label>
+        </p>
+        {% if page.is_root == true %}
+            <p class="info-tip">{{ 'some_actions_are_not_allowed_for_root_page'|trans }}</p>
+        {% endif %}
+        <p class="position-bottom">
+            {{ 'scheduling'|trans }} :
+            <span id="contribution-scheduling-state">{{ 'no_one'|trans }}</span>
+            <button id="contribution-scheduling-btn" type="button" class="btn btn-transparent btn-xs btn-toggle btn-show" {% if page.is_root == true %}disabled{% endif %}>
+                <i class="fa fa-angle-down"></i> {{ 'publishing_archiving'|trans }}
+            </button>
+        </p>
+    </div>
+    <div class="col-bb5-25">
+        <p>
+            <button type="button" class="btn btn-default-grey btn-sm btn-block bundle-toolbar-global-validate">
+                <i class="fa fa-floppy-o"></i> {{ 'save_status'|trans }}
+            </button>
+        </p>
+        <p>
+            <button type="button" class="btn btn-default-grey btn-sm btn-block bundle-toolbar-global-cancel">
+                <i class="fa fa-share"></i> {{ 'cancel'|trans }}
+            </button>
+        </p>
+    </div><!--/ End col-->
+</div><!--/.row-->

@@ -1,0 +1,183 @@
+//
+// BB5 UI
+// --------------------------------------------------
+
+//PATCH Bootstrap 
+@boot-path: "../bootstrap-master/less/";
+//VAR for GEN
+@import "@{boot-path}variables.less";
+@import "@{boot-path}mixins.less";
+
+//Var
+@bb5-ui-bg:             #f9f9f9;
+@bb5-txt-clr:           #333;
+
+//Var
+@shadow : inset 0 1px 1px rgba(0,0,0,0.075),0 0 4px rgba(red(@brand-primary), green(@brand-primary), blue(@brand-primary),0.6);
+
+//Mixins 
+.border-radius (@radius: 5px) {
+	-webkit-border-radius: @radius;
+	-moz-border-radius:    @radius;
+	border-radius:         @radius;
+}
+.border-radiuses (@topleft: 0, @topright: 0, @bottomright: 0, @bottomleft: 0) {
+	-webkit-border-radius: @topleft @topright @bottomright @bottomleft;
+	-moz-border-radius:    @topleft @topright @bottomright @bottomleft;
+	border-radius:         @topleft @topright @bottomright @bottomleft;	
+}
+// helper class, will never show up in resulting css
+// will be called as long the index is above 0
+.makeCol (@index) when (@index > 0) {
+
+    // create the actual css selector, example will result in
+    // .myclass_30, .myclass_28, .... , .myclass_1
+    .col-bb5-@{index} {
+        width: percentage(@index*0.01);
+    }
+
+    // next iteration
+    .makeCol(@index - 1);
+}
+
+#bb5-ui {
+// end the loop when index is 0
+.makeCol (0) {}
+
+.bb5-query-results {color:@brand-primary;}
+
+//COL
+.makeCol (100);
+
+
+    // BB5-UI
+    & {background-color:@bb5-ui-bg;}
+
+    /*RESET UI ELTS - prevent front styles */
+    & * {font-family:Arial, Helvetica, sans-serif; font-size:11px; color:@bb5-txt-clr; background:none; width:auto; height:auto;}
+
+    //
+    .position-bottom, .bb5-ui-banner p.position-bottom {margin:floor((@grid-gutter-width / 2));}
+    .txt-lighten {color:lighten(@bb5-txt-clr,38)}
+    .txt-hightligth, .txt-hightligth * {color:@brand-primary;}
+
+    // BTN
+    .btn {.transition-duration(250ms); .transition-timing-function(ease); .transition-property(background border);}
+    .bb5-logout {color:@btn-default-color}
+    .bb5-logout:hover {color:@brand-primary}
+    .bb5-logout:active {color:darken(@brand-primary,10)}
+    .btn-simple {.box-shadow(none);}
+    .btn-transparent {.box-shadow(none);}
+    .btn-transparent:hover, .btn-transparent:focus, .btn-transparent:active, .btn-transparent.active, .open .dropdown-toggle .btn-transparent {color:@brand-primary;}
+    .btn-transparent:hover .fa, .btn-transparent:focus .fa, .btn-transparent:active .fa, .btn-transparent.active .fa, .open .dropdown-toggle .btn-transparent .fa {color:@brand-primary;}
+    .btn-toggle .fa {.border-radius(3px);}
+    .bb5-blocks-choice-x {.border-radius(6px);}
+    .btn-group .btn.active {background-color:@brand-primary; color:#fff; text-shadow:none;}
+    .btn-help {.border-radius(2px)}
+    .btn-help:hover {background-color:@brand-primary; border-color:@brand-primary; color: #fff; }
+    /**/
+    .bb5-upload-ico .bb5-figure .fa {.transition(all 250ms ease)}
+    .bb5-upload-ico .bb5-figure.hovered .fa {color:@brand-primary;}
+
+    //FORM
+    .bb5-form-wrapper {background-color:@bb5-ui-bg; .border-radius(4px); margin-bottom:@grid-gutter-width; padding-left:floor((@grid-gutter-width / 2)); padding-right:floor((@grid-gutter-width / 2));}
+    .form-control:focus {border-color:@brand-primary; .box-shadow(@shadow)}
+
+    // ICO
+    .bb5-ico-right .fa {.border-radius(3px);}
+
+    // GRID
+    [class*="col-bb5-"] {padding-left:floor((@grid-gutter-width / 2)); padding-right:floor((@grid-gutter-width / 2));}
+
+    // NAVBAR
+    #bb5-navbar-primary, #bb5-navbar-secondary {padding-left:floor((@grid-gutter-width / 2)); padding-right:floor((@grid-gutter-width / 2));}
+    .navbar { .border-radius(0) }
+    .navbar-inverse .navbar-nav > li.active > a {color:@brand-primary;}
+    // NAVBAR ACTIVE
+    .navbar-inverse .navbar-nav > li.active > a {background-color:@bb5-ui-bg;}
+
+    // TABS
+    .bb5-ui-tab-title {color:@brand-primary;}
+    #bb5-maintabs.nav-tabs.nav-tabs > li > a { .border-radius(0);}
+    .bb5-ui-banner .tab-pane {.border-radius(4px); padding-left:floor((@grid-gutter-width / 2)); padding-right:floor((@grid-gutter-width / 2));}
+    // 		TABS ->	bb5-navbar-primary
+    #bb5-maintabs.nav-tabs>li>a:hover, #bb5-maintabs.nav-tabs>li>a:focus {background-color:lighten(@navbar-inverse-bg, 10%);}
+    #bb5-maintabs.nav-tabs>li.active>a, #bb5-maintabs.nav-tabs>li.active>a:hover, #bb5-maintabs.nav-tabs>li.active>a:focus {color:@brand-primary; background-color:@bb5-ui-bg;}
+    #bb5-maintabs.nav-tabs .dropdown-menu>li>a:hover, #bb5-maintabs.nav-tabs .dropdown-menu>li>a:focus {color:@brand-primary;}
+    // 		TABS ->	tabs-vertical
+    .tabs-vertical .nav-tabs > li > a {.border-radiuses(8px, 0, 0, 8px); color:@btn-default-color;}
+    .tabs-vertical .nav-tabs > li.active > a {color:@brand-primary;}
+    .tabs-vertical .tab-content>.tab-pane {.border-radiuses(0, 8px, 8px, 0);}
+
+    //LIBRARY
+    .bb5-list-media.bb5-list-media-is-list li p:nth-child(2) a {color:@brand-primary;}
+
+    //PAGINATION
+    .bb5-widget-toolbar .pagination {.border-radius(0px);}
+    .pagination>li>a, .pagination>li>span {color:@text-color;}
+    .pagination>li>.bb5-pagination-current {color:@brand-primary; font-weight:bold;}
+    .pagination>li>a.bb5-pagination-btn {.border-radius(2px);}
+    .pagination>li>a:hover, .pagination>li>a.bb5-pagination-btn:hover {background-color:@brand-primary; border-color:@brand-primary;}
+    .pagination>li>a:hover, .pagination>li>a.bb5-pagination-btn:hover, .pagination>li>a.bb5-pagination-btn:hover i {color:#fff;}
+    .pagination>li>.bb5-pagination-current:hover, .pagination>li>.bb5-pagination-current:focus {color:@brand-primary;}
+
+    //CAROUSEL
+    .bb5-ui-carousel .carousel-control .fa {color:@brand-primary;}
+
+    //JQUERY
+    .ui-widget {.border-radius(4px);}
+    .ui-widget-header {background-color:@navbar-inverse-bg; .border-radiuses(4px, 4px, 0, 0);}
+    .ui-widget-header .ui-button:hover {background-color:lighten(@navbar-inverse-bg, 10%);}
+    //dialog
+    .ui-dialog .ui-dialog-buttonpane {.clearfix()}
+    .ui-dialog .dialog-title {color:@brand-primary;}
+    .ui-dialog .page-status {background-color:@brand-primary;}
+    //datepicker
+    .ui-datepicker {}
+    .ui-datepicker .ui-state-default {color:@text-color}
+    .ui-datepicker .ui-widget-header .ui-datepicker-prev:hover, .ui-datepicker .ui-widget-header .ui-datepicker-next:hover {background-color:lighten(@navbar-inverse-bg, 10%); border-color:lighten(@navbar-inverse-bg, 10%);}
+    .ui-datepicker .ui-state-default:hover, .ui-datepicker .ui-state-hover {color:@brand-primary; background-color:@bb5-ui-bg;}
+    .ui-datepicker .ui-state-active, .ui-datepicker .ui-state-default.ui-state-active, .ui-datepicker .ui-state-active:hover {background-color:@brand-primary; border-color:@brand-primary;}
+    .ui-widget-header .ui-datepicker-next, .ui-widget-header .ui-datepicker-prev {background-color:@navbar-inverse-bg; border-color:@navbar-inverse-bg;}
+    //accordion
+    .bb5-accordion .bb5-accordion-section {color:@brand-primary;}
+    .bb5-accordion .bb5-accordion-section .ui-icon:before {border-left-color:@brand-primary;}
+
+    //TOGGLE
+    .bb5-data-toggle .bb5-data-toggle-header {background-color:@bb5-ui-bg; .user-select(none);}
+    .bb5-data-toggle.open .bb5-data-toggle-header {color:@brand-primary;}
+    .bb5-data-toggle.open .bb5-data-toggle-header .bb5-data-toggle-trigger .fa {.rotate(180deg);}
+    /**/
+    .bb5-list-display-grid .bb5-data-toggle:hover,
+    .bb5-list-display-grid .bb5-data-toggle:hover .bb5-data-drpdown {border-color:lighten(@brand-primary, 10%);}
+    .bb5-list-display-grid .bb5-data-toggle:hover .bb5-manage-user-trigger i {color:lighten(@brand-primary, 10%)}
+    .bb5-list-display-grid .bb5-data-toggle.ui-draggable-dragging,
+    .bb5-list-display-grid .bb5-data-toggle.open,
+    .bb5-list-display-grid .bb5-data-toggle.open .bb5-data-drpdown,
+    .bb5-data-toggle.ui-draggable-dragging {border-color:@brand-primary!important;}
+    .bb5-list-display-grid .bb5-data-toggle.open .bb5-manage-user-trigger i {color:@brand-primary}
+    .bb5-list-display-grid .bb5-data-toggle.ui-draggable-dragging,
+    .bb5-data-toggle.ui-draggable-dragging {.box-shadow(0 0 1px 1px @brand-primary);}
+
+    .bb5-button-selector-status {color:@brand-primary}
+
+    //LAYOUT
+    .bb5-layout-pane .bb5-layout-figure {.border-radius(5px);}
+
+    //EXTENSIONS
+    .bb5-extension-pane {.clearfix()}
+    .bb5-extension-pane figure.bb5-extension-img .label {.border-radius(50%;)}
+
+    //LIST
+    .bb5-list-data-toolbar {.clearfix()}
+    .bb5-list-data-header {color:@brand-primary;}
+    .bb5-list-data .bb5-list-data-item {.clearfix()}
+    .bb5-list-users.bb5-list-display-list .bb5-list-users-item .bb5-manage-user {.clearfix()}
+
+    /*GROUPS*/
+    .bb5-manage-group {.border-radius(5px);}
+    .bb5-manage-group.ui-state-hover {border-color:@brand-primary;}
+    .bb5-manage-group .bb5-manage-group-tools {.border-radius(4px);}
+    .bb5-manage-group .bb5-manage-group-header {.border-radius(4px);}
+    .bb5-manage-group .bb5-manage-group-header .group-counter {color:@brand-primary}
+}

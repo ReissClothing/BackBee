@@ -42,37 +42,6 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 class ResourceController extends Controller
 {
     /**
-     * Handles a resource file request.
-     *
-     * @param string $filename The resource file to provide
-     *
-     * @throws HttpException
-     *
-     * @return Response
-     */
-    public function resourcesAction(Request $request, $filename, $base_dir = null)
-    {
-        if (null === $base_dir) {
-            File::resolveFilepath($filename, null, array('include_path' => $this->container->get('bb.context.resource_dir')->getResourceDir()));
-        } else {
-            File::resolveFilepath($filename, null, array('base_dir' => $base_dir));
-        }
-
-        $this->container->get('logger')->info(sprintf('Handling resource URL `%s`.', $filename));
-
-        if (false === file_exists($filename) || false === is_readable($filename)) {
-            throw new HttpException(404, sprintf(
-                    'The file `%s` can not be found (referer: %s).',
-                    $request->getHost() . '/' . $request->getPathInfo(),
-                    $request->server->get('HTTP_REFERER')
-                )
-            );
-        }
-
-        return $this->createResourceResponse($filename);
-    }
-
-    /**
      * Hdandles classcontent thumbnail request, returns the right thumbnail if it exists, else the default one.
      *
      * @param string $filename

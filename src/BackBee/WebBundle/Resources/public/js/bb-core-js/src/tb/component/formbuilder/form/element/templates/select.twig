@@ -1,0 +1,15 @@
+<label for="{{ element.getKey() }}" class="label">{{ element.getLabel() }}</label>
+<select name="{{ element.getKey() }}"
+        {% if element.isDisabled() %}disabled{% endif %}
+        {% if element.isMultiple() %}multiple{% endif %}
+        class="form-control"
+        >
+    {% for key, item in element.getOptions() %}
+        <option {% if key in element.getValue() %}selected{% endif %}
+         value="{{ key }}">
+            {{ item }}
+        </option>
+    {% endfor %}
+</select>
+<span class="hidden updated"></span>
+<span class="form_error help-block {% if element.getError() == null %}hidden{% endif %}">{{ element.getError() }}</span>

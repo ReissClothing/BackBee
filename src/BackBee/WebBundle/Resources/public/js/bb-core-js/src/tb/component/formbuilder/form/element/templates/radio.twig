@@ -1,0 +1,15 @@
+<label for="{{ element.getKey() }}" class="label">{{ element.getLabel() }}</label>
+{% for key, item in element.getOptions() %}
+    <label class="radio{% if element.isInline() %}-inline{% endif %}">
+        <input type="radio"
+               name="{{ element.getKey() }}"
+               {% if element.isDisabled() %}disabled{% endif %}
+               value="{{ key }}"
+               {% if element.getValue() == key %}checked{% endif %}
+               style="margin-top:0px;"
+               >
+        {{ item }}
+    </label>
+{% endfor %}
+<span class="hidden updated"></span>
+<span class="form_error help-block {% if element.getError() == null %}hidden{% endif %}">{{ element.getError() }}</span>

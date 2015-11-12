@@ -1,0 +1,41 @@
+{
+  "name": "BBTB",
+  "version": "0.1.0",
+  "authors": [
+    "Nicolas Dufreche <nicolas.dufreche@lp-digital.fr>",
+    "Harris Baptiste <harris.baptiste@lp-digital.fr>"
+  ],
+  "description": "BackBee ToolBar 2.0",
+  "main": "toolbar/Application.js",
+  "moduleType": [
+    "amd"
+  ],
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "jquery": "~2.1.3",
+    "requirejs": "~2.1.14",
+    "requirejs-text": "~2.0.12",
+    "backbone": "~1.1.2",
+    "cryptojslib": "*",
+    "bootstrap": "3.1.0",
+    "jsclass": "4.0.5",
+    "moment": "~2.8.3",
+    "i18next": "*",
+    "nunjucks": "~1.1.0",
+    "jquery-ui": "~1.11.2",
+    "jqtree": "~1.2.1",
+    "datetimepicker": "~2.4.3",
+    "jquery.layout": "https://github.com/jlbfalcao/jquery.layout.git",
+    "jssimplepagination": "https://github.com/flaviusmatis/simplePagination.js.git",
+    "colpick": "~2.0.2",
+    "components-font-awesome": "4.2.0",
+    "ckeeditor": "git://github.com/ckeditor/ckeditor-releases.git#standard/stable",
+    "dropzone": "~4.0.1",
+    "backbee-core-js": "~0.1.*"
+  },
+  "devDependencies": {
+    "uri.js": "~1.14.1",
+    "es5-shim": "~4.1.0"
+  }
+}

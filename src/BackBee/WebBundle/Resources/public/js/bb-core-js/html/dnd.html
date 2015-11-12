@@ -1,0 +1,110 @@
+<?php header('Access-Control-Allow-Origin: *'); ?>
+<!DOCTYPE html>
+<html lang="en_EN">
+    <head>
+        <meta encoding="utf8">
+        <title>DnD</title>
+        <link rel="stylesheet" href="resources/html/css/style_reset.css">
+        <link rel="stylesheet" href="resources/bower_components/bootstrap/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="resources/html/css/bb5-skin03.css">
+        <link rel="stylesheet" href="resources/html/css/jquery-ui.css">
+        <link rel="stylesheet" href="resources/html/css/font-awesome.min.css">
+        <link rel="stylesheet" href="resources/html/css/bb5-ui.css">
+        <script src="resources/bower_components/requirejs/require.js"></script>
+        <script src="resources/src/require.config.js"></script>
+        <style type="text/css">
+            #boxA, #boxB, #boxC {
+                float:left; width:200px; height:200px; padding:10px; margin:10px;
+            }
+            #boxA { background-color: blue; }
+            #boxB { background-color: green; }
+            #boxC { background-color: yellow; }
+            #drag, #drag2, #drag3, #drag4 {
+                width:50px; height:50px; padding:5px; margin:5px;
+                -moz-user-select:none;
+            }
+            #drag { background-color: red;}
+            #drag2 { background-color: orange;}
+            #drag3 { background-color: purple;}
+            #drag4 { background-color: black;}
+        </style>
+    </head>
+    <body>
+        <div id="container" class="container">
+            <div id="boxA" dropzone="true" class="droptrue">
+                <div id="drag" class="content droptrue" draggable="true">drag me</div>
+                <div id="drag2" class="droptrue" draggable="true">drag me</div>
+                <div id="drag3" draggable="true"  class="droptrue">drag me</div>
+            </div>
+            <div id="boxB" dropzone="true" class="droptrue"></div>
+            <div id="boxC" dropzone="true" class="droptrue"></div>
+            <button id="btn">add new block</button>
+        </div>
+
+        <script>
+            /* sample to put in a yml file*/
+            var _errorHandler = function (error) {
+                console.log("error", error);
+            }
+            var config = {
+                ApplicationManager: {
+                    appPath: 'resources/src/tb/apps',
+                    /*ne charge que les onglets qui se trouvent dans 'applications'*/
+                    active: 'layout',
+                    route: '', // to change: App should know
+                    applications: {
+                        layout : {
+                            label  : 'Layout',
+                            config : { mainRoute : 'appLayout/home'}
+                        },
+                        content: {
+                            label  : 'Content edition',
+                            config : {}
+                        }
+                    }
+                },
+                component: {
+                    logger: {
+                        loglevel: 5,
+                        debug: true
+                    }
+                }
+            };
+
+
+            require(['tb.core', 'component!dnd', 'jquery'], function (core, dnd, jquery) {
+                var btn = jquery('#btn');
+
+                btn.click(function () {
+                    jquery('<div id="drag4" draggable="true" class="droptrue">drag me</div>').appendTo('#boxA')
+                });
+
+                core.Mediator.subscribe('on:content:dragstart', function (event) {
+                    console.log('dragstart', event.target.getAttribute('id'));
+                    event.dataTransfer.effectAllowed = 'move';
+                    event.dataTransfer.setData('text', event.target.getAttribute('id'));
+                    event.dataTransfer.setDragImage(event.target,0,0);
+                });
+
+                core.Mediator.subscribe('on:content:dragover', function (event) {
+                    if (event.target.getAttribute('dropzone')) {
+                        event.preventDefault();
+                    }
+                });
+
+                core.Mediator.subscribe('on:content:drop', function (event) {
+                    var idelt = event.dataTransfer.getData('text');
+                    event.target.appendChild(document.getElementById(idelt));
+                    event.stopPropagation();
+                    event.preventDefault();
+                });
+
+                core.Mediator.subscribe('on:content:dragend', function (event) {
+                    event.dataTransfer.clearData('text');
+                });
+
+                dnd('#container').addListeners('content', '.droptrue');
+            }, _errorHandler);
+        </script>
+    </body>
+</html>

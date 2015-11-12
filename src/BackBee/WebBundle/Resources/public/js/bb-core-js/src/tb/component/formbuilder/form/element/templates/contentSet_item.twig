@@ -1,0 +1,12 @@
+<li class="bb5-content-item" data-uid="{{ item.uid }}" data-type="{{ item.type }}">
+
+    <p><a href="javascript:;" class="edit"><img src="{{ item.data.image }}" alt="{{ item.data.label }}"></a></p>
+    <p><a href="javascript:;" class="edit" title="{{ item.type }}({{ item.uid|truncate(5) }})">{{ item.data.label }}</a></p>
+    <p>&nbsp;</p>
+    <p>
+        <button class="btn btn-default-grey btn-sm fa fa-angle-up move-up {% if loop.first %}hidden{% endif %} move"></button>
+        <button class="btn btn-default-grey btn-sm fa fa-angle-down move-down {% if loop.last %}hidden{% endif %} move"></button>
+        <button class="btn btn-default-grey btn-sm fa fa-edit edit"></button>
+        <button class="btn btn-default-grey btn-sm fa fa-trash trash"></button>
+    </p>
+</li>

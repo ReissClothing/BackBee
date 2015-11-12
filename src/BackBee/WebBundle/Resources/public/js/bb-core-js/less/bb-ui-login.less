@@ -1,0 +1,210 @@
+@import (reference) "bb-ui.less";
+
+#bb5-ui {
+
+  &,
+  & * {
+    #bb5-ui .bb5-ui-reset;
+  }
+
+  .help-block {
+    #bb5-ui .help-block;
+  }
+
+  .ui-dialog {
+    #bb5-ui .ui-dialog;
+    .ui-dialog-content {
+      #bb5-ui .ui-dialog .ui-dialog-content;
+      #bb5-ui .ui-dialog-content;
+      padding: 1em 1em 0 1em;
+    }
+  }
+
+  .ui-widget {
+    #bb5-ui .ui-widget;
+    .ui-icon {
+      #bb5-ui .ui-widget .ui-icon;
+    }
+    .ui-icon-closethick:before {
+      &:extend(#bb5-ui .ui-widget .ui-icon-closethick:before);
+    }
+  }
+
+  .ui-widget-header {
+    #bb5-ui .ui-widget-header;
+    & * {
+      &:extend(#bb5-ui .ui-widget-header *);
+    }
+
+    .ui-button {
+      #bb5-ui .ui-widget-header .ui-button;
+      .ui-icon {
+        #bb5-ui .ui-widget-header .ui-button .ui-icon
+      }
+
+      &:hover{
+        &:extend(#bb5-ui .ui-widget-header .ui-button:hover);
+      }
+    }
+  }
+}
+.animation-delay(@delay) {
+  animation-delay: @delay;
+  -o-animation-delay: @delay;
+  -ms-animation-delay: @delay;
+  -webkit-animation-delay: @delay;
+  -moz-animation-delay: @delay;
+}
+#backbee-loader {
+  display: none;
+  position: fixed;
+  z-index: 99999999;
+  background-color: rgba(0, 0, 0, 0.3);
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  .loader {
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    margin: -60px 0 0 -60px;
+    top: 50%;
+    left: 50%;
+  }
+
+  &.visible {
+    display: block;
+  }
+
+  #circularG_1 {
+    left: 0;
+    top: 48px;
+    .animation-delay(0.41s);
+  }
+
+  #circularG_2 {
+    left: 12px;
+    top: 12px;
+    .animation-delay(0.55s);
+  }
+
+  #circularG_3 {
+    top: 0;
+    left: 48px;
+    .animation-delay(0.69s);
+  }
+
+  #circularG_4 {
+    right: 12px;
+    top: 12px;
+    .animation-delay(0.83s);
+  }
+
+  #circularG_5 {
+    right: 0;
+    top: 48px;
+    .animation-delay(0.97s);
+  }
+
+  #circularG_6 {
+    right: 12px;
+    bottom: 12px;
+    .animation-delay(1.1s);
+  }
+
+  #circularG_7 {
+    left: 48px;
+    bottom: 0;
+    .animation-delay(1.24s);
+  }
+
+  #circularG_8{
+    left: 12px;
+    bottom: 12px;
+    .animation-delay(1.38s);
+  }
+
+  .circularG {
+    position: absolute;
+    background-color: rgb(245,135,39);
+    width: 28px;
+    height: 28px;
+    border-radius: 18px;
+    -o-border-radius: 18px;
+    -ms-border-radius: 18px;
+    -webkit-border-radius: 18px;
+    -moz-border-radius: 18px;
+    animation-name: bounce_circularG;
+    -o-animation-name: bounce_circularG;
+    -ms-animation-name: bounce_circularG;
+    -webkit-animation-name: bounce_circularG;
+    -moz-animation-name: bounce_circularG;
+    animation-duration: 1.1s;
+    -o-animation-duration: 1.1s;
+    -ms-animation-duration: 1.1s;
+    -webkit-animation-duration: 1.1s;
+    -moz-animation-duration: 1.1s;
+    animation-iteration-count: infinite;
+    -o-animation-iteration-count: infinite;
+    -ms-animation-iteration-count: infinite;
+    -webkit-animation-iteration-count: infinite;
+    -moz-animation-iteration-count: infinite;
+    animation-direction: normal;
+    -o-animation-direction: normal;
+    -ms-animation-direction: normal;
+    -webkit-animation-direction: normal;
+    -moz-animation-direction: normal;
+  }
+}
+
+@keyframes bounce_circularG {
+  0%{
+    transform: scale(1);
+  }
+
+  100%{
+    transform: scale(.3);
+  }
+}
+
+@-o-keyframes bounce_circularG {
+  0%{
+    -o-transform: scale(1);
+  }
+
+  100%{
+    -o-transform: scale(.3);
+  }
+}
+
+@-ms-keyframes bounce_circularG {
+  0%{
+    -ms-transform: scale(1);
+  }
+
+  100%{
+    -ms-transform: scale(.3);
+  }
+}
+
+@-webkit-keyframes bounce_circularG{
+  0%{
+    -webkit-transform: scale(1);
+  }
+
+  100%{
+   -webkit-transform: scale(.3);
+  }
+}
+
+@-moz-keyframes bounce_circularG{
+  0%{
+    -moz-transform: scale(1);
+  }
+
+  100%{
+    -moz-transform: scale(.3);
+  }
+}

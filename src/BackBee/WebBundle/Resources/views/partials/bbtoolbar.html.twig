@@ -6,12 +6,12 @@
 {#{% if bb.token != null %}#}
 {# @todo gvf pensar manera de que esto se ponga en el stylesheets del layout, asi no lo hace, idem para js#}
         {% stylesheets
-        'bundles/backbeeweb/css/bb-ui.css'
+            '@BackBeeWebBundle/Resources/public/css/bb-ui.css'
+            '@BackBeeWebBundle/Resources/public/css/vendor-toolbar.css'
         filter='cssrewrite'
         %}
 <link rel="stylesheet" href="{{ asset_url }}"/>
     {% endstylesheets %}
-        {#'@BackBeeWebBundle/Resources/public/css/vendor-toolbar.css'#}
 {#{% else %}#}
     {#<link href="{{ this.getResourceUrl('toolbar/dist/css/bb-ui-login' ~ isMin ~ '.css') }}" rel="stylesheet">#}
 {#{% endif %}#}
@@ -50,8 +50,11 @@
         </div>
     </div>
     
-    {% javascripts '@BackBeeWebBundle/Resources/public/js/toolbar-config.js' %}
+    {% javascripts
+        '@BackBeeWebBundle/Resources/public/js/toolbar-config.js'
+    %}
     <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
+
 </div>
 {% endif %}

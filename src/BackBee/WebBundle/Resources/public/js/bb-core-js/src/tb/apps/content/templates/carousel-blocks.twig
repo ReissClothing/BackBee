@@ -1,0 +1,15 @@
+{% for blocks in groupBlocks %}
+    <div class="item{% if loop.index == 1 %} active{% endif %}">
+        <div class="item-inner">
+            <div class="row">
+                {% for block in blocks %}
+                    <div class="col-xs-4 slider-col">
+                        <a draggable="true" data-bb-type="{{ block.type }}" class="button bb5-blocks-choice-x bb-dnd carousel-block" title="{{ block.label }}">
+                            <i style="background-image:url({{ block.thumbnail }});"></i>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endfor %}

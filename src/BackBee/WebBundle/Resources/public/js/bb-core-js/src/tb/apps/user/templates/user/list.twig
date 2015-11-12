@@ -1,0 +1,7 @@
+<ul class="bb5-list-data bb5-list-users bb5-list-display-grid clearfix">
+    {% for user in users %}
+        {{ user.render() }}
+    {% else %}
+        {{ 'no_user_found'|trans }}
+    {% endfor %}
+</ul>

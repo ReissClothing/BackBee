@@ -1,0 +1,22 @@
+{
+    "name": "backbee/bb-core-js",
+    "description": "BbCoreJs is the javascript client for backbee/backbee CMS",
+    "keywords": ["CMS", "Core", "Content Management", "No backend CMS", "User Management", "Bundle"],
+    "license": "GPL-3.0+",
+    "authors": [
+        {
+            "name": "Nicolas Dufreche",
+            "email": "nicolas.dufrech@lp-digital.fr"
+        },
+        {
+            "name": "BackBee community",
+            "homepage": "https://github.com/backbee/BbCoreJs/graphs/contributors"
+        }
+    ],
+    "minimum-stability": "stable",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}

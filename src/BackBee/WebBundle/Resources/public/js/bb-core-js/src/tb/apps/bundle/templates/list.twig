@@ -1,0 +1,33 @@
+<div id="extensions" class="bb5-dialog ui-dialog-no-title">
+    {% for name, category in categories %}
+    <div class="bb5-data-toggle {% if loop.first %}open{% endif %}">
+        <div class="bb5-data-toggle-header">
+            {{ name }}
+            <span class="bb5-data-toggle-trigger">
+                <i class="fa fa-angle-down"></i>
+            </span>
+        </div>
+        <div class="bb5-data-drpdown">
+            <div class="bb5-list-data bb5-list-bordered">
+                {% for bundle in category %}
+                <div class="bb5-list-data-item" id="{{ bundle.id }}">
+                    <div class="bb5-extension-pane">
+                        <div class="pull-left">
+                            <figure class="bb5-extension-img">
+                                <img style="width:75px;" src="{{ bundle.thumbnail }}" alt="">
+                            </figure>
+                        </div>
+                        <div class="float-reflow">
+                            <p>
+                                <strong>{{ bundle.name }}</strong>
+                            </p>
+                            <p>{{ bundle.description }}</p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div><!--/.bb5-list-data-->
+        </div><!--/.bb5-data-drpdown-->
+    </div><!--/.bb5-data-toggle-->
+    {% endfor %}
+</div><!--id:extensions-->

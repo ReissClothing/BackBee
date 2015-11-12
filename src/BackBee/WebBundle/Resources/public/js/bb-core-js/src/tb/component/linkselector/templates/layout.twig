@@ -1,0 +1,62 @@
+<div class="link-selector" style="height: 100%;">
+    <div class="link-selector-menu">
+        <ul class="nav nav-pills">
+            <li class="active" data-pane="internal"><a href="#">{{ trans('internal_link') }}</a></li>
+            <li data-pane="external"><a href="#">{{ trans('external_link') }}</a></li>
+        </ul>
+    </div>
+    <div class="link-selector-external-link hidden">
+        <div class="link-selector-wrapper-area"></div>
+    </div>
+    <div class="link-selector-internal-link" class="bb5-windowpane-wrapper windowpane-treeview" style="height: 100%;">
+        <div class="bb5-windowpane-tree ui-layout-pane ui-layout-west link-selector-tree">
+
+            <div class="ui-layout-north">
+                <p><strong data-i18n="toolbar.selector.select_a_website">{{ trans('select_a_website') }}</strong></p>
+                <div class="site-selector-ctn"></div>
+            </div>
+
+            <div class="bb5-treeview">
+
+                {{ trans('loading') }}...
+
+            </div>
+        </div>
+        <div class="bb5-windowpane-main ui-layout-pane ui-layout-center">
+
+            <div class="ui-layout-north">
+                <div class="row">
+                    <div class="col-bb5-100">
+                        <p class="bb5-widget-toolbar result-infos"></p>
+                        <div class="bb5-widget-toolbar list-options clearfix" style="height:50px;">
+                            <ul class="pagination link-selector-selection-pagination clearfix"></ul>
+                            <p class="pull-right">
+                                <button type="button" data-viewmode="grid" class="btn viewmode-btn btn-simple btn-sm bb5-sortasgrid fa fa-th-large"></button>
+                                <button type="button" data-viewmode="list" class="btn viewmode-btn btn-simple btn-sm bb5-sortaslist fa fa-list-ul"></button>
+                                <select class="max-per-page-selector input-xs"></select>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div><!--/.ui-layout-north-->
+
+
+            <div class="inner-center layout-overflow-scroll">
+                <div class="bb5-list-data-toolbar bb5-toolbar-order">
+                    <div class="row">
+                        <p class="bb5-toolbar-order-col col-bb5-50">{{ trans('current_directory') }}</p>
+                        <p class="bb5-toolbar-order-col col-bb5-22">{{ trans('creation_date') }}</p>
+                        <p class="bb5-toolbar-order-col col-bb5-22">{{ trans('modified_date') }}</p>
+                        <p class="bb5-toolbar-order-col col-bb5-5">&nbsp;</p>
+                    </div>
+                </div><!--/.bb5-list-data-toolbar-->
+                <div class="link-selector-body"></div><!--/.bb5-list-users : list -->
+
+            </div><!--/.inner-center-->
+
+            <div class="ui-layout-south">
+            </div><!--/.ui-layout-south-->
+
+        </div>
+    </div>
+</div><!--id:content-library-->

@@ -1,0 +1,32 @@
+<div id="bb-current-user" class="nav navbar-nav pull-right">
+    <div class="dropdown">
+        <button id="bb5-topmost-login" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-user"></i> {{ login }} <i class="fa fa-caret-down"></i>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="bb5-topmost-login">
+            <li>
+                <a href="#/user/edit" class="bb-service" data-service="editCurrent">
+                    <i class="fa fa-pencil"></i> {{ trans('edit') }}
+                </a>
+            </li>
+            <li>
+                <a href="#/user/edit/password" class="bb-service" data-service="changePassword">
+                    <i class="fa fa-unlock-alt"></i> {{ trans('change_password') }}
+                </a>
+            </li>
+            <li role="separator" class="divider"></li>
+            <li class="dropdown-header">{{ trans('language') }}</li>
+            <li class="list-lang">
+            {% for key, locale in locales %}
+                <a href="#" data-locale="{{ key }}" class="bb-locale-btn btn btn-default btn-sm {% if key == current_locale %}active{% endif %}">{{ locale }}</a>
+            {% endfor %}
+            </li>
+            <li role="separator" class="divider"></li>
+            <li>
+                <a href="#/user/logout" class="bb-service" data-service="logout">
+                    <i class="fa fa-power-off"></i> {{ trans('log_out') }}
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>

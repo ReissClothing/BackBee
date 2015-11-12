@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en_EN">
+    <head>
+        <meta encoding="utf8">
+        <title>Login</title>
+        <link rel="stylesheet" href="resources/bower_components/bootstrap/dist/css/bootstrap.min.css">
+
+    </head>
+    <body>
+        <!-- Static navbar -->
+        <div class="navbar navbar-default navbar-static-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">BackBuilder</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#appLayout/showlist/58">Layout</a></li>
+                <li><a data-action="layout" href="#appContent/params">Content</a></li>
+            </ul>
+            <div class="jumbotron">
+                <p>Use tabs to choose application.</p>
+            </div>
+
+        </div>
+    </body>
+    <script src="resources/lib/requirejs/require.js"></script>
+    <script src="resources/build/require.config.min.js"></script>
+    <script>
+        /* sample to put in a yml file*/
+        var _errorHandler = function(error){
+            console.log(error);
+        }
+        var applicationConfig = {
+            appPath: 'resources/src/tb/apps',
+            /*ne charge que les onglets qui se trouvent dans 'applications'*/
+            active: 'layout',
+            route: '', // to change: App should know
+            applications: {
+                layout : {
+                    label  : 'Layout',
+                    config : { mainRoute : 'appLayout/home'}
+                },
+                content: {
+                    label  : 'Content edition',
+                    config : { }
+                }
+            }
+        };
+
+        require(['tb.core'], function (bbCore) {
+            var router = null;
+
+            bbCore.ApplicationManager.on('routesLoaded', function () {
+                /*cf http://backbonejs.org/#Router for available options */
+                router = bbCore.RouteManager.initRouter({silent:true});
+            });
+
+            bbCore.ApplicationManager.on('appIsReady',function(app){
+                router.navigate(app.getMainRoute());
+            });
+
+            bbCore.ApplicationManager.init(applicationConfig);
+        }, _errorHandler);
+    </script>
+</html>

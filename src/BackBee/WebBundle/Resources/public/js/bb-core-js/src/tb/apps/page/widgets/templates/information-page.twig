@@ -1,0 +1,10 @@
+<p class="page-{% if page.state in [1, 3] %}online{% else %}offline{% endif %}">
+    {% for state in page.states %}
+        {% set pageStatus = 'state-'+state %}
+        {{ pageStatus|trans }}<br />
+    {% endfor %}
+    {% for template in templates %}
+        {{ template }}
+    {% endfor %}
+</p>
+<p>Last update: <span class="page-date">{{ page.modified }}</span></p>

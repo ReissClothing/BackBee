@@ -1,0 +1,24 @@
+<div class="bb5-windowpane-tree ui-layout-pane ui-layout-south">
+    <ul class="bb5-list-data bb5-list-users bb5-list-display-grid clearfix">
+
+        <li class="hidden bb5-list-data-item bb5-list-users-item">
+            <div id="toolbar-new-group" class="bb5-manage-group">
+                <div class="bb5-manage-group-tools">
+                    <p>
+                        <button type="button" class="btn btn-default btn-xs" id="toolbar-new-group-action">{{ 'create_group'|trans }}</button>
+                    </p>
+                </div>
+            </div>
+        </li>
+
+        {% for group in groups %}
+            {{ group.render() }}
+        {% endfor %}
+    </ul>
+</div>
+
+<p style="display:none">
+    <a href="#" class="bb5-pagination-btn bb5-pagination-next">
+        <i class="fa fa-angle-up"></i> {{ 'group'|trans }}
+    </a>
+</p>

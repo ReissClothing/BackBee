@@ -1,0 +1,18 @@
+{% set title = data.title %}
+{% if data.siteLabel %}
+    {% set title = data.title + " (" + data.siteLabel + ")" %}
+{% endif %}
+
+<li style="margin-top:5px;">
+    <button class="btn btn-default-grey btn-sm fa fa-trash trash"></button>
+    <button class="btn btn-default-grey btn-sm fa fa-angle-up move-up move"></button>
+    <button class="btn btn-default-grey btn-sm fa fa-angle-down move-down move"></button>
+    <br />
+    <div class="input-group">
+        <span class="input-group-btn">
+            <button class="btn btn-default node-selector-edit" type="button"><i class="fa fa-columns"></i></button>
+        </span>
+        <input type="text" disabled value="{{ title }}" class="form-control title">
+        <input type="hidden" value="{{ data.pageUid }}" class="form-control pageuid">
+    </div>
+</li>

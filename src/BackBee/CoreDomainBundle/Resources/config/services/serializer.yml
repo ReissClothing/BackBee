@@ -75,7 +75,7 @@ services:
         #JMS\Serializer\Metadata\Driver
 
     serializer.metadata.cache:
-        class: BackBee\Rest\Metadata\Cache\FileCache
+        class: BackBee\ApiBundle\Metadata\Cache\FileCache
         arguments:  ["%bbapp.cache.dir%/"]
 
     serializer.naming_strategy:

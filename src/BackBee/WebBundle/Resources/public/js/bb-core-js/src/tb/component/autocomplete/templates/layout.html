@@ -1,0 +1,5 @@
+<ul>
+    {% for item in suggestions %}
+    <li class="suggestion-item" data-item="{{item.uid}}">{{ item.keyword }}</li>
+    {% endfor %}
+</ul>

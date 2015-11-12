@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+        
+        <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.2/moment.min.js"></script>
+        <script src="https://raw.githubusercontent.com/satazor/SparkMD5/master/spark-md5.js"></script>
+        
+        
+        
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+        
+        
+        
+    </head>
+    <body>
+        
+        
+        <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-2">
+                <button id="btn-auth" type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#authForm">
+                    Authenticate</button>
+                
+                <button id="btn-user-details" style="display: none" type="button" class="btn btn-primary btn-lg">
+                    Get User Info</button>
+            
+            </div>
+            <div class="col-md-8">
+                <div id="messages"></div>
+            </div>
+      </div>
+        
+        
+        
+        <script>
+        var currentUser = null;
+        var isAuthenticated = false;
+        var auth = {};
+        var dateFormat = 'YYYY-MM-DD HH:mm:ss';
+        
+        $(document).ready(function(){
+            $(".alert").alert();
+            
+            $('#btn-user-details').click(function(){
+                $.ajax('/rest/1/user/' + window.currentUser.id, {
+                    'headers' : {
+                        'X-BB-METHOD' : 'JsonRpc',
+                        'X-BB-AUTH' : 'UsernameToken Username="' + auth.username
+                             + '", PasswordDigest="' + SparkMD5.hash(auth.nonce + moment(auth.created).format(dateFormat) + SparkMD5.hash(auth.pass))
+                             + '", Nonce="' + auth.nonce
+                             + '", Created="' + moment(auth.created).format(dateFormat) + '"'
+                    },
+                    'success' : function(data) {
+                        console.log(data);
+                        $('#messages').append(
+                           '<div class="alert alert-success fade in" role="alert" data-dismiss="alert"><strong>Got user data!</strong> ' + JSON.stringify(data) 
+                           + '<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>'
+                           + '</div>'
+                        );
+                    }, 'error' : function(data) {
+                        console.log(data);
+                        
+                        $('#messages').append(
+                           '<div class="alert alert-danger fade in" role="alert" data-dismiss="alert"><strong>Request for user info has failed</strong> Data returned:' + JSON.stringify(data) 
+                           + '<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>'
+                           + '</div>'
+                        );
+                        
+                        isAuthenticated = true;
+                    }
+                });
+            });
+            
+            $('#authForm button.signin').click(function(){
+                auth.username = $('#auth_username').val();
+                auth.pass = $('#auth_password').val();
+                auth.created = new Date();
+                auth.nonce = '1234567890';
+                
+                var digest = SparkMD5.hash(auth.nonce + moment(auth.created).format(dateFormat) + SparkMD5.hash(auth.pass));
+                
+                
+                $.ajax('/rest/1/security/auth/bb_area', {
+                    'type': 'POST',
+                    'data' : JSON.stringify({
+                        'username' : auth.username,
+                        'created' : moment(auth.created).format(dateFormat),
+                        'nonce' : auth.nonce,
+                        'digest' : digest
+                    }),
+                    'contentType' : 'application/json',
+                    'success' : function(data) {
+                        
+                        
+                        $('#messages').append(
+                           '<div class="alert alert-success fade in" role="alert" data-dismiss="alert"><strong>Login success!</strong> ' + JSON.stringify(data) 
+                           + '<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>'
+                           + '</div>'
+                        );
+                        
+                        $('#authForm').modal('hide');
+                        
+                        
+                        $('#btn-user-details').show();
+                        
+                        currentUser = data.user;
+                        
+                        isAuthenticated = true;
+                    }, 'error' : function(data) {
+                        console.log(data);
+                        
+                        $('#messages').append(
+                           '<div class="alert alert-danger fade in" role="alert" data-dismiss="alert"><strong>Couldnt login</strong> Data returned:' + JSON.stringify(data) 
+                           + '<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>'
+                           + '</div>'
+                        );
+                        
+                        $('#authForm').modal('hide');
+                        $('#btn-user-details').hide();
+                        isAuthenticated = false;
+                    }
+                });
+            });
+            
+        });
+        
+        </script>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        <div class="modal fade" id="authForm">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                  <h4 class="modal-title">Modal title</h4>
+                </div>
+                <div class="modal-body">
+                    
+                    <form class="form-horizontal" role="form">
+                        <div class="form-group">
+                          <label for="inputEmail3" class="col-sm-2 control-label">Username</label>
+                          <div class="col-sm-10">
+                            <input type="text" class="form-control" id="auth_username" placeholder="Username">
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label for="inputPassword3" class="col-sm-2 control-label">Password</label>
+                          <div class="col-sm-10">
+                            <input type="password" class="form-control" id="auth_password" placeholder="Password">
+                          </div>
+                        </div>
+                    </form>
+                    
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary signin">Sign in</button>
+                </div>
+              </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+        
+    </body>
+</html>

@@ -1,0 +1,101 @@
+<?php header('Access-Control-Allow-Origin: *'); ?>
+<!DOCTYPE html>
+<html lang="en_EN">
+    <head>
+        <meta encoding="utf8">
+        <title>Demo</title>
+        <link rel="stylesheet" href="resources/html/css/style_reset.css">
+        <link rel="stylesheet" href="resources/bower_components/bootstrap/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="resources/bower_components/jquery-ui/themes/ui-lightness/jquery-ui.min.css">
+        <link rel="stylesheet" href="resources/html/css/bb5-skin03.css">
+        <link rel="stylesheet" href="resources/lib/datetimepicker/jquery.datetimepicker.css">
+        <link rel="stylesheet" href="resources/html/css/fix.css">
+        <link rel="stylesheet" href="resources/html/css/font-awesome.min.css">
+        <link rel="stylesheet" href="resources/html/css/bb5-ui.css">
+        <script src="resources/bower_components/requirejs/require.js"></script>
+        <script src="resources/src/require.config.js"></script>
+
+    </head>
+    <body>
+        <div id="bb5-ui"></div>
+        <!-- Static navbar -->
+        <div class="navbar navbar-default navbar-static-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">BackBuilder</a>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <ul class="nav nav-tabs">
+                <li class="active"><a data-action="layout:default" href="#appContent/params">Layout</a></li>
+                <li><a href='#appContent/params'>Content</a></li>
+            </ul>
+            <div class="jumbotron">
+                <p>Use tabs to change application.</p>
+            </div>
+        </div>
+
+        <script>
+            /* sample to put in a yml file*/
+            var _errorHandler = function (error) {
+                console.log("error", error);
+            }
+            var config = {
+                ApplicationManager: {
+                    appPath: 'bb-core-js/src/tb/apps',
+                    /*ne charge que les onglets qui se trouvent dans 'applications'*/
+                    active: 'layout',
+                    route: '', // to change: App should know
+                    applications: {
+                        layout : {
+                            label  : 'Layout',
+                            config : { mainRoute : 'appLayout/home'}
+                        },
+                        content: {
+                            label  : 'Content edition',
+                            config : {}
+                        }
+                    }
+                },
+                component: {
+                    logger: {
+                        loglevel: 5,
+                        debug: true
+                    }
+                }
+            };
+
+
+            require(['tb.core', 'component!logger'], function (core, logger) {
+                var router = null;
+
+        core.ApplicationManager.on('routesLoaded', function () {
+            /*cf http://backbonejs.org/#Router for available options */
+            router = core.RouteManager.initRouter({silent : false});
+        });
+
+         core.ApplicationManager.on('appError', function(reason){
+             console.log("bbCoreError --> ", reason);
+         });
+
+         core.ApplicationManager.on('appIsReady',function(app){
+             router.navigate(app.getMainRoute());
+        });
+
+        try {
+             core.ApplicationManager.init(config.ApplicationManager);
+         } catch(e){
+             console.log(e);
+         }
+            }, _errorHandler);
+
+        </script>
+    </body>
+</html>

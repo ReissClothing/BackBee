@@ -1,0 +1,13 @@
+<div class="row-draft col-bb5-100">
+    <span class="col-bb5-60">
+        <span class="checkbox">
+            <label>
+                <input type="checkbox" data-key="{{ item.key }}" data-savable="true" checked />
+                {{ item.label }}
+                <span class="txt-lighten">- {{ 'changed_to'|trans }} {{ item.frontValue }}</span>
+            </label>
+        </span>
+    </span>
+    <span class="col-bb5-20">{{ item.author }}</span>
+    <span class="col-bb5-20">{{ item.modified_at }}</span>
+</div>

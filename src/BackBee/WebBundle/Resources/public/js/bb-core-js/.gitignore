@@ -1,0 +1,13 @@
+_SpecRunner.html
+bower_*
+node_*
+lib
+build
+html/resources
+html/css
+old/
+template/
+nbproject/
+.grunt/
+coverage/
+npm-debug.log

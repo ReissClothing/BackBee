@@ -1,0 +1,54 @@
+<div class="row">
+    <div class="col-bb5-15">
+        <p>
+            <button id="bundle-toolbar-tree" class="btn btn-simple btn-xs">
+                <i class="fa fa-sitemap"></i> {{ trans('tree') }}
+            </button>
+        </p>
+        <p class="hidden">
+            <button id="bundle-toolbar-contentSelector" type="button" class="btn btn-simple btn-xs">
+                <i class="fa fa-search"></i> {{ 'content'|trans }}
+            </button>
+        </p>
+        <p>
+
+            <button id="btn-show-mediaLibrary" class="btn btn-simple btn-xs">
+                <i class="fa fa-picture-o"></i> {{ 'media_library'|trans }}
+            </button>
+
+        </p>
+        <p>
+            <button id="new-page" type="button" class="btn btn-simple btn-xs">
+                <i class="fa fa-file-o"></i> {{ 'new_page'|trans }}
+            </button>
+        </p>
+
+        <p>
+            <button id="keyword-editor" type="button" class="btn btn-simple btn-xs">
+                <i class="fa fa-tags"></i> {{ 'keywords_editor'|trans }}
+            </button>
+        </p>
+    </div><!--/ End col-->
+
+    <div class="col-bb5-85">
+        <div class="tabs-vertical row">
+            <ul class="nav nav-tabs col-bb5-15" id="edit-tab">
+                <li id="edit-tab-content">
+                    <a href="#content/contribution/edit" data-type="content">{{ 'content'|trans }}</a>
+                </li>
+                <li id="edit-tab-block">
+                    <a href="#content/contribution/index" data-type="block">{{ 'blocks'|trans }}</a>
+                </li>
+                <li id="edit-tab-page">
+                    <a href="#page/contribution/index" data-type="page">{{ 'page'|trans }}</a>
+                </li>
+            </ul>
+            <div class="tab-content col-bb5-85" id="contrib-tab-apps">
+                <div class="tab-pane" id="content-contrib-tab"></div>
+                <div class="tab-pane" id="block-contrib-tab"></div>
+                <div class="tab-pane" id="page-contrib-tab"></div>
+            </div>
+        </div>
+    </div><!--/ End col-->
+
+</div>

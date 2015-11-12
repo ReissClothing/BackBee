@@ -1,0 +1,39 @@
+<li class="bb5-list-data-item bb5-list-group-item">
+    <div id="toolbar-group-{{ group.id }}" class="bb5-manage-group ui-droppable" dropzone="true" data-group="{{ group.id }}">
+        <div class="bb5-manage-group-header">
+            <p class="bb5-group-name">{{ group.name }}</p>
+            <p>
+                <span class="group-counter">
+                    {% if group.user_count < 2 %}
+                        {{ group.user_count }} {{ 'user'|trans }}
+                    {% else %}
+                        {{ group.user_count }} {{ 'users'|trans }}
+                    {% endif %}
+                </span>
+            </p>
+        </div>
+        <div class="bb5-manage-group-body">
+            <div class="row">
+                <div class="col-sm-6" data-group="{{ group.id }}">
+                    <button type="button" class="btn btn-simple btn-xs btn-action" data-action="showUsers">
+                        <i class="fa fa-user"></i> {{ 'users'|trans }}
+                    </button>
+                    <button type="button" class="hidden btn btn-simple btn-xs">
+                        <i class="fa fa-key"></i> {{ 'manage_rights'|trans }}
+                    </button>
+                </div>
+                <div class="col-sm-6" data-group="{{ group.id }}">
+                    <button type="button" class="btn btn-simple btn-xs btn-action" data-action="showDescription">
+                        <i class="fa fa-key"></i> {{ 'rights_description'|trans }}
+                    </button>
+                    <button type="button" class="hidden btn btn-simple btn-xs btn-action" data-action="edit">
+                        <i class="fa fa-pencil"></i> {{ 'rename'|trans }}
+                    </button>
+                    <button type="button" class="hidden btn btn-simple btn-xs btn-action" data-action="delete">
+                        <i class="fa fa-trash-o"></i> {{ 'delete'|trans }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</li>

@@ -1,0 +1,20 @@
+{% if items|length > 0 %}
+<p class="dialog-title">{{ title }}</p>
+<div class="bb5-list-data-toolbar bb5-toolbar-order">
+    <div class="row">
+        <p class="bb5-toolbar-order-col col-bb5-60"><a href="#">{{ 'title'|trans }}</a></p>
+        <p class="bb5-toolbar-order-col col-bb5-20"><a href="#">{{ 'modified_at'|trans }}</i></a></p>
+    </div>
+</div>
+
+{% if noteMsg %}
+<p class="alert alert-warning txt-center">{{ noteMsg }}</p>
+{% endif %}
+
+<ul class="bb5-list-data bb5-list-display-list clearfix bb-revision-selector">
+    <input type="checkbox" name="test" checked style="margin-left:15px;" class="general-revision-input"/> {{ trans('select_all') }}
+    {{ items }}
+</ul>
+{% else %}
+<p>{{ noContentMsg }}</p>
+{% endif %}

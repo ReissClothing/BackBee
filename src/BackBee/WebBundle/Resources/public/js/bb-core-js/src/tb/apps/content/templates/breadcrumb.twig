@@ -1,0 +1,8 @@
+<ul class="list-inline">
+    {% for element in elements %}
+        <li {% if loop.last %}class="selected"{% endif %}><a class="breadcrumb-item" href="#" data-bb-content-id="{{ element.id }}">{{ element.name }}</a></li>
+        {% if loop.last == false %}
+            <li><i class="fa fa-arrow-right"></i></li>
+        {% endif %}
+    {% endfor %}
+</ul>

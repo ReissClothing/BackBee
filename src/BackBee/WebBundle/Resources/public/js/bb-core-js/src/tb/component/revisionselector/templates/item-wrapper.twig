@@ -1,0 +1,92 @@
+<li class="bb5-list-data-item">
+    {% for item in items %}
+
+        {% set margin = item.margin %}
+        <div class="row-draft col-bb5-100 {% if item.hideHimself %}hidden{% endif %}">
+            <span class="col-bb5-60">
+                <span class="checkbox" style="margin-left: {{ margin }}px;">
+                    <label {% if item.error == true %}style='color:red;'{% endif %}>
+                        <input class="revision-input"
+                               type="checkbox"
+                               data-parent-uid="{{ item.parentUid }}"
+                               data-parent-id="{{ item.elementParentId }}"
+                               data-uid="{{ item.uid }}"
+                               data-type="{{ item.type }}"
+                               data-id="{{ item.id }}"
+                               data-savable="true"
+                               data-scalar="{{ item.isScalar }}"
+                               data-name="{{ item.name }}"
+                               data-contentset="{{ item.isContentSet }}"
+                               checked
+                        />
+                        {{ item.name }}
+                        <span class="txt-lighten">- {{ item.stateLabel }}</span>
+                    </label>
+                </span>
+            </span>
+            <span class="col-bb5-20">{{ item.modifiedString }}</span>
+        </div>
+
+        {% if item.paramId != null %}
+            <div class="row-draft col-bb5-100 {% if item.hideChildren %}hidden{% endif %}" >
+                <span class="col-bb5-60">
+                    <span class="checkbox" style="margin-left: {{ margin + 15 }}px;">
+                        <label style='font-weight:bold;'>
+                            <input class="revision-input"
+                                   type="checkbox"
+                                   data-id="{{ item.paramId }}"
+                                   data-parent-id="{{ item.id }}"
+                                   checked
+                            />
+                            Parameters :
+                        </label>
+                    </span>
+                </span>
+            </div>
+            {% for key, param in item.parameters %}
+                <div class="row-draft col-bb5-100 {% if item.hideChildren %}hidden{% endif %}">
+                    <span class="col-bb5-60">
+                        <span class="checkbox" style="margin-left: {{ margin + 30 }}px;">
+                            <label {% if item.error == true %}style='color:red;'{% endif %}>
+                                <input class="revision-input"
+                                       type="checkbox"
+                                       data-parent-uid="{{ item.uid }}"
+                                       data-id="{{ generateId() }}"
+                                       data-parent-id="{{ item.paramId }}"
+                                       data-uid="{{ item.uid }}"
+                                       data-type="{{ item.type }}"
+                                       data-savable="true"
+                                       data-param="true"
+                                       data-name="{{ key }}"
+                                       checked
+                                 />
+                                {{ key }}
+                                <span class="txt-lighten">{{ param.current }} changed to {{ param.draft }}</span>
+                            </label>
+                        </span>
+                    </span>
+                    <span class="col-bb5-20">{{ item.modifiedString }}</span>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        {% if item.elementId != null or item.isContentSet == true %}
+            <div class="row-draft col-bb5-100 {% if item.hideChildren %}hidden{% endif %}">
+                <span class="col-bb5-60">
+                    <span class="checkbox" style="margin-left: {{ margin + 15 }}px;">
+                        <label style='font-weight:bold;'>
+                            <input class="revision-input"
+                                   type="checkbox"
+                                   data-id="{{ item.elementId }}"
+                                   data-parent-id="{{ item.id }}"
+                                   data-element="true"
+                                   checked
+                             />
+                            Elements {% if item.isContentSet == false%}:{% endif %}
+                        </label>
+                    </span>
+                </span>
+            </div>
+        {% endif %}
+    {% endfor %}
+</li>

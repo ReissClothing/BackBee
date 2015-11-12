@@ -1,0 +1,10 @@
+<label for="{{ element.getKey() }}" class="label">{{ element.getLabel() }}</label>
+<input type="url"
+       name="{{ element.getKey() }}"
+       {% if element.isDisabled() %}disabled{% endif %}
+       value="{{ element.getValue() }}"
+       placeholder="{{ element.getPlaceholder() }}"
+       class="form-control"
+       >
+<span class="hidden updated"></span>
+<span class="form_error help-block {% if element.getError() == null %}hidden{% endif %}">{{ element.getError() }}</span>

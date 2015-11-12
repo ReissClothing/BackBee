@@ -1,0 +1,31 @@
+<div id="backbee-palette-blocks">
+    <div class="bb5-data-toggle open">
+        <div class="bb5-data-toggle-header">
+            {{ block.category }}
+        </div>
+        <div class="bb5-data-drpdown">
+            <div class="bb5-list-data bb5-list-bordered">
+                <div class="bb5-list-data-item">
+                    <div class="bb5-extension-pane">
+                        <div class="pull-left">
+                            <figure class="bb5-extension-img">
+                                <img
+                                    draggable="false"
+                                    data-bb-type="{{ block.type }}"
+                                    style="width:75px;"
+                                    src="{{ block.thumbnail }}"
+                                >
+                            </figure>
+                        </div>
+                        <div class="float-reflow">
+                            <p>
+                                <strong>{{ block.label }}</strong>
+                            </p>
+                            <p>{{ block.description }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,27 @@
+<form id="{{ form.getId() }}"
+      role="form" method="{{ form.getMethod() }}"
+      {% if form.getAction() != null %}action="{{ form.getAction() }}"{% endif %}
+      onsubmit="return false;"
+      >
+
+    {% if form.information != null %}
+        <div class="alert alert-info" role="alert">{{ form.information }}</div>
+    {% endif %}
+    {% if form.getFormError() != null %}
+        <span class="help-block">{{ form.getFormError() }}</span>
+    {% endif %}
+
+    {% for key, group in groups %}
+        {% if group|length > 1 %}<p class="h3">{{ key }}</p>{% endif %}
+        {% for element in group %}
+            {% if loop.first %}
+            <div class="element_{{ element.getKey() }} form-group {% if group|length > 1 %}custom-form-group margin-top-none{% endif %}">
+            {% endif %}
+                {{ element.render() }}
+            {% if loop.last %}
+            </div>
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+    <button type="submit" class="btn btn-default bb-submit-form">{{ form.getSubmitLabel() }}</button>
+</form>

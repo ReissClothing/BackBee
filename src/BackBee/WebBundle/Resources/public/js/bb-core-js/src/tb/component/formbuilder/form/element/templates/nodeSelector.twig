@@ -1,0 +1,11 @@
+<label class="label">{{ element.getLabel() }}</label>
+<button class="add_node" class="btn btn-default-grey btn-sm"><i class="fa fa-plus"></i> {{ trans('select') }}</button>
+<div class="node_elements_wrapper">
+    <ul class="nodeselector_list list-unstyled" style="margin-top:10px;">
+        {% for item in items %}
+            {{ item }}
+        {% endfor %}
+    </ul>
+</div>
+<input type="hidden" name="{{ element.getKey() }}"/>
+<span class="form_error help-block {% if element.getError() == null %}hidden{% endif %}">{{ element.getError() }}</span>

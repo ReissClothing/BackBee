@@ -1,0 +1,5 @@
+{% for keywordItem in keywords %}
+    <li class="kw-item" data-kw-uid="{{ keywordItem.uid }}">
+        <span class="btn btn-default btn-rm-kw"> {{ keywordItem.keyword }} <button data-kw-uid="{{ keywordItem.uid }}" class="fa fa-remove btn btn-sm"></button></span>
+    </li>
+{% endfor %}

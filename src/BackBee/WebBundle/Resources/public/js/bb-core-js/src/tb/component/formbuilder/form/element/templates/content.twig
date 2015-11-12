@@ -1,0 +1,15 @@
+<p class="label">{{ element.getLabel() }}</p>
+<ul class="bb5-list-media bb5-list-media-is-list clearfix contentset_list" data-uid="{{ element.value }}" data-type="{{ element.classname }}">
+    <li class=""bb5-content-item">
+        <p>
+            <a href="javascript:;" class="edit">
+                <img class="bb-content-img" src="{{ element.image }}" alt="{{ element.title }}">
+            </a>
+        </p>
+        <p>
+            <a href="javascript:;" class="edit bb-content-form-edit" title="{{ element.classname }}({{ element.value|truncate(5) }})">{{ element.title}}</a>
+        </p>
+        <p>&nbsp;</p>
+        <p><button class="btn btn-default-grey btn-sm fa fa-edit edit"></button></p>
+    </li>
+</ul>

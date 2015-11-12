@@ -1,0 +1,45 @@
+<div id="backbee-palette-blocks">
+    {% for category in categories %}
+        {% if category.show %}
+        <div class="bb5-data-toggle">
+            <div class="bb5-data-toggle-header">
+                {{ category.name }}
+                <span class="bb5-data-toggle-trigger">
+                    <i class="fa fa-angle-down"></i>
+                </span>
+            </div>
+            <div class="bb5-data-drpdown">
+                <div class="bb5-list-data bb5-list-bordered">
+                    {% for content in category.contents %}
+                        {% if content.visible  %}
+                            <div class="bb5-list-data-item bb-block">
+                                <div class="bb5-extension-pane">
+                                    <div class="pull-left">
+                                        <figure class="bb5-extension-img">
+                                            <img
+                                                {% if draggable == true %}
+                                                    draggable="true"
+                                                    class="bb-dnd"
+                                                {% endif %}
+                                                data-bb-type="{{ content.type }}"
+                                                style="width:75px;"
+                                                src="{{ content.thumbnail }}"
+                                            >
+                                        </figure>
+                                    </div>
+                                    <div class="float-reflow">
+                                        <p>
+                                            <strong>{{ content.label }}</strong>
+                                        </p>
+                                        <p>{{ content.description }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    {% endfor %}
+</div>

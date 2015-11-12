@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en_EN">
+<head>
+    <meta encoding="utf8">
+    <title>Login</title>
+    <script data-main="scripts/main" src="scripts/require.js"></script>
+</head>
+<body>
+<div>
+    <form data-action="user/login" id="tb-login-form">
+        <input type="text" name="login">
+        <input type="password" name="password">
+        <input type="submit">
+        <script type="text/javascript">
+        require(['tb/Router/User', 'jquery'], function (user_router, jquery){
+            jquery('#tb-login-form').submit(function (event) {
+                event.preventDefault();
+                user_router.authenticate(this);
+            })
+        })
+        </script>
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,15 @@
+<p class="label">{{ element.getLabel() }}</p>
+
+<div class="bb5-listContainer">
+    <p>
+        <button class="btn btn-default-grey btn-sm addmedia"><i class="fa fa-plus"></i> {{ trans('add_media') }}</button>
+        <button class="btn btn-default-grey btn-sm trashall"><i class="fa fa-trash"></i> {{ trans('clear_all') }}</button>
+    </p>
+    <ul class="bb5-list-media bb5-list-media-is-list clearfix media_list">
+        {% for item in items %}
+            {{ item }}
+        {% endfor %}
+    </ul>
+</div>
+<input type="hidden" name="{{ element.getKey() }}" />
+<span class="form_error help-block {% if element.getError() == null %}hidden{% endif %}">{{ element.getError() }}</span>

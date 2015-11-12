@@ -63,34 +63,36 @@ require.config({
     waitSeconds: 15,
     urlArgs: 'cb=' + Math.random(),
     paths: {
-        'component': 'src/tb/component/component',
-        'filter': 'src/tb/filter/filter',
-        'Core': 'bower_components/backbee-core-js/dist/Core',
-        'jsclass' : 'node_modules/jsclass/min/core',
-        'underscore': 'bower_components/underscore/underscore',
-        'nunjucks': 'bower_components/nunjucks/browser/nunjucks',
-        'BackBone': 'bower_components/backbone/backbone',
-        'text': 'bower_components/requirejs-text/text',
-        'moment': 'bower_components/moment/moment',
-        'URIjs': 'bower_components/uri.js/src',
-        'URIjs/URI': 'bower_components/uri.js/src/URI',
-        'bootstrap-carousel': 'bower_components/bootstrap/js/carousel',
-        'bootstrap-dropdown': 'bower_components/bootstrap/js/dropdown',
-        'ckeeditor': 'bower_components/ckeeditor/ckeditor',
-        'dropzone': 'bower_components/dropzone/dist/dropzone',
+        'component': 'bundles/backbeeweb/js/bb-core-js/src/tb/component/component',
+        'filter': 'bundles/backbeeweb/js/bb-core-js/src/tb/filter/filter',
+        'Core': 'bundles/backbeeweb/js/bb-core-js/bower_components/backbee-core-js/dist/Core',
+        'jsclass' : 'bundles/backbeeweb/js/bb-core-js/node_modules/jsclass/min/core',
+        'underscore': 'bundles/backbeeweb/js/bb-core-js/bower_components/underscore/underscore',
+        'nunjucks': 'bundles/backbeeweb/js/bb-core-js/bower_components/nunjucks/browser/nunjucks',
+        'BackBone': 'bundles/backbeeweb/js/bb-core-js/bower_components/backbone/backbone',
+        'text': 'bundles/backbeeweb/js/bb-core-js/bower_components/requirejs-text/text',
+        'moment': 'bundles/backbeeweb/js/bb-core-js/bower_components/moment/moment',
+        'URIjs': 'bundles/backbeeweb/js/bb-core-js/bower_components/uri.js/src',
+        'URIjs/URI': 'bundles/backbeeweb/js/bb-core-js/bower_components/uri.js/src/URI',
+        'bootstrap-carousel': 'bundles/backbeeweb/js/bb-core-js/bower_components/bootstrap/js/carousel',
+        'bootstrap-dropdown': 'bundles/backbeeweb/js/bb-core-js/bower_components/bootstrap/js/dropdown',
+        'ckeeditor': 'bundles/backbeeweb/js/bb-core-js/bower_components/ckeeditor/ckeditor',
+        'dropzone': 'bundles/backbeeweb/js/bb-core-js/bower_components/dropzone/dist/dropzone',
 
-        'jquery.noconflict': 'src/core-jquery.noconflict',
-        'core-jquery': 'bower_components/jquery/dist/jquery.min',
-        'jqueryui': 'bower_components/jquery-ui/jquery-ui',
-        'jquery-helper': 'src/jquery.helper',
-        'jquery-layout' : 'bower_components/jquery.layout/dist/jquery.layout-latest',
-        'lib.jqtree': 'bower_components/jqtree/tree.jquery',
-        'datetimepicker': 'bower_components/datetimepicker/jquery.datetimepicker',
-        'jssimplepagination': 'bower_components/jssimplepagination/jquery.simplePagination',
+        'jquery.noconflict': 'bundles/backbeeweb/js/bb-core-js/src/core-jquery.noconflict',
+        //@todo gvf is jquery min necessary?
+        'core-jquery': 'bundles/backbeeweb/js/bb-core-js/bower_components/jquery/dist/jquery.min',
+        'jqueryui': 'bundles/backbeeweb/js/bb-core-js/bower_components/jquery-ui/jquery-ui',
+        'jquery-helper': 'bundles/backbeeweb/js/bb-core-js/src/jquery.helper',
+        'jquery-layout' : 'bundles/backbeeweb/js/bb-core-js/bower_components/jquery.layout/dist/jquery.layout-latest',
+        'lib.jqtree': 'bundles/backbeeweb/js/bb-core-js/bower_components/jqtree/tree.jquery',
+        'datetimepicker': 'bundles/backbeeweb/js/bb-core-js/bower_components/datetimepicker/jquery.datetimepicker',
+        'jssimplepagination': 'bundles/backbeeweb/js/bb-core-js/bower_components/jssimplepagination/jquery.simplePagination',
 
-        'cryptojs.core': 'bower_components/cryptojslib/components/core',
-        'cryptojs.md5': 'bower_components/cryptojslib/components/md5'
+        'cryptojs.core': 'bundles/backbeeweb/js/bb-core-js/bower_components/cryptojslib/components/core',
+        'cryptojs.md5': 'bundles/backbeeweb/js/bb-core-js/bower_components/cryptojslib/components/md5'
     },
+    // @todo gvf this shouldn't be needed with bundle symfonys override
     'map': {
         "*": {
             'jquery': 'core-jquery'
@@ -139,12 +141,13 @@ require.config({
             exports: 'CryptoJS'
         }
     },
-    deps: ['src/tb/init'],
+    deps: ['bundles/backbeeweb/js/toolbar/src/tb/init'],
     callback: function (init) {
         'use strict';
         init.listen();
     }
 });
 
-require.config({ baseUrl: document ? document.getElementById('bb5-ui').getAttribute('data-base-url') + "resources/toolbar/" : './resources/toolbar/'});
+//require.config({ baseUrl: document ? document.getElementById('bb5-ui').getAttribute('data-base-url') + "resources/toolbar/" : './resources/toolbar/'});
+require.config({ baseUrl: '/'});
 

@@ -1,0 +1,16 @@
+{% if page.has_children %}
+    <h3 class="text-danger"><i class="fa fa-2x fa-exclamation-triangle text-danger"></i> {{ 'warning'|trans }}</h3>
+    <p class="text-danger">
+        {{ 'the_page_you_are_about_to_delete_contains_subpages'|trans }}.
+        {{ 'all_subpages_will_automatically_be_deleted_if_you_confirm_this_action'|trans }}
+    </p>
+    <p>
+        {{ 'if_you_wish_to_keep_these_subpages_please_move_them_to_another_location'|trans }}
+    </p>
+{% else %}
+    <p>{{ 'do_you_wish_to_delete_the_page'|trans }}?</p>
+{% endif %}
+<div>
+    <button class="btn btn-default" id="bb-page-cancel">{{ 'cancel'|trans }}</button>
+    <button class="btn btn-primary" id="bb-page-validate">{{ 'delete'|trans }}</button>
+</div>

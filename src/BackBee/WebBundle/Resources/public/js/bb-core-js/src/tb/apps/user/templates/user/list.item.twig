@@ -1,0 +1,51 @@
+<li class="bb5-list-data-item bb5-list-users-item">
+    <div class="bb5-data-toggle bb5-manage-user" draggable="true" data-user="{{ user.id() }}">
+        <div class="bb5-data-toggle-header">
+            <div class="bb5-data-picture">
+                <figure><img src="{{ user.picture() }}" alt="{{ user.lastname() }} {{ user.firstname() }}"></figure>
+            </div>
+            <p class="col-bb5-28 user-firstname">{{ user.lastname() }}</p>
+            <p class="col-bb5-25 user-name">{{ user.firstname() }}</p>
+            {% if group_listing %}
+                <button type="button" class="btn-group btn-default btn-sm btn-remove">
+                    <i class="fa fa-cross"></i> {{ 'remove'|trans }}
+                </button>
+            {% endif %}
+            <a class="bb5-data-toggle-trigger" href="#"><i class="fa fa-angle-down"></i></a>
+        </div>
+        <div class="bb5-data-drpdown">
+            <div class="bb5-data-drpdown-body">
+                <p class="user-mail">
+                    <strong>{{ 'email'|trans }} :</strong> {{ user.email() }}
+                </p>
+                <p class="col-bb5-22 user-group">
+                    <strong>{{ 'group'|trans }} :</strong> {{ user.groups()|join(', ') }}
+                </p>
+                <p class="col-bb5-20 user-status">
+                    {% if current and user.id() != current.id() %}
+                    <strong>{{ 'status'|trans }} :</strong>
+                    <span class="bb5-button-selector">
+                        <a href="#" class="btn btn-default btn-sm fa fa-angle-left btn-service" data-service="updateStatus">
+                            <span class="sr-only">{{ 'previous'|trans }}</span>
+                        </a>
+                        <span class="bb5-button-selector-status bb-toggle-status">{% if user.activated() %}{{ 'active'|trans }}{% else %}{{ 'deactivated'|trans }}{% endif %}</span>
+                        <a href="#" class="btn btn-default btn-sm fa fa-angle-right btn-service"  data-service="updateStatus">
+                            <span class="sr-only">{{ 'next'|trans }}</span>
+                        </a>
+                    </span>
+                    {% endif %}
+                </p>
+            </div>
+            <div class="col-bb5-5 bb5-data-drpdown-footer">
+                <p data-user="{{ user.id() }}">
+                    <button type="button" class="btn btn-default btn-sm btn-edit">
+                        <i class="fa fa-pencil"></i> {{ 'edit'|trans }}
+                    </button>
+                    <button type="button" class="btn btn-delete btn-default btn-sm">
+                        <i class="fa fa-trash-o"></i> {{ 'delete'|trans }}
+                    </button>
+                </p>
+            </div>
+        </div>
+    </div>
+</li>

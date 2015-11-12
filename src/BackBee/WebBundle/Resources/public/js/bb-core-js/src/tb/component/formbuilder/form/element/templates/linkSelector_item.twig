@@ -1,0 +1,23 @@
+<li>
+    <button class="btn btn-default-grey btn-sm fa fa-trash trash"></button>
+    <button class="btn btn-default-grey btn-sm fa fa-angle-up move-up move"></button>
+    <button class="btn btn-default-grey btn-sm fa fa-angle-down move-down move"></button>
+    <br />
+    <label>Lien</label>
+    <div class="input-group">
+        <span class="input-group-btn">
+            <button class="btn btn-default link-selector-edit" type="button"><i class="fa fa-columns"></i></button>
+        </span>
+        <input type="text" disabled value="{{ data.url }}" class="form-control link">
+    </div>
+    <label>Title</label>
+    <input type="text" class="form-control title" value="{{ data.title }}">
+    <label>Target</label>
+    <select class="form-control target">
+        <option value="_self" {% if data.target == '_self' %}selected{% endif %}>_self</option>
+        <option value="_blank" {% if data.target == '_blank' %}selected{% endif %}>_blank</option>
+        <option value="_parent" {% if data.target == '_parent' %}selected{% endif %}>_parent</option>
+        <option value="_top" {% if data.target == '_top' %}selected{% endif %}>_top</option>
+    </select>
+    <input type="hidden" value="{{ data.pageUid }}" class="form-control pageuid">
+</li>

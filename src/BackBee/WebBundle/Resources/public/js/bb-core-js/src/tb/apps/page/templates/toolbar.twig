@@ -1,0 +1,35 @@
+<div id="bb-page-manage-toolbar" class="row">
+    <div class="col-bb5-20 bb5-border-right align-middle">
+        <p class="txt-center">
+            <button type="button" id="toolbar-page-clear-filter-action"  class="btn btn-default-grey btn-sm">
+                {{ 'clear_filters'|trans }}
+            </button>
+        </p>
+    </div>
+    <form class="col-bb5-80" id="bb-toolbar-page-search-form">
+        <p>
+            <strong>{{ 'page_filters'|trans }}</strong>
+        </p>
+
+        <p class="row form-group">
+            <span class="col-bb5-10"><label for="bb-page-title">{{ 'title'|trans }}</label></span>
+            <span class="col-bb5-30">
+                <input type="text" class="form-control input-xs" id="bb-page-title" name="title">
+            </span>
+            <span class="col-bb5-10"><label for="bb-page-layout">{{ 'layout'|trans }}</label></span>
+            <span class="col-bb5-30">
+                <select class="form-control input-xs" id="bb-page-layout" name="layout">
+                    <option value="all">{{ 'all_layouts'|trans }}</option>
+                    {% for layout in layouts %}
+                        <option value="{{ layout.uid }}">{{ layout.label }}</option>
+                    {% endfor %}
+                </select>
+            </span>
+        </p>
+        <p class="form-group">
+            <button type="reset" id="bb-toolbar-page-reset-search-form" class="btn btn-default-grey btn-xs">{{ 'reset'|trans }}</button>
+            <button type="submit" class="btn btn-default-grey btn-xs"><i class="fa fa-search"></i>{{ 'search'|trans }}</button>
+        </p>
+
+    </form>
+</div>

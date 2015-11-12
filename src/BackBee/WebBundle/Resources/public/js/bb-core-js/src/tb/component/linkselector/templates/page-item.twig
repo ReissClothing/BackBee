@@ -1,0 +1,12 @@
+<li class="bb5-list-data-item{% if item.state not in [1, 3] %} disabled{% endif %}" data-uid="{{ item.uid }}">
+    <span class="bb5-toolbar-order-col col-bb5-50">{{ item.title }}</span>
+    <span class="bb5-toolbar-order-col col-bb5-22">Unknown</span>
+    <span class="bb5-toolbar-order-col col-bb5-22">Unknown</span>
+    <span class="bb5-toolbar-order-col col-bb5-6">
+        {% if item.state in [1, 3] %}
+            <button class="btn btn-online btn-xs select-btn"></i> {{ trans('select') }}</button>
+        {% else %}
+            <button class="btn btn-offline btn-xs disabled"></i> {{ trans('offline') }}</button>
+        {% endif %}
+    </span>
+</li>

@@ -1,0 +1,113 @@
+#bb5-ui .form-group.custom-form-group {
+    border: 2px solid #ccc;
+    padding: 5px;
+    margin: 10px 0;
+}
+
+#bb5-ui .bb5-context-menu {
+    z-index: 999999;
+}
+#bb5-ui .jq-tree-editor .fa{
+    cursor: pointer;
+    border: 1px solid green;
+    margin-left: 2px;
+}
+
+#bb5-ui .bb5-content-breadcrumb .bb5-ui-width-setter ul {
+    padding-left: 40px;
+    margin-top: 7px;
+}
+
+#bb5-ui .bb5-content-breadcrumb .bb5-ui-width-setter ul li a {
+    color: black;
+}
+
+#bb5-ui .bb5-content-breadcrumb .bb5-ui-width-setter ul li.selected a {
+    color: #e34c26;
+}
+
+#bb5-ui .ui-dialog-content {
+    overflow: auto;
+}
+
+/* CONTENT */
+
+.bb-content:not(.bb-content-page-mode) {
+    position:relative;
+    min-height:21px;
+    padding-bottom: 15px;
+    padding-top: 15px;
+    margin-bottom: 15px;
+    margin-top: 15px;
+} /*min-height*/
+
+
+#bb5-site-wrapper {
+    margin-top: 220px;
+}
+
+#bb5-ui .help-block {
+    color: red;
+}
+
+#link-selector-external-link .link-selector-wrapper-area {
+    width: 300px;
+    margin: auto;
+}
+
+#bb5-ui .link_elements_wrapper ul {
+    padding: 5px 15px 5px 15px;
+}
+
+#bb5-ui .link_elements_wrapper ul li{
+    list-style: none;
+    padding-bottom: 5px;
+    border-bottom: dotted 1px #ccc;
+}
+
+#bb5-ui .link_elements_wrapper ul li:hover {
+    border: 2px solid #e34c26;
+}
+
+#bb5-ui .scroll{
+    background: @brand-success;
+    height: 50px;
+    width: 100%;
+    text-align: center;
+    opacity: 0.2;
+    z-index: 999999;
+
+    .fa {
+        opacity: 0.6;
+        color: @bb5-ui-bg;
+        font-size: 50px;
+    }
+
+    &.over {
+        opacity: 0.6;
+    }
+
+    &.scroll-up {
+        position: fixed;
+        top: 190px;
+    }
+
+    &.scroll-down {
+        position: fixed;
+        bottom: 0;
+    }
+}
+
+#bb5-ui .backbee-autocomplete {
+    border: 1px solid #D3D3D3;
+    background: "white";
+    position: "absolute";
+    width: "150px";
+}
+#bb5-ui .content-actions a {
+    cursor: pointer
+}
+
+@import "component-notify.less";
+@import "cke.less";
+@import "keywordselector.less";

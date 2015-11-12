@@ -1,0 +1,2 @@
+RewriteEngine On
+RewriteRule resources/(.*) ../$1 [L]

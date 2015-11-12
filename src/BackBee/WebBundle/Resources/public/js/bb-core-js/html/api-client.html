@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.2/moment.min.js"></script>
+        <script src="https://raw.githubusercontent.com/satazor/SparkMD5/master/spark-md5.js"></script>
+        
+        <script src="/bower_components/requirejs/require.js"></script>
+        <script src="/require.config.js"></script>
+        <!--
+        
+        <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+        
+        <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.2/moment.min.js"></script>
+        <script src="https://raw.githubusercontent.com/satazor/SparkMD5/master/spark-md5.js"></script>
+        
+        
+        
+         Latest compiled and minified CSS 
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+
+         Optional theme 
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+
+         Latest compiled and minified JavaScript 
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>-->
+        
+        
+        
+    </head>
+    <body>
+        
+        
+        <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-2">
+                <button id="btn-auth" type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#authForm">
+                    Authenticate</button>
+                
+                <button id="btn-user-details" style="display: none" type="button" class="btn btn-primary btn-lg">
+                    Get User Info</button>
+            
+            </div>
+            <div class="col-md-8">
+                <div id="messages"></div>
+            </div>
+      </div>
+        
+        
+        
+        
+        
+        
+        
+    <script>
+        require(['jquery', '/src/tb/core/bb.ApiClient.js', '/src/tb/core/bb.ApiResource.js', '/src/tb/core/bb.ApiRequestBuilder.js'], function ($, apiClient){
+            console.log(apiClient);
+            var client = new apiClient(1, {});
+            
+            
+            $('#btn-auth').click(function(){
+                client.connect("sa", "sa");
+            });
+        })
+
+    </script>
+        
+        
+    </body>
+</html>
