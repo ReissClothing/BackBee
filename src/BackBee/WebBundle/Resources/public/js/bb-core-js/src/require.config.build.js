@@ -57,11 +57,13 @@ define('hook', function () {
 var baseURI = document.getElementById('bb5-ui').getAttribute('data-base-url') + "resources/toolbar/";
 require.config({
     baseUrl: baseURI,
-    catchError: true,
+    //@todo gvf use  requirejs.onError() for prod/dev
+    //catchError: true,
+    catchError: false,
     waitSeconds: 15,
     paths: {
         'component': 'src/tb/component/component',
-        'filter': 'bundles/backbeeweb/js/bb-core-js/src/tb/filter/filter',
+        'filter': 'src/tb/filter/filter',
         'vendor': 'dist/vendor.min',
         'jquery.noconflict': 'src/core-jquery.noconflict',
         'ckeeditor': 'dist/ckeeditor/ckeditor'
@@ -118,6 +120,7 @@ require.config({
     deps: ['src/tb/init'],
     callback: function (init) {
         'use strict';
+        //4
         init.listen();
     }
 });

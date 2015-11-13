@@ -59,12 +59,14 @@ define('hook', function () {
 });
 
 require.config({
-    catchError: true,
+    //@todo gvf use  requirejs.onError() for prod/dev
+    //catchError: true,
+    catchError: false,
     waitSeconds: 15,
     urlArgs: 'cb=' + Math.random(),
     paths: {
         'component': 'src/tb/component/component',
-        'filter': 'bundles/backbeeweb/js/bb-core-js/src/tb/src/tb/filter/filter',
+        'filter': 'src/tb/filter/filter',
         'Core': 'bower_components/backbee-core-js/dist/Core',
         'jsclass' : 'node_modules/jsclass/min/core',
         'underscore': 'bower_components/underscore/underscore',
@@ -142,9 +144,11 @@ require.config({
     deps: ['src/tb/init'],
     callback: function (init) {
         'use strict';
+        //2
         init.listen();
     }
 });
 
-require.config({ baseUrl: document ? document.getElementById('bb5-ui').getAttribute('data-base-url') + "resources/toolbar/" : './resources/toolbar/'});
+//require.config({ baseUrl: document ? document.getElementById('bb5-ui').getAttribute('data-base-url') + "resources/toolbar/" : './resources/toolbar/'});
 
+require.config({ baseUrl: '/bundles/backbeeweb/js/bb-core-js/'});

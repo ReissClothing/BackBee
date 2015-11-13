@@ -20,7 +20,7 @@
     'use strict';
     require.config({
         paths: {
-            'tb.filter': 'bundles/backbeeweb/js/bb-core-js/src/tb/filter'
+            'tb.filter': 'src/tb/filter'
         }
     });
 

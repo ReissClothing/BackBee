@@ -1,3 +1,7 @@
+back_bee_api:
+    resource: "@BackBeeApiBundle/Resources/config/routing.yml"
+    prefix:   /
+
 back_bee_web:
     resource: "@BackBeeWebBundle/Resources/config/routing.yml"
     prefix:   /

@@ -20,7 +20,7 @@
     'use strict';
     require.config({
         paths: {
-            'tb.component': 'bundles/backbeeweb/js/bb-core-js/src/tb/component'
+            'tb.component': 'src/tb/component'
         }
     });
 

@@ -3,7 +3,7 @@
     {% set isMin = '' %}
 {% endif %}
 {# @TODO gvf #}
-{#{% if bb.token != null %}#}
+{#{% if app.user != null %}#}
 {# @todo gvf pensar manera de que esto se ponga en el stylesheets del layout, asi no lo hace, idem para js#}
         {% stylesheets
             '@BackBeeWebBundle/Resources/public/css/bb-ui.css'
@@ -27,15 +27,13 @@
     data-api="{{ path('bb.rest.api.dummy', {'version': 2}) }}"
     data-base-url="{{ path('bb.default') }}"
     data-toolbar-selector="true"
-     {# @TODO gvf #}
-    {#{% if bb.token != null %}#}
-        {# @todo gvf#}
+    {% if app.user != null %}
         data-autostart
         data-site-uid="{{ this.getCurrentPage().getSite().getUid() }}"
         data-page-uid="{{ this.getCurrentPage().getUid() }}"
         data-layout-uid="{{ this.getCurrentPage().getLayout().getUid() }}"
         data-root-uid="{{ this.getCurrentPage().getRoot().getUid() }}"
-    {#{% endif %}#}
+    {% endif %}
 >
     <div id="backbee-loader">
         <div class="loader">
@@ -51,7 +49,7 @@
     </div>
     
     {% javascripts
-        '@BackBeeWebBundle/Resources/public/js/toolbar-config.js'
+        '@BackBeeWebBundle/Resources/public/js/toolbar/dist/config.js'
     %}
     <script src="{{ asset_url }}"></script>
     {% endjavascripts %}

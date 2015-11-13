@@ -20,6 +20,7 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
             new BackBee\WebBundle\BackBeeWebBundle(),
             new BackBee\StandardBundle\BackBeeStandardBundle(),
+            new BackBee\ApiBundle\BackBeeApiBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
@@ -43,7 +44,7 @@ class AppKernel extends Kernel
     public function getCacheDir()
     {
 //        if ($this->shouldUseSharedMemory()) {
-//            return '/dev/shm/reiss/cache/' . $this->environment;
+            return '/dev/shm/reiss/cache/' . $this->environment;
 //        }
 
         return $this->rootDir . '/cache/' . $this->environment;
@@ -55,7 +56,7 @@ class AppKernel extends Kernel
     public function getLogDir()
     {
 //        if ($this->shouldUseSharedMemory()) {
-//            return '/dev/shm/reiss/logs/' . $this->environment;
+            return '/dev/shm/reiss/logs/' . $this->environment;
 //        }
 
         return $this->rootDir . '/logs/' . $this->environment;

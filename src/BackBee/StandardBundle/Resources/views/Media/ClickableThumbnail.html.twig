@@ -1,5 +1,4 @@
-{#@todo gvf#}
-{#{% if bb.token != null or image.image.path != '' %}#}
+{% if app.user != null or image.image.path != '' %}
 <div {{ this.bbcontent(null, {class: 'bb-clickable-thumbnail'})|raw }}>
     <a href="{{ link_image.value }}" target="_blank">
         {{ this.render(image, 'no-figcaption', {'class': 'figure block-fullwidth'})|raw }}
@@ -11,4 +10,4 @@
         </p>
     {% endif %}
 </div>
-{#{% endif %}#}
+{% endif %}

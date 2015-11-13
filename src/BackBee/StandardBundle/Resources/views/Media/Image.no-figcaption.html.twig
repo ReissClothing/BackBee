@@ -1,9 +1,8 @@
-{# @todo gvf #}
-{#{% if bb.token != null or image.path != '' %}#}
+{% if app.user != null or image.path != '' %}
     <figure {{ this.bbcontent()|raw }}>
         <img {{ this.bbcontent(image)|raw }}
                 {#@gvf todo this shoul dbe coded inside the image#}
             src="{{ '/media/' ~ image.path }}"
             alt="{{ title }}" style="width: 100%" itemprop="contentURL">
     </figure>
-{#{% endif %}#}
+{% endif %}
