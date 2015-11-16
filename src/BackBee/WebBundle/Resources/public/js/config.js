@@ -144,7 +144,7 @@ require.config({
             exports: 'CryptoJS'
         }
     },
-    deps: ['bundles/backbeeweb/js/toolbar/src/tb/init'],
+    deps: ['src/tb/init'],
     callback: function (init) {
         'use strict';
         //1

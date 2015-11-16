@@ -144,8 +144,10 @@ define('tb.component/session/session', ['Core', 'Core/Utils', 'jsclass'], functi
         },
 
         isAuthenticated: function () {
-
-            if (this.isValidAuthentication() && document.getElementById('bb5-ui') && document.getElementById('bb5-ui').hasAttribute('data-autostart')) {
+            var a = this.isValidAuthentication();
+            var b = document.getElementById('bb5-ui');
+            var c = document.getElementById('bb5-ui').hasAttribute('data-autostart');
+            if (a && b && c) {
                 return true;
             }
             return false;

@@ -57,8 +57,8 @@ parameters:
     bbapp.config.configurator.class: BackBee\Config\Configurator
     bbapp.config.persistor.class: BackBee\Config\Persistor
     bbapp.bundle.loader.class: BackBee\Bundle\BundleLoader
-    bbapp.classcontent.category_manager.class: BackBee\CoreDomain\ClassContent\CategoryManager
-    bbapp.classcontent.manager.class: BackBee\CoreDomain\ClassContent\ClassContentManager
+    bbapp.classcontent.category_manager.class: BackBee\CoreDomainBundle\ClassContent\CategoryManager
+    bbapp.classcontent.manager.class: BackBee\CoreDomainBundle\ClassContent\ClassContentManager
     bbapp.classcontent.exception_on_unknown_classname: true  # true: always throw an exception on class content unknown
                                                              # false:  always ignore class content unknown
                                                              # debug: throw an exception on class content unknown if debug mode is activated
@@ -144,25 +144,23 @@ services:
 #        class:      %bbapp.config.persistor.class%
 #        arguments:  ["@bbapp", "@config.configurator"]
 
-#    classcontent.iconizer.thumbnail:
-#        class:      BackBee\CoreDomain\ClassContent\Iconizer\ThumbnailIconizer
-#        arguments:  [@bbapp]
-#
-#    classcontent.iconizer.property:
-#        class:      BackBee\CoreDomain\ClassContent\Iconizer\PropertyIconizer
-#        arguments:  [@routing]
-#
-#    classcontent.iconizer.chained:
-#        class:      BackBee\CoreDomain\ClassContent\Iconizer\ChainIconizer
-#        arguments:  [["@classcontent.iconizer.property", "@classcontent.iconizer.thumbnail"]]
-#
-#    classcontent.category_manager:
-#        class:      %bbapp.classcontent.category_manager.class%
-#        arguments: [@bbapp]
-#
-#    classcontent.manager:
-#        class:      %bbapp.classcontent.manager.class%
-#        arguments: [@bbapp, "@classcontent.iconizer.chained"]
+    classcontent.iconizer.thumbnail:
+        class:      BackBee\CoreDomainBundle\ClassContent\Iconizer\ThumbnailIconizer
+
+    classcontent.iconizer.property:
+        class:      BackBee\CoreDomainBundle\ClassContent\Iconizer\PropertyIconizer
+
+    classcontent.iconizer.chained:
+        class:      BackBee\CoreDomainBundle\ClassContent\Iconizer\ChainIconizer
+        arguments:  [[@classcontent.iconizer.property, @classcontent.iconizer.thumbnail]]
+
+    classcontent.category_manager:
+        class:      %bbapp.classcontent.category_manager.class%
+        arguments: [@bbapp]
+
+    classcontent.manager:
+        class:      %bbapp.classcontent.manager.class%
+        arguments: [@doctrine.orm.default_entity_manager, @classcontent.iconizer.chained]
 
 #    controller_resolver:
 #        class:      %bbapp.controller_resolver.class%

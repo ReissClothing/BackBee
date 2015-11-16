@@ -45,7 +45,7 @@ $settings = array (
         array (
             'ApplicationManager' =>
                 array (
-                    'appPath' => '$resources-baseurl$/toolbar/src/tb/apps',
+                    'appPath' => '/bundles/backbeeweb/js/bb-core-js/src/tb/apps',
                     'active' => 'main',
                     'route' => '',
                     'applications' =>
@@ -141,7 +141,7 @@ $settings = array (
                 ),
             'translator' =>
                 array (
-                    'base' => '$resources-baseurl$/toolbar/src/tb/i18n/',
+                    'base' => '/bundles/backbeeweb/js/bb-core-js/src/tb/i18n',
                     'default_locale' => 'en_US',
                     'locales' =>
                         array (

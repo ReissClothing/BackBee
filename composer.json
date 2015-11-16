@@ -17,9 +17,9 @@
         "sensio/distribution-bundle": "~4.0",
         "sensio/framework-extra-bundle": "^3.0.2",
         "incenteev/composer-parameter-handler": "~2.0",
-        "jms/serializer": "0.16.0",
         "doctrine/doctrine-migrations-bundle": "^1.0",
-        "backbee/utils": "2.*"
+        "backbee/utils": "2.*",
+        "jms/serializer-bundle": "^1.1"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3"

@@ -180,7 +180,7 @@ abstract class AbstractRestController extends Controller implements RestControll
      */
     protected function getSerializer()
     {
-        $this->serializer = $this->getContainer()->get('serializer');
+        $this->serializer = $this->get('serializer');
 
         return $this->serializer;
     }

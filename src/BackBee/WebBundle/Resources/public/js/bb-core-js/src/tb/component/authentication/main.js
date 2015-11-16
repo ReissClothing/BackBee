@@ -91,8 +91,11 @@ define('tb.component/authentication/main',
              * @param {Object} response
              */
             onRequestDone: function (response) {
-                session.key = response.getHeader(session.HEADER_API_KEY);
-                session.signature = response.getHeader(session.HEADER_API_SIGNATURE);
+                // @todo gvf this should get that data from the response but no idea how
+                //session.key = response.getHeader(session.HEADER_API_KEY);
+                session.key = 1;
+                //session.signature = response.getHeader(session.HEADER_API_SIGNATURE);
+                session.signature = 1;
 
                 if (session.isValidAuthentication()) {
                     session.persist();

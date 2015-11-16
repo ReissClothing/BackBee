@@ -96,13 +96,15 @@ class UserController extends AbstractRestController
      */
     public function getCurrentAction()
     {
-        if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
+//        @todo gvf
+//        if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
+        if (!$this->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
             throw new InsufficientAuthenticationException('You must be authenticated to access');
         }
 
-        $user = $this->getEntityManager()->find(get_class($this->getUser()), $this->getUser()->getId());
+//        $user = $this->getEntityManager()->find(get_class($this->getUser()), $this->getUser()->getId());
 
-        return new Response($this->formatItem($user), 200, ['Content-Type' => 'application/json']);
+        return new Response($this->formatItem($this->getUser()), 200, ['Content-Type' => 'application/json']);
     }
 
     /**

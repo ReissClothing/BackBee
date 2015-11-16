@@ -1,3 +1,7 @@
-back_bee_toolbar_homepage:
-    path:     /hello/{name}
-    defaults: { _controller: BackBeeToolbarBundle:Default:index }
+bb.bundle.toolbar.get_config:
+    pattern: /rest/{version}/toolbar/config
+    defaults:
+        _controller: BackBeeToolbarBundle:Config:get
+    requirements:
+        version: \d
+        _method: GET

@@ -27,6 +27,7 @@ use BackBee\CoreDomain\ClassContent\AbstractClassContent;
 use BackBee\ClassContent\Exception\InvalidContentTypeException;
 use BackBee\ApiBundle\Controller\Annotations as Rest;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -81,7 +82,7 @@ class ClassContentController extends AbstractRestController
             $categories[] = array_merge(['id' => $id], $category->jsonSerialize());
         }
 
-        return $this->addContentRangeHeadersToResponse($this->createJsonResponse($categories), $categories, 0);
+        return $this->addContentRangeHeadersToResponse(new JsonResponse($categories), $categories, 0);
     }
 
     /**
@@ -92,11 +93,12 @@ class ClassContentController extends AbstractRestController
      * @Rest\Pagination(default_count=25, max_count=100)
      * @Rest\Security("is_fully_authenticated() & has_role('ROLE_API_USER')")
      */
-    public function getCollectionAction($start, $count, Request $request)
+//    public function getCollectionAction($start, $count, Request $request)
+    public function getCollectionAction($start = 25, $count = 100, Request $request)
     {
         $contents = [];
         $format = $this->getFormatParam();
-        $response = $this->createJsonResponse();
+        $response = new JsonResponse();
         $categoryName = $request->query->get('category', null);
 
         if (AbstractClassContent::JSON_DEFINITION_FORMAT === $format) {
@@ -131,7 +133,7 @@ class ClassContentController extends AbstractRestController
     {
         $classname = AbstractClassContent::getClassnameByContentType($type);
         $contents = $this->findContentsByCriteria((array) $classname, $start, $count);
-        $response = $this->createJsonResponse($this->getClassContentManager()->jsonEncodeCollection(
+        $response = new JsonResponse($this->getClassContentManager()->jsonEncodeCollection(
             $contents,
             $this->getFormatParam()
         ));
@@ -423,7 +425,7 @@ class ClassContentController extends AbstractRestController
      */
     private function getCategoryManager()
     {
-        return $this->getContainer()->get('classcontent.category_manager');
+        return $this->get('classcontent.category_manager');
     }
 
     /**
@@ -433,13 +435,7 @@ class ClassContentController extends AbstractRestController
      */
     private function getClassContentManager()
     {
-        if (null === $this->manager) {
-            $this->manager = $this->getApplication()->getContainer()->get('classcontent.manager')
-                ->setBBUserToken($this->getApplication()->getBBUserToken())
-            ;
-        }
-
-        return $this->manager;
+        return $this->get('classcontent.manager');
     }
 
     /**

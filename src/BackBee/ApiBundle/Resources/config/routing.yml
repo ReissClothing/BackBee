@@ -15,8 +15,7 @@ bb.rest.user.current:
     path: /rest/{version}/user/current
     methods: [GET]
     defaults:
-        _action: getCurrentAction
-        _controller: BackBee\ApiBundle\Controller\UserController
+        _controller: BackBeeApiBundle:User:getCurrent
     requirements:
         version: \d+
 
@@ -398,12 +397,11 @@ bb.rest.classcontent.category.get:
 
 bb.rest.classcontent.category.get_collection:
     path: /rest/{version}/classcontent-category
+    methods: [GET]
     defaults:
-        _action: getCategoryCollectionAction
-        _controller: BackBee\ApiBundle\Controller\ClassContentController
+        _controller: BackBeeApiBundle:ClassContent:getCategoryCollection
     requirements:
         version: \d+
-        _method: GET
 
 bb.rest.classcontent.get:
     path: /rest/{version}/classcontent/{type}/{uid}
@@ -418,22 +416,20 @@ bb.rest.classcontent.get:
 
 bb.rest.classcontent.get_collection_by_type:
     path: /rest/{version}/classcontent/{type}
+    methods: [GET]
     defaults:
-        _action: getCollectionByTypeAction
-        _controller: BackBee\ApiBundle\Controller\ClassContentController
+        _controller: BackBeeApiBundle:ClassContent:getCollectionByType
     requirements:
         version: \d+
         type: "[a-zA-Z_\/]+"
-        _method: GET
 
 bb.rest.classcontent.get_collection:
     path: /rest/{version}/classcontent
+    methods: [GET]
     defaults:
-        _action: getCollectionAction
-        _controller: BackBee\ApiBundle\Controller\ClassContentController
+        _controller: BackBeeApiBundle:ClassContent:getCollection
     requirements:
         version: \d+
-        _method: GET
 
 bb.rest.classcontent.put_collection:
     path: /rest/{version}/classcontent
