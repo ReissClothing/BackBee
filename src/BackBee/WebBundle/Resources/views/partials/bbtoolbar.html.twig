@@ -1,9 +1,4 @@
-{% set isMin = '.min' %}
-{% if this.isToolbarDebug() %}
-    {% set isMin = '' %}
-{% endif %}
-{# @TODO gvf #}
-{#{% if app.user != null %}#}
+{% if app.user != null %}
 {# @todo gvf pensar manera de que esto se ponga en el stylesheets del layout, asi no lo hace, idem para js#}
         {% stylesheets
             '@BackBeeWebBundle/Resources/public/css/bb-ui.css'
@@ -12,9 +7,14 @@
         %}
 <link rel="stylesheet" href="{{ asset_url }}"/>
     {% endstylesheets %}
-{#{% else %}#}
-    {#<link href="{{ this.getResourceUrl('toolbar/dist/css/bb-ui-login' ~ isMin ~ '.css') }}" rel="stylesheet">#}
-{#{% endif %}#}
+{% else %}
+    {% stylesheets
+    '@BackBeeWebBundle/Resources/public/css/toolbar/bb-ui-login.css'
+    filter='cssrewrite'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endif %}
 
 {% if disableToolbar == false %}
     {% javascripts '@BackBeeWebBundle/Resources/public/js/require.js' %}

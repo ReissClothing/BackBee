@@ -51,36 +51,27 @@ class SecurityController extends AbstractRestController
      */
     public function authenticateAction(Request $request)
     {
-//        @todo gvf
-//        $created = date('Y-m-d H:i:s');
-//        $token = new BBUserToken();
-//        $token->setUser($request->request->get('username'));
-//        $token->setCreated($created);
-//        $token->setNonce(md5(uniqid('', true)));
-//        $token->setDigest(md5($token->getNonce().$created.md5($request->request->get('password'))));
-//
-//        $tokenAuthenticated = $this->getApplication()->getSecurityContext()->getAuthenticationManager()
-//            ->authenticate($token)
-//        ;
-//
-//        if (!$tokenAuthenticated->getUser()->getApiKeyEnabled()) {
-//            throw new DisabledException('API access forbidden');
-//        }
-//
-//        $this->getApplication()->getSecurityContext()->setToken($tokenAuthenticated);
-//
-//        return $this->createJsonResponse(null, 201, array(
-//            'X-API-KEY'       => $tokenAuthenticated->getUser()->getApiKeyPublic(),
-//            'X-API-SIGNATURE' => $tokenAuthenticated->getNonce(),
-//        ));
+        $created = date('Y-m-d H:i:s');
+        $token = new BBUserToken();
+        $token->setUser($request->request->get('username'));
+        $token->setCreated($created);
+        $token->setNonce(md5(uniqid('', true)));
+        $token->setDigest(md5($token->getNonce().$created.md5($request->request->get('password'))));
 
-        return new JsonResponse(
-            array(
-                'X-API-KEY'       => 1,
-                'X-API-SIGNATURE' => 1,
-            ),
-            201
-        );
+        $tokenAuthenticated = $this->getApplication()->getSecurityContext()->getAuthenticationManager()
+            ->authenticate($token)
+        ;
+
+        if (!$tokenAuthenticated->getUser()->getApiKeyEnabled()) {
+            throw new DisabledException('API access forbidden');
+        }
+
+        $this->getApplication()->getSecurityContext()->setToken($tokenAuthenticated);
+
+        return $this->createJsonResponse(null, 201, array(
+            'X-API-KEY'       => $tokenAuthenticated->getUser()->getApiKeyPublic(),
+            'X-API-SIGNATURE' => $tokenAuthenticated->getNonce(),
+        ));
     }
 
     /**

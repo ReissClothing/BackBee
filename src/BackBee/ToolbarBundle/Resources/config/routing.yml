@@ -1,0 +1,3 @@
+back_bee_toolbar_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: BackBeeToolbarBundle:Default:index }

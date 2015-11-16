@@ -63,7 +63,8 @@ require.config({
     //catchError: true,
     catchError: false,
     waitSeconds: 15,
-    urlArgs: 'cb=' + Math.random(),
+    //@gvf todo why is this needed?
+    //urlArgs: 'cb=' + Math.random(),
     paths: {
         'component': 'src/tb/component/component',
         'filter': 'src/tb/filter/filter',

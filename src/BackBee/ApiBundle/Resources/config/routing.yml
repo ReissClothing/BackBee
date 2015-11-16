@@ -140,10 +140,10 @@ bb.rest.group.get_collection:
 
 bb.rest.security.authenticate:
     path: /rest/{version}/security/authentication
-#    methods: [POST]
-    methods: [GET, POST]
-    defaults:
-        _controller: BackBeeApiBundle:Security:authenticate
+    methods: [POST]
+#    methods: [GET, POST]
+#    defaults:
+#        _controller: BackBeeApiBundle:Security:authenticate
     requirements:
         version: \d+
 

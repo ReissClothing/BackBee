@@ -40,8 +40,8 @@ use JMS\Serializer\Annotation as Serializer;
  * @author      m.baptista <michel.baptista@lp-digital.fr>
  *
  * @Serializer\ExclusionPolicy("all")
- * @ORM\Entity(repositoryClass="BackBee\Security\Repository\UserRepository")
- * @ORM\Table(name="user", uniqueConstraints={@ORM\UniqueConstraint(name="UNI_LOGIN",columns={"login"})})
+ * @ORM\Entity(repositoryClass="BackBee\CoreDomain\Security\Repository\UserRepository")
+ * @ORM\Table(name="user", uniqueConstraints={@ORM\UniqueConstraint(name="UNI_username",columns={"username"})})
  * @ORM\HasLifecycleCallbacks
  * @BB\Fixtures(qty=20)
  */
@@ -65,19 +65,19 @@ class User implements ApiUserInterface
     protected $_id;
 
     /**
-     * The login of this user.
+     * The username of this user.
      *
      * @var string
-     * @ORM\Column(type="string", name="login")
+     * @ORM\Column(type="string", name="username")
      * @BB\Fixtures(type="word")
      *
      * @Serializer\Expose
      * @Serializer\Type("string")
      */
-    protected $_login;
+    protected $_username;
 
     /**
-     * The login of this user.
+     * The username of this user.
      *
      * @var string
      * @ORM\Column(type="string", name="email")
@@ -223,17 +223,13 @@ class User implements ApiUserInterface
     /**
      * Class constructor.
      *
-     * @param string $login
+     * @param string $username
      * @param string $password
      * @param string $firstname
      * @param string $lastname
      */
-    public function __construct($login = null, $password = null, $firstname = null, $lastname = null)
+    public function __construct()
     {
-        $this->_login = (is_null($login)) ? '' : $login;
-        $this->_password = (is_null($password)) ? '' : $password;
-        $this->_firstname = $firstname;
-        $this->_lastname = $lastname;
         $this->_created = new \DateTime();
         $this->_modified = new \DateTime();
 
@@ -248,7 +244,7 @@ class User implements ApiUserInterface
      */
     public function __toString()
     {
-        return trim($this->_firstname . ' ' . $this->_lastname . ' (' . $this->_login . ')');
+        return trim($this->_firstname . ' ' . $this->_lastname . ' (' . $this->_username . ')');
     }
 
     /**
@@ -259,7 +255,7 @@ class User implements ApiUserInterface
     public function serialize()
     {
         $serialized = new \stdClass();
-        $serialized->username = $this->_login;
+        $serialized->username = $this->_username;
         $serialized->commonname = trim($this->_firstname . ' ' . $this->_lastname);
 
         return json_encode($serialized);
@@ -281,14 +277,14 @@ class User implements ApiUserInterface
     }
 
     /**
-     * @param string $login
+     * @param string $username
      *
      * @return \BackBee\CoreDomain\Security\User
      * @codeCoverageIgnore
      */
-    public function setLogin($login)
+    public function setUsername($username)
     {
-        $this->_login = $login;
+        $this->_username = $username;
 
         return $this;
     }
@@ -371,9 +367,9 @@ class User implements ApiUserInterface
      * @return string
      * @codeCoverageIgnore
      */
-    public function getLogin()
+    public function getUsername()
     {
-        return $this->_login;
+        return $this->_username;
     }
 
     /**
@@ -480,15 +476,6 @@ class User implements ApiUserInterface
     public function getSalt()
     {
         return;
-    }
-
-    /**
-     * @return string
-     * @codeCoverageIgnore
-     */
-    public function getUsername()
-    {
-        return $this->getLogin();
     }
 
     /**

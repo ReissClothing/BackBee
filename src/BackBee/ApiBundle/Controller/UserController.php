@@ -246,7 +246,7 @@ class UserController extends AbstractRestController
         $userExists = $this->getApplication()
                            ->getEntityManager()
                            ->getRepository(get_class($this->getUser()))
-                           ->findBy(array('_login' => $request->request->get('login')));
+                           ->findBy(array('_username' => $request->request->get('username')));
 
         if ($userExists) {
             throw new ConflictHttpException(sprintf('User with that login already exists: %s', $request->request->get('login')));

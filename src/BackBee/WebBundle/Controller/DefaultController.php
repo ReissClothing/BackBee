@@ -35,7 +35,6 @@ class DefaultController extends Controller
             throw new HttpException(500, 'A BackBee\Site instance is required.');
         }
 
-        ;
 // @TODO gvf
 //        $redirect_page = null !== $this->application->getRequest()->get('bb5-redirect', null)
 //            ? ('false' !== $this->application->getRequest()->get('bb5-redirect'))

@@ -1,8 +1,7 @@
-{#@TODO gvf#}
-{#{% if app.user != null %}#}
+{% if app.user != null %}
 	<div {{ this.bbcontent()|raw }}>
 		{{ this.render(body)|raw }}
 	</div>
-{#{% else %}#}
-	{#{{ body.value|raw }}#}
-{#{% endif %}#}
+{% else %}
+	{{ body.value|raw }}
+{% endif %}

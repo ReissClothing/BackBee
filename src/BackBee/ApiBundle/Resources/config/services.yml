@@ -1,4 +1,8 @@
 services:
-#    back_bee_api.example:
-#        class: BackBee\ApiBundle\Example
-#        arguments: [@service_id, "plain_value", %parameter%]
+    bbapi.security.authentication_handler:
+        class: BackBee\ApiBundle\Authentication\AuthenticationHandler
+        public: false
+    bbapi.kernel.event_listener.json_request_transformer:
+        class: BackBee\ApiBundle\EventListener\JsonRequestTransformerListener
+        tags:
+            - {name: kernel.event_listener, event: kernel.request, method:onKernelRequest, priority: 100 }

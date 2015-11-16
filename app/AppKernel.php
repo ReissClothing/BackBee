@@ -21,6 +21,7 @@ class AppKernel extends Kernel
             new BackBee\WebBundle\BackBeeWebBundle(),
             new BackBee\StandardBundle\BackBeeStandardBundle(),
             new BackBee\ApiBundle\BackBeeApiBundle(),
+            new BackBee\ToolbarBundle\BackBeeToolbarBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
@@ -44,7 +45,7 @@ class AppKernel extends Kernel
     public function getCacheDir()
     {
 //        if ($this->shouldUseSharedMemory()) {
-            return '/dev/shm/reiss/cache/' . $this->environment;
+//            return '/dev/shm/reiss/cache/' . $this->environment;
 //        }
 
         return $this->rootDir . '/cache/' . $this->environment;

@@ -1,24 +1,60 @@
 # To get started with security, check out the documentation:
 # http://symfony.com/doc/current/book/security.html
 security:
-
-    # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
     providers:
-        in_memory:
-            memory: ~
+        bbapi_user_provider:
+            entity:
+                class: BackBee\CoreDomain\Security\User
+                property: _username
 
+        bbapi.in_memory:
+            memory:
+                users:
+                    gonzalo:
+                        password: gonzalo
+                        roles: 'ROLE_USER'
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-
+#        login_firewall:
+#            pattern: ^/login$
+#            anonymous: ~
         main:
+#            pattern:    ^/rest
+            form_login:
+#                provider: bbapi_user_provider
+                provider: bbapi.in_memory
+                # field names for the username and password fields
+                username_parameter: username
+                password_parameter: password
+
+                success_handler: bbapi.security.authentication_handler
+                failure_handler: bbapi.security.authentication_handler
+
+#                @TODO gvf add api version as placeholder
+                check_path: /rest/2/security/authentication
+#                @todo remove require_previous_session:  and post_only only here for testing
+#                require_previous_session: false
+#                post_only:      false
+            # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
+#        main:
             anonymous: ~
             # activate different ways to authenticate
 
             # http_basic: ~
             # http://symfony.com/doc/current/book/security.html#a-configuring-how-your-users-will-authenticate
 
-            # form_login: ~
-            # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
+    encoders:
+#    todo remove
+        Symfony\Component\Security\Core\User\User: plaintext
+
+        BackBee\CoreDomain\Security\User:
+            algorithm: md5
+            encode_as_base64: false
+            iterations: 1
+
+    access_control:
+        - { path: ^/rest/2/security/authentication, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/rest, roles: ROLE_USER }
