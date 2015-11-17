@@ -57,7 +57,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @copyright   Lp digital system
  * @author      c.rouillon <charles.rouillon@lp-digital.fr>
- * @ORM\Entity(repositoryClass="BackBee\Site\Repository\LayoutRepository")
+ * @ORM\Entity(repositoryClass="BackBee\CoreDomain\Site\Repository\LayoutRepository")
  * @ORM\Table(name="layout",indexes={@ORM\Index(name="IDX_SITE", columns={"site_uid"})})
  * @ORM\HasLifecycleCallbacks
  *

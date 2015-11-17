@@ -86,7 +86,6 @@ swiftmailer:
     password:  "%mailer_password%"
     spool:     { type: memory }
 
-
 back_bee_core_domain:
     renderer:
         bb_scripts_directory:

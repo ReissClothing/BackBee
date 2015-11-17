@@ -25,6 +25,8 @@ namespace BackBee\CoreDomainBundle\ClassContent;
 
 use BackBee\ApplicationInterface;
 use BackBee\AutoLoader\Exception\ClassNotFoundException;
+use BackBee\CoreDomain\ClassContent\AbstractClassContent;
+use BackBee\CoreDomain\ClassContent\Category;
 use BackBee\Utils\File\File;
 
 /**
@@ -57,18 +59,18 @@ class CategoryManager
      *
      * @param ApplicationInterface $application application from where we will extract classcontent's categories
      */
-    public function __construct(ApplicationInterface $application)
+    public function __construct()
     {
         $this->categories = [];
-        $this->options = [
-            'thumbnail_url_pattern' => $application->getRouting()->getUrlByRouteName(
-                'bb.classcontent_thumbnail', [
-                    'filename' => '%s.'.$application->getContainer()->getParameter('classcontent_thumbnail.extension'),
-                ]
-            ),
-        ];
+//        $this->options = [
+//            'thumbnail_url_pattern' => $application->getRouting()->getUrlByRouteName(
+//                'bb.classcontent_thumbnail', [
+//                    'filename' => '%s.'.$application->getContainer()->getParameter('classcontent_thumbnail.extension'),
+//                ]
+//            ),
+//        ];
 
-        $this->loadCategoriesFromClassContentDirectories($application->getClassContentDir());
+        $this->loadCategoriesFromClassContentDirectories();
     }
 
     /**
@@ -115,12 +117,20 @@ class CategoryManager
      *
      * @param array $directories classcontent directories
      */
-    private function loadCategoriesFromClassContentDirectories($directories)
+    private function loadCategoriesFromClassContentDirectories()
     {
-        $classcontents = [];
-        foreach ($directories as $directory) {
-            $classcontents = array_merge($classcontents, self::getClassContentClassnamesFromDir($directory));
-        }
+// @gvf todo all this should come from configuration of classes in config, no in folders
+        $classcontents = [
+            'BackBee\CoreDomain\ClassContent\Article\Article',
+            'BackBee\CoreDomain\ClassContent\Article\ArticleContainer',
+            'BackBee\CoreDomain\ClassContent\Article\Body',
+            'BackBee\CoreDomain\ClassContent\Article\LatestArticle',
+            'BackBee\CoreDomain\ClassContent\Article\Quote',
+            'BackBee\CoreDomain\ClassContent\Article\Related',
+            'BackBee\CoreDomain\ClassContent\Article\RelatedContainer',
+            'BackBee\CoreDomain\ClassContent\Home\Slider',
+        ];
+
 
         foreach ($classcontents as $class) {
             try {
@@ -153,7 +163,7 @@ class CategoryManager
                 ksort($this->categories);
             }
 
-            $this->categories[$id]->addBlock($content, $visible, $this->options);
+            $this->categories[$id]->addBlock($content, $visible);
         }
     }
 

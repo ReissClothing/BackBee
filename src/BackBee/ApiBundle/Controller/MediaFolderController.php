@@ -55,7 +55,7 @@ class MediaFolderController extends AbstractRestController
      *
      * @Rest\Pagination(default_count=100, max_count=200)
      *
-     * @Rest\ParamConverter(
+     * @ParamConverter(
      *   name="parent", id_name="parent_uid", id_source="query", class="BackBee\NestedNode\MediaFolder", required=false
      * )
      * @Rest\Security("is_fully_authenticated() & has_role('ROLE_API_USER') & is_granted('VIEW','\BackBee\NestedNode\MediaFolder')")
@@ -74,7 +74,7 @@ class MediaFolderController extends AbstractRestController
      * @param MediaFolder $mediaFolder
      * @return Response
      *
-     * @Rest\ParamConverter(name="mediaFolder", class="BackBee\NestedNode\MediaFolder")
+     * @ParamConverter(name="mediaFolder", class="BackBee\NestedNode\MediaFolder")
      * @Rest\Security("is_fully_authenticated() & has_role('ROLE_API_USER') & is_granted('VIEW', mediaFolder)")
      */
     public function getAction(MediaFolder $mediaFolder)
@@ -88,7 +88,7 @@ class MediaFolderController extends AbstractRestController
      * @Rest\RequestParam(name="title", description="media title", requirements={
      *      @Assert\NotBlank()
      * })
-     * @Rest\ParamConverter(name="mediaFolder", class="BackBee\NestedNode\MediaFolder")
+     * @ParamConverter(name="mediaFolder", class="BackBee\NestedNode\MediaFolder")
      * @Rest\Security("is_fully_authenticated() & has_role('ROLE_API_USER') & is_granted('EDIT', mediaFolder)")
      */
     public function putAction(MediaFolder $mediaFolder, Request $request)
@@ -117,7 +117,7 @@ class MediaFolderController extends AbstractRestController
     /**
      * @return Response
      *
-     * @Rest\ParamConverter(name="mediaFolder", class="BackBee\NestedNode\MediaFolder")
+     * @ParamConverter(name="mediaFolder", class="BackBee\NestedNode\MediaFolder")
      * @Rest\Security("is_fully_authenticated() & has_role('ROLE_API_USER') & is_granted('DELETE', mediaFolder)")
      */
     public function deleteAction(MediaFolder $mediaFolder)
@@ -145,7 +145,7 @@ class MediaFolderController extends AbstractRestController
      * @Rest\RequestParam(name="title", description="media title", requirements={
      *   @Assert\NotBlank()
      * })
-     * @Rest\ParamConverter(
+     * @ParamConverter(
      *   name="parent", id_name="parent_uid", id_source="request", class="BackBee\NestedNode\MediaFolder", required=false
      * )
      * @Rest\Security("is_fully_authenticated() & has_role('ROLE_API_USER') & is_granted('CREATE', '\BackBee\NestedNode\MediaFolder')")
@@ -205,7 +205,7 @@ class MediaFolderController extends AbstractRestController
      * @param  Request     $request
      * @return Response
      *
-     * @Rest\ParamConverter(name="mediaFolder", class="BackBee\NestedNode\MediaFolder")
+     * @ParamConverter(name="mediaFolder", class="BackBee\NestedNode\MediaFolder")
      * @Rest\Security("is_fully_authenticated() & has_role('ROLE_API_USER') & is_granted('EDIT', mediaFolder)")
      */
     public function patchAction(MediaFolder $mediaFolder, Request $request)

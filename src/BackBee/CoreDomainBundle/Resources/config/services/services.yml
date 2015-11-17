@@ -156,7 +156,6 @@ services:
 
     classcontent.category_manager:
         class:      %bbapp.classcontent.category_manager.class%
-        arguments: [@bbapp]
 
     classcontent.manager:
         class:      %bbapp.classcontent.manager.class%
@@ -186,23 +185,23 @@ services:
 #        class: Doctrine\Common\Annotations\AnnotationReader
 
     # data collectors
-    data_collector.config:
-        class: %bbapp.collector.config.class%
-        calls:
-            - [setKernel, [@?controller]]
-
-    data_collector.request:
-        class: %bbapp.collector.request.class%
-        tags:
-            - { name: kernel.event_subscriber }
-
-    data_collector.exception:
-        class: %bbapp.collector.exception.class%
-        tags:
-
-    data_collector.events:
-        class: %bbapp.collector.events.class%
-        tags:
+#    data_collector.config:
+#        class: %bbapp.collector.config.class%
+#        calls:
+#            - [setKernel, [@?controller]]
+#
+#    data_collector.request:
+#        class: %bbapp.collector.request.class%
+#        tags:
+#            - { name: kernel.event_subscriber }
+#
+#    data_collector.exception:
+#        class: %bbapp.collector.exception.class%
+#        tags:
+#
+#    data_collector.events:
+#        class: %bbapp.collector.events.class%
+#        tags:
 
 #    data_collector.logger:
 #        class: %bbapp.collector.logger.class%
@@ -210,25 +209,25 @@ services:
 #        tags:
 #            - { name: monolog.logger,  channel: profiler }
 
-    data_collector.time:
-        class: %bbapp.collector.time.class%
-        arguments:  [@?controller]
-        tags:
-            - { name: monolog.logger,  channel: profiler }
-
-    data_collector.memory:
-        class: %bbapp.collector.memory.class%
-
-    data_collector.routing:
-        class: %bbapp.collector.routing.class%
-        calls:
-            - [setContainer, [@service_container]]
-
-
-    data_collector.doctrine:
-        class: %bbapp.collector.doctrine.class%
-        calls:
-            - [setContainer, [@service_container]]
+#    data_collector.time:
+#        class: %bbapp.collector.time.class%
+#        arguments:  [@?controller]
+#        tags:
+#            - { name: monolog.logger,  channel: profiler }
+#
+#    data_collector.memory:
+#        class: %bbapp.collector.memory.class%
+#
+#    data_collector.routing:
+#        class: %bbapp.collector.routing.class%
+#        calls:
+#            - [setContainer, [@service_container]]
+#
+#
+#    data_collector.doctrine:
+#        class: %bbapp.collector.doctrine.class%
+#        calls:
+#            - [setContainer, [@service_container]]
 
 #    doctrine.dbal.logger.profiling:
 #        class: %bbapp.dbal.logger.profiling.class%

@@ -31,7 +31,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Exception\InsufficientAuthenticationException;
 use Symfony\Component\Validator\Constraints as Assert;
-
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use BackBee\AutoLoader\Exception\ClassNotFoundException;
 use BackBee\CoreDomain\ClassContent\AbstractClassContent;
 use BackBee\Exception\InvalidArgumentException;
@@ -74,7 +74,7 @@ class PageController extends AbstractRestController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      *
-     * @Rest\ParamConverter(name="page", class="BackBee\CoreDomain\NestedNode\Page")
+     * @ParamConverter(name="page", class="BackBee\CoreDomain\NestedNode\Page")
      */
     public function getMetadataAction(Page $page)
     {
@@ -90,7 +90,7 @@ class PageController extends AbstractRestController
      * Get page ancestors
      * @param Page $page the page we want to get its ancestors
      * @return \Symfony\Component\HttpFoundation\Response
-     * @Rest\ParamConverter(name="page", class="BackBee\CoreDomain\NestedNode\Page")
+     * @ParamConverter(name="page", class="BackBee\CoreDomain\NestedNode\Page")
      */
     public function getAncestorsAction(Page $page)
     {
@@ -107,7 +107,7 @@ class PageController extends AbstractRestController
      *
      * @return Symfony\Component\HttpFoundation\Response
      *
-     * @Rest\ParamConverter(name="page", class="BackBee\CoreDomain\NestedNode\Page")
+     * @ParamConverter(name="page", class="BackBee\CoreDomain\NestedNode\Page")
      */
     public function putMetadataAction(Page $page, Request $request)
     {
@@ -171,8 +171,8 @@ class PageController extends AbstractRestController
      *   })
      * })
      *
-     * @Rest\ParamConverter(
-     *   name="parent", id_name="parent_uid", id_source="query", class="BackBee\CoreDomain\NestedNode\Page", required=false
+     * @ParamConverter(
+     *   name="parent", options={"id"="parent_uid", "required"=false}, class="BackBee\CoreDomain\NestedNode\Page"
      * )
      */
     public function getCollectionAction(Request $request, $start, $count, Page $parent = null)
@@ -203,7 +203,7 @@ class PageController extends AbstractRestController
      *
      * @return Symfony\Component\HttpFoundation\Response
      *
-     * @Rest\ParamConverter(name="page", class="BackBee\CoreDomain\NestedNode\Page")
+     * @ParamConverter("page", class="BackBee\CoreDomain\NestedNode\Page", options={"id" = "uid"})
      * @Rest\Security(expression="is_granted('VIEW', page)")
      */
     public function getAction(Page $page)
@@ -219,16 +219,16 @@ class PageController extends AbstractRestController
      *   @Assert\NotBlank()
      * })
      *
-     * @Rest\ParamConverter(
+     * @ParamConverter(
      *   name="layout", id_name="layout_uid", id_source="request", class="BackBee\CoreDomain\Site\Layout", required=true
      * )
-     * @Rest\ParamConverter(
+     * @ParamConverter(
      *   name="parent", id_name="parent_uid", id_source="request", class="BackBee\CoreDomain\NestedNode\Page", required=false
      * )
-     * @Rest\ParamConverter(
+     * @ParamConverter(
      *   name="source", id_name="source_uid", id_source="query", class="BackBee\CoreDomain\NestedNode\Page", required=false
      * )
-     * @Rest\ParamConverter(
+     * @ParamConverter(
      *   name="workflow", id_name="workflow_uid", id_source="request", class="BackBee\CoreDomain\Workflow\State", required=false
      * )
      *
@@ -355,12 +355,12 @@ class PageController extends AbstractRestController
      *   @Assert\Type(type="digit", message="The value should be a positive number")
      * })
      *
-     * @Rest\ParamConverter(name="page", class="BackBee\CoreDomain\NestedNode\Page")
-     * @Rest\ParamConverter(name="layout", id_name="layout_uid", class="BackBee\CoreDomain\Site\Layout", id_source="request")
-     * @Rest\ParamConverter(
+     * @ParamConverter(name="page", class="BackBee\CoreDomain\NestedNode\Page")
+     * @ParamConverter(name="layout", id_name="layout_uid", class="BackBee\CoreDomain\Site\Layout", id_source="request")
+     * @ParamConverter(
      *   name="parent", id_name="parent_uid", class="BackBee\CoreDomain\NestedNode\Page", id_source="request", required=false
      * )
-     * @Rest\ParamConverter(
+     * @ParamConverter(
      *   name="workflow", id_name="workflow_uid", id_source="request", class="BackBee\CoreDomain\Workflow\State", required=false
      * )
      * @Rest\Security(expression="is_granted('EDIT', page)")
@@ -531,7 +531,7 @@ class PageController extends AbstractRestController
      *   @Assert\NotBlank(message="Request must contain at least one operation")
      * })
      *
-     * @Rest\ParamConverter(name="page", class="BackBee\CoreDomain\NestedNode\Page")
+     * @ParamConverter(name="page", class="BackBee\CoreDomain\NestedNode\Page")
      * @Rest\Security(expression="is_granted('EDIT', page)")
      */
     public function patchAction(Page $page, Request $request)
@@ -573,7 +573,7 @@ class PageController extends AbstractRestController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      *
-     * @Rest\ParamConverter(name="page", class="BackBee\CoreDomain\NestedNode\Page")
+     * @ParamConverter(name="page", class="BackBee\CoreDomain\NestedNode\Page")
      */
     public function deleteAction(Page $page)
     {
@@ -604,11 +604,11 @@ class PageController extends AbstractRestController
      *   @Assert\NotBlank
      * })
      *
-     * @Rest\ParamConverter(name="source", class="BackBee\CoreDomain\NestedNode\Page")
-     * @Rest\ParamConverter(
+     * @ParamConverter(name="source", class="BackBee\CoreDomain\NestedNode\Page")
+     * @ParamConverter(
      *   name="parent", id_name="parent_uid", id_source="request", class="BackBee\CoreDomain\NestedNode\Page", required=false
      * )
-     * @Rest\ParamConverter(
+     * @ParamConverter(
      *   name="sibling", id_name="sibling_uid", id_source="request", class="BackBee\CoreDomain\NestedNode\Page", required=false
      * )
      *

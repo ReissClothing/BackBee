@@ -23,9 +23,11 @@
 
 namespace BackBee\ApiBundle\Controller;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 use BackBee\ApiBundle\Controller\Annotations as Rest;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use BackBee\CoreDomain\Site\Layout;
 
 /**
@@ -43,11 +45,11 @@ class LayoutController extends AbstractRestController
      *
      * @return Symfony\Component\HttpFoundation\Response
      *
-     * @Rest\ParamConverter(name="layout", class="BackBee\CoreDomain\Site\Layout")
+     * @ParamConverter("layout", class="BackBee\CoreDomain\Site\Layout", options={"id" = "uid"})
      */
     public function getWorkflowStateAction(Layout $layout)
     {
-        $layout_states = $this->getApplication()->getEntityManager()
+        $layout_states = $this->getDoctrine()->getManager()
             ->getRepository('BackBee\CoreDomain\Workflow\State')
             ->getWorkflowStatesForLayout($layout)
         ;
@@ -71,7 +73,7 @@ class LayoutController extends AbstractRestController
             }
         }
 
-        $translator = $this->getApplication()->getContainer()->get('translator');
+        $translator = $this->get('translator');
 
         $states = array_merge(
             array('0' => array('label' => $translator->trans('offline'), 'code' => '0')),
@@ -80,19 +82,19 @@ class LayoutController extends AbstractRestController
             $states['online']
         );
 
-        return $this->createJsonResponse(array_values($states), 200, array(
+        return new JsonResponse(array_values($states), 200, array(
             'Content-Range' => '0-'.(count($states) - 1).'/'.count($states),
         ));
     }
 
     /**
-     * @Rest\ParamConverter(
-     *   name="site", id_name="site_uid", id_source="query", class="BackBee\CoreDomain\Site\Site", required=false
+     * @ParamConverter(
+     *   "site", id_name="site_uid", id_source="query", class="BackBee\CoreDomain\Site\Site", required=false, options={"id" = "uid"}
      * )
      */
     public function getCollectionAction(Request $request)
     {
-        $qb = $this->getEntityManager()
+        $qb = $this->getDoctrine()->getManager()
             ->getRepository('BackBee\CoreDomain\Site\Layout')
             ->createQueryBuilder('l')
             ->select('l, st')
@@ -113,7 +115,7 @@ class LayoutController extends AbstractRestController
 
         $layouts = $qb->getQuery()->getResult();
 
-        $response = $this->createJsonResponse(null, 200, array(
+        $response = new JsonResponse(null, 200, array(
             'Content-Range' => '0-'.(count($layouts) - 1).'/'.count($layouts),
         ));
 
@@ -123,12 +125,12 @@ class LayoutController extends AbstractRestController
     }
 
     /**
-     * @Rest\ParamConverter(name="layout", class="BackBee\CoreDomain\Site\Layout")
+     * @ParamConverter("layout", class="BackBee\CoreDomain\Site\Layout", options={"id" = "uid"})
      * @Rest\Security("is_fully_authenticated() & has_role('ROLE_API_USER') & is_granted('VIEW', layout)")
      */
     public function getAction(Layout $layout)
     {
-        $response = $this->createJsonResponse();
+        $response = new JsonResponse();
         $response->setContent($this->formatItem($layout));
 
         return $response;

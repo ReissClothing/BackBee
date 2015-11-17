@@ -49,7 +49,7 @@ class KeywordController extends AbstractRestController
      *
      * @Rest\Pagination(default_count=25, max_count=100)
      *
-     * @Rest\ParamConverter(
+     * @ParamConverter(
      *   name="parent", id_name="parent_uid", id_source="query", class="BackBee\CoreDomain\NestedNode\KeyWord", required=false
      * )
      */
@@ -81,7 +81,7 @@ class KeywordController extends AbstractRestController
      *
      * @return Symfony\Component\HttpFoundation\Response
      *
-     * @Rest\ParamConverter(name="keyword", class="BackBee\CoreDomain\NestedNode\KeyWord")
+     * @ParamConverter(name="keyword", class="BackBee\CoreDomain\NestedNode\KeyWord")
      * @Rest\Security("is_fully_authenticated() & has_role('ROLE_API_USER')")
      */
     public function getAction(KeyWord $keyword)
@@ -92,7 +92,7 @@ class KeywordController extends AbstractRestController
     /**
      * @return Response
      *
-     * @Rest\ParamConverter(name="keyword", class="BackBee\CoreDomain\NestedNode\KeyWord")
+     * @ParamConverter(name="keyword", class="BackBee\CoreDomain\NestedNode\KeyWord")
      * @Rest\Security("is_fully_authenticated() & has_role('ROLE_API_USER')")
      */
     public function deleteAction(KeyWord $keyword = null)
@@ -121,7 +121,7 @@ class KeywordController extends AbstractRestController
      *
      * @return Response
      *
-     * @Rest\ParamConverter(name="keyword", class="BackBee\CoreDomain\NestedNode\KeyWord")
+     * @ParamConverter(name="keyword", class="BackBee\CoreDomain\NestedNode\KeyWord")
      * @Rest\Security("is_fully_authenticated() & has_role('ROLE_API_USER')")
      */
     public function patchAction(KeyWord $keyword, Request $request)
@@ -200,7 +200,7 @@ class KeywordController extends AbstractRestController
      * @Rest\RequestParam(name="keyword", description="Keyword value", requirements={
      *   @Assert\NotBlank()
      * })
-     * @Rest\ParamConverter(
+     * @ParamConverter(
      *   name="parent", id_name="parent_uid", id_source="request", class="BackBee\CoreDomain\NestedNode\KeyWord", required=false
      * )
      * @Rest\Security("is_fully_authenticated() & has_role('ROLE_API_USER')")
@@ -260,7 +260,7 @@ class KeywordController extends AbstractRestController
      * @Rest\RequestParam(name="keyword", description="Keyword value", requirements={
      *      @Assert\NotBlank()
      * })
-     * @Rest\ParamConverter(name="keyword", class="BackBee\CoreDomain\NestedNode\KeyWord")
+     * @ParamConverter(name="keyword", class="BackBee\CoreDomain\NestedNode\KeyWord")
      * @Rest\Security("is_fully_authenticated() & has_role('ROLE_API_USER')")
      */
     public function putAction(KeyWord $keyword, Request $request)

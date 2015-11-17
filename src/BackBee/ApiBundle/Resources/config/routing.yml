@@ -249,22 +249,20 @@ bb.rest.page.put_metadata:
 
 bb.rest.page.get_collection:
     path: /rest/{version}/page
+    methods: [GET]
     defaults:
-        _action:     getCollectionAction
-        _controller: BackBee\ApiBundle\Controller\PageController
+        _controller: BackBeeApiBundle:Page:getCollection
     requirements:
         version: \d+
-        _method: GET
 
 bb.rest.page.get:
     path: /rest/{version}/page/{uid}
+    methods: [GET]
     defaults:
-        _action:     getAction
-        _controller: BackBee\ApiBundle\Controller\PageController
+        _controller: BackBeeApiBundle:Page:get
     requirements:
         version: \d+
         uid: \w{32}
-        _method: GET
 
 bb.rest.page.post:
     path: /rest/{version}/page
@@ -325,12 +323,11 @@ bb.rest.page.delete:
 
 bb.rest.layout.get_workflow_state:
     path: /rest/{version}/layout/{uid}/workflow_state
+    methods: [GET]
     defaults:
-        _action: getWorkflowStateAction
-        _controller: BackBee\ApiBundle\Controller\LayoutController
+        _controller: BackBeeApiBundle:Layout:getWorkflowState
     requirements:
         version: \d+
-        _method: GET
 
 bb.rest.layout.get_collection:
     path: /rest/{version}/layout

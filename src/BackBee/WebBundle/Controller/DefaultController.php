@@ -32,7 +32,7 @@ class DefaultController extends Controller
     public function defaultAction($uri = '', $sendResponse = true)
     {
         if (!$site = $this->get('bbapp.site_context')->getSite()) {
-            throw new HttpException(500, 'A BackBee\Site instance is required.');
+            throw new HttpException(500, 'A BackBee\CoreDomain\Site instance is required.');
         }
 
 // @TODO gvf

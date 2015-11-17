@@ -65,7 +65,7 @@ services:
 #
 #nestednode.page.preupdate:
 #    listeners:
-#        - [BackBee\Workflow\Listener\PageListener, onPreUpdate]
+#        - [BackBee\CoreDomain\Workflow\Listener\PageListener, onPreUpdate]
 #
 #nestednode.page.postrender:
 #    listeners:

@@ -34,8 +34,8 @@ use Symfony\Component\Security\Core\Util\ClassUtils;
  *
  * * \BackBee\CoreDomain\Site\Site
  * * \BackBee\CoreDomain\Site\Layout
- * * \BackBee\Site\NestedNode
- * * \BackBee\Site\AbstractClassContent
+ * * \BackBee\CoreDomain\Site\NestedNode
+ * * \BackBee\CoreDomain\Site\AbstractClassContent
  *
  * @category    BackBee
  *

@@ -42,7 +42,7 @@ use JMS\Serializer\Annotation as Serializer;
  *
  * @copyright   Lp digital system
  * @author      c.rouillon <charles.rouillon@lp-digital.fr>
- * @ORM\Entity(repositoryClass="BackBee\Workflow\Repository\StateRepository")
+ * @ORM\Entity(repositoryClass="BackBee\CoreDomain\Workflow\Repository\StateRepository")
  * @ORM\Table(name="workflow")
  *
  * @Serializer\ExclusionPolicy("all")
@@ -247,10 +247,10 @@ class State extends AbstractObjectIdentifiable implements \JsonSerializable
     /**
      * Sets the optional listener classname.
      *
-     * @param mixed $listener The listener; it must implement BackBee\Workflow\ListenerInterface
+     * @param mixed $listener The listener; it must implement BackBee\CoreDomain\Workflow\ListenerInterface
      * @return self
      * @throws \InvalidArgumentException if provided listener is not type of null, object or string
-     * @throws \LogicException if provided listener does not implement BackBee\Workflow\ListenerInterface
+     * @throws \LogicException if provided listener does not implement BackBee\CoreDomain\Workflow\ListenerInterface
      */
     public function setListener($listener = null)
     {
@@ -261,10 +261,10 @@ class State extends AbstractObjectIdentifiable implements \JsonSerializable
             ));
         }
 
-        if (null !== $listener && !is_subclass_of($listener, 'BackBee\Workflow\ListenerInterface')) {
+        if (null !== $listener && !is_subclass_of($listener, 'BackBee\CoreDomain\Workflow\ListenerInterface')) {
             throw new \LogicException(sprintf(
                 'Workflow state listener must implement %s.',
-                'BackBee\Workflow\ListenerInterface'
+                'BackBee\CoreDomain\Workflow\ListenerInterface'
             ));
         }
 
