@@ -1,6 +1,5 @@
 parameters:
 
-    bbapp.routing.class: BackBee\Routing\RouteCollection
     bbapp.routing.default_protocol: http
     bbapp.routing.image_uri_prefix: images
     bbapp.routing.media_uri_prefix: media

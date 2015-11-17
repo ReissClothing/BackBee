@@ -46,3 +46,6 @@ bb.default:
     defaults:
         _controller: BackBeeWebBundle:Default:default
         uri: ''
+#   This allows / in route
+    requirements:
+        uri: .+

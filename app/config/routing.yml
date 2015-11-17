@@ -2,13 +2,14 @@ back_bee_api:
     resource: "@BackBeeApiBundle/Resources/config/routing.yml"
     prefix:   /
 
+back_bee_toolbar:
+    resource: "@BackBeeToolbarBundle/Resources/config/routing.yml"
+    prefix:   /
+#This should be last to avoid the catchall from catching other urls, a prefix should be added to the catchall I guess
 back_bee_web:
     resource: "@BackBeeWebBundle/Resources/config/routing.yml"
     prefix:   /
 
-back_bee_toolbar:
-    resource: "@BackBeeToolbarBundle/Resources/config/routing.yml"
-    prefix:   /
 
 #back_bee_temp:
 #    resource: "@BackBeeCoreDomainBundle/Resources/config/routing.yml"

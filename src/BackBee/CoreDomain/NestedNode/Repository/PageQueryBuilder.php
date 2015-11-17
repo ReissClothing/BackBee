@@ -92,7 +92,7 @@ class PageQueryBuilder extends QueryBuilder
     /**
      * Add query part to select page by site.
      *
-     * @param  Site                 $site               The owning site
+     * @param  Sie                 $site               The owning site
      *
      * @return PageQueryBuilder
      */

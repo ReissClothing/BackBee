@@ -19,7 +19,8 @@
         "incenteev/composer-parameter-handler": "~2.0",
         "doctrine/doctrine-migrations-bundle": "^1.0",
         "backbee/utils": "2.*",
-        "jms/serializer-bundle": "^1.1"
+        "jms/serializer-bundle": "^1.1",
+        "twig/extensions": "^1.3"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3"

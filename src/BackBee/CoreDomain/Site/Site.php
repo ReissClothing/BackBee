@@ -51,7 +51,7 @@ use JMS\Serializer\Annotation as Serializer;
  *     @ORM\Index(name="IDX_SERVERNAME", columns={"server_name"}),
  *     @ORM\Index(name="IDX_LABEL", columns={"label"})})
  * @BB\Fixtures(qty=1)
- *
+ *t
  * @Serializer\ExclusionPolicy("all")
  */
 class Site extends AbstractObjectIdentifiable

@@ -17,7 +17,7 @@ use Doctrine\ORM\EntityRepository;
  */
 class SiteResolver
 {
-//    @GVF TODO put site repo interface?
+//    @GVF TODO put site repo interface? replaced by site factory?
     /**
      * @var EntityRepository
      */
