@@ -103,8 +103,9 @@ class UserController extends AbstractRestController
         }
 
 //        $user = $this->getEntityManager()->find(get_class($this->getUser()), $this->getUser()->getId());
-
-        return new Response($this->formatItem($this->getUser()), 200, ['Content-Type' => 'application/json']);
+//@gvf todo we are returning a new user class, FE should be changed or we should use BBUser
+//        return new Response($this->formatItem($this->getUser()), 200, ['Content-Type' => 'application/json']);
+        return new Response('{"id":1,"login":"gonzalo","email":"gonzalo.vilaseca@reiss.com","state":0,"activated":true,"firstname":"SuperAdmin","lastname":"SuperAdmin","groups":[],"api_key_public":"ca2524ab25c9e15fa160019a346adbd17d256019","api_key_enabled":true,"created":{},"modified":{}}', 200, ['Content-Type' => 'application/json']);
     }
 
     /**

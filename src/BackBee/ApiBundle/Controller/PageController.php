@@ -175,7 +175,9 @@ class PageController extends AbstractRestController
      *   name="parent", options={"id"="parent_uid", "required"=false}, class="BackBee\CoreDomain\NestedNode\Page"
      * )
      */
-    public function getCollectionAction(Request $request, $start, $count, Page $parent = null)
+//    @todo Controller "BackBee\ApiBundle\Controller\PageController::getCollectionAction()" requires that you provide a value for the "$start" argument (because there is no default value or because there is a non optional argument after this one).
+//    public function getCollectionAction(Request $request, $start, $count, Page $parent = null)
+    public function getCollectionAction(Request $request, $start = 0, $count = 2000, Page $parent = null)
     {
         $response = null;
         $contentUid = $request->query->get('content_uid', null);
@@ -281,15 +283,15 @@ class PageController extends AbstractRestController
 
             $this->trySetPageWorkflowState($page, $this->getEntityFromAttributes('workflow'));
             $this->granted('CREATE', $page);
-
+            $em = $this->getDoctrine()->getManager();
             if (null !== $page->getParent()) {
-                $this->getEntityManager()
+               $em
                         ->getRepository('BackBee\CoreDomain\NestedNode\Page')
                         ->insertNodeAsFirstChildOf($page, $page->getParent());
             }
 
-            $this->getEntityManager()->persist($page);
-            $this->getEntityManager()->flush($page);
+            $em->persist($page);
+            $em->flush($page);
         } catch (\Exception $e) {
             return $this->createResponse('Internal server error: '.$e->getMessage(), 500);
         }
@@ -667,7 +669,7 @@ class PageController extends AbstractRestController
      */
     private function getPageRepository()
     {
-        return $this->getEntityManager()->getRepository('BackBee\CoreDomain\NestedNode\Page');
+        return $this->getDoctrine()->getManager()->getRepository('BackBee\CoreDomain\NestedNode\Page');
     }
 
     /**
@@ -682,7 +684,7 @@ class PageController extends AbstractRestController
     {
         $content = null;
         $classname = AbstractClassContent::getClassnameByContentType($contentType);
-        $em = $this->getApplication()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
 
         try {
             $content = $em->find($classname, $contentUid);
@@ -774,7 +776,7 @@ class PageController extends AbstractRestController
                 }
                 $qb->andSiteIs($site);
             } else {
-                $qb->andSiteIs($this->getApplication()->getSite());
+                $qb->andSiteIs($this->get('site'));
             }
 
             if ($request->query->has('root')) {
@@ -827,7 +829,7 @@ class PageController extends AbstractRestController
     */
     private function getSiteRepository()
     {
-        return $this->getEntityManager()->getRepository('BackBee\CoreDomain\Site\Site');
+        return $this->getDoctrine()->getManager()->getRepository('BackBee\CoreDomain\Site\Site');
     }
 
     /**

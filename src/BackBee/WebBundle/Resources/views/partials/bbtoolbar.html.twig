@@ -16,7 +16,6 @@
     {% endstylesheets %}
 {% endif %}
 
-{% if disableToolbar == false %}
     {% javascripts '@BackBeeWebBundle/Resources/public/js/require.js' %}
     <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
@@ -55,4 +54,3 @@
     {% endjavascripts %}
 
 </div>
-{% endif %}
