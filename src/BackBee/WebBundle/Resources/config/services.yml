@@ -10,7 +10,44 @@ services:
             - @templating
             - @doctrine.orm.entity_manager
             - @event_dispatcher
+            - @service_container
     twig.extension.text:
         class: Twig_Extensions_Extension_Text
         tags:
             - { name: twig.extension }
+
+#   HELPERS
+    bbcontent:
+        class: BackBee\WebBundle\Renderer\Helper\bbcontent
+        arguments:
+            - @security.authorization_checker
+    bbtoolbar:
+        class: BackBee\WebBundle\Renderer\Helper\bbtoolbar
+    brand:
+        class: BackBee\WebBundle\Renderer\Helper\brand
+    breadcrumb:
+        class: BackBee\WebBundle\Renderer\Helper\breadcrumb
+    bundleAdminForm:
+        class: BackBee\WebBundle\Renderer\Helper\bundleAdminForm
+    bundleAdminLink:
+        class: BackBee\WebBundle\Renderer\Helper\bundleAdminLink
+    bundleAdminUrl:
+        class: BackBee\WebBundle\Renderer\Helper\bundleAdminUrl
+    container:
+        class: BackBee\WebBundle\Renderer\Helper\container
+    dateHelper:
+        class: BackBee\WebBundle\Renderer\Helper\dateHelper
+#        @todo gvf not sure if this is used
+    isToolbarDebug:
+        class: BackBee\WebBundle\Renderer\Helper\isToolbarDebug
+    metadata:
+        class: BackBee\WebBundle\Renderer\Helper\metadata
+        arguments:
+            - @doctrine.orm.entity_manager
+    navbar:
+        class: BackBee\WebBundle\Renderer\Helper\navbar
+    socialnetwork:
+        class: BackBee\WebBundle\Renderer\Helper\socialNetwork
+
+
+#  END HELPERS

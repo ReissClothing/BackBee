@@ -30,6 +30,7 @@ use BackBee\WebBundle\Renderer\AbstractRenderer;
  *
  * @copyright   Lp digital system
  * @author      c.rouillon <charles.rouillon@lp-digital.fr>
+ * @author      gonzalo.vilaseca <gonzalo.vilaseca@reiss.com>
  */
 abstract class AbstractHelper
 {
@@ -37,16 +38,6 @@ abstract class AbstractHelper
      * @var \BackBee\WebBundle\Renderer\AbstractRenderer
      */
     protected $_renderer;
-
-    /**
-     * Class constructor.
-     *
-     * @param \BackBee\WebBundle\Renderer\AbstractRenderer $renderer
-     */
-    public function __construct(AbstractRenderer $renderer)
-    {
-        $this->setRenderer($renderer);
-    }
 
     /**
      * Set the renderer.
