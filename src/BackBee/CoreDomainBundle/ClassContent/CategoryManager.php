@@ -119,7 +119,7 @@ class CategoryManager
      */
     private function loadCategoriesFromClassContentDirectories()
     {
-// @gvf todo all this should come from configuration of classes in config, no in folders
+// @gvf todo all this should come from configuration of classes in config, not in folders
         $classcontents = [
             'BackBee\CoreDomain\ClassContent\Article\Article',
             'BackBee\CoreDomain\ClassContent\Article\ArticleContainer',

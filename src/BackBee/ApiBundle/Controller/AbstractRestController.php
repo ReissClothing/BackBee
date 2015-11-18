@@ -202,9 +202,8 @@ abstract class AbstractRestController extends Controller implements RestControll
      */
     protected function granted($attributes, $object = null, $message = 'Permission denied')
     {
-        $security_context = $this->getApplication()->getSecurityContext();
 
-        if (null !== $security_context->getACLProvider() && false === parent::isGranted($attributes, $object)) {
+        if (false === parent::isGranted($attributes, $object)) {
             throw new InsufficientAuthenticationException($message);
         }
 

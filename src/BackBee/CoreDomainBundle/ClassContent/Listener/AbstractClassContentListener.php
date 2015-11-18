@@ -55,14 +55,14 @@ class AbstractClassContentListener
     /**
      * @var
      */
-    private $entityManager;
+    private $serviceContainer;
 
 //    public function __construct(EntityManagerInterface $entityManager)
-    public function __construct( $entityManager)
+    public function __construct( $serviceContainer)
     {
 
 //        $this->exceptionOnUnknownClassname = strtolower($exceptionOnUnknownClassname);
-        $this->entityManager = $entityManager;
+        $this->serviceContainer = $serviceContainer;
     }
 
     /**
@@ -77,7 +77,7 @@ class AbstractClassContentListener
         $fullClassname  = AbstractClassContent::getFullClassname($event->getTarget());
         foreach (class_parents($fullClassname) as $classname) {
 //            @gvf todo container injection
-            $this->entityManager->get('doctrine.orm.default_entity_manager')->getClassMetadata($classname)->addDiscriminatorMapClass($shortClassname, $fullClassname);
+            $this->serviceContainer->get('doctrine.orm.default_entity_manager')->getClassMetadata($classname)->addDiscriminatorMapClass($shortClassname, $fullClassname);
 
             if ('BackBee\CoreDomain\ClassContent\AbstractClassContent' === $classname) {
                 break;

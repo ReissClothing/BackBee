@@ -27,11 +27,11 @@ use BackBee\CoreDomain\NestedNode\Page;
 use BackBee\CoreDomain\Renderer\Exception\RendererException;
 use BackBee\CoreDomain\Renderer\RenderableInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\Security\Core\Util\ClassUtils;
 
-use BackBee\BBApplication;
 use BackBee\CoreDomain\Renderer\Event\RendererEvent;
 use BackBee\CoreDomain\Site\Layout;
 use BackBee\CoreDomain\Site\Site;
@@ -139,6 +139,10 @@ abstract class AbstractRenderer implements RendererInterface
      * @var EntityManagerInterface
      */
     protected $entityManager;
+    /**
+     * @var Container
+     */
+    private $serviceContainer;
 
     /**
      * Class constructor.
@@ -147,7 +151,11 @@ abstract class AbstractRenderer implements RendererInterface
      * @param array        $config      Optional configurations overriding
      */
 //    public function __construct(BBApplication $application = null, $config = null)
-    public function __construct(EventDispatcherInterface $eventDispatcher, EntityManagerInterface $entityManager)
+    public function __construct(
+        EventDispatcherInterface $eventDispatcher,
+        EntityManagerInterface $entityManager,
+        Container $serviceContainer
+    )
     {
 //        if (null !== $application) {
 //            $this->application = $application;
@@ -212,9 +220,10 @@ abstract class AbstractRenderer implements RendererInterface
 //            }
 //        }
 
-        $this->helpers = new ParameterBag();
+        $this->helpers         = new ParameterBag();
         $this->eventDispatcher = $eventDispatcher;
-        $this->entityManager = $entityManager;
+        $this->entityManager   = $entityManager;
+        $this->serviceContainer = $serviceContainer;
     }
 
     public function __call($method, $argv)
@@ -267,8 +276,10 @@ abstract class AbstractRenderer implements RendererInterface
      * Magic method to assign a var.
      *
      * @codeCoverageIgnore
-     * @param  string    $var   the name of the variable
-     * @param  mixed     $value the value of the variable
+     *
+     * @param  string $var   the name of the variable
+     * @param  mixed  $value the value of the variable
+     *
      * @return AbstractRenderer the current renderer
      */
     public function __set($var, $value = null)
@@ -298,9 +309,8 @@ abstract class AbstractRenderer implements RendererInterface
     public function __clone()
     {
         $this->cache()
-             ->reset()
-             ->updateHelpers()
-        ;
+            ->reset()
+            ->updateHelpers();
     }
 
     /**
@@ -365,7 +375,7 @@ abstract class AbstractRenderer implements RendererInterface
         for ($i = 0; $i < $this->__overloaded; $i++) {
             unset($this->_scriptdir[$i]);
         }
-        $this->_scriptdir = array_values($this->_scriptdir);
+        $this->_scriptdir   = array_values($this->_scriptdir);
         $this->__overloaded = 0;
     }
 
@@ -382,8 +392,8 @@ abstract class AbstractRenderer implements RendererInterface
 
         $templates = array();
         foreach ($this->_scriptdir as $dir) {
-            if (true === is_array(glob($dir.DIRECTORY_SEPARATOR.$pattern))) {
-                $templates = array_merge($templates, glob($dir.DIRECTORY_SEPARATOR.$pattern));
+            if (true === is_array(glob($dir . DIRECTORY_SEPARATOR . $pattern))) {
+                $templates = array_merge($templates, glob($dir . DIRECTORY_SEPARATOR . $pattern));
             }
         }
 
@@ -406,14 +416,15 @@ abstract class AbstractRenderer implements RendererInterface
      * Returns the list of available render mode for the provided object.
      *
      * @param  \BackBee\Renderer\RenderableInterface $object
+     *
      * @return array
      */
     public function getAvailableRenderMode(RenderableInterface $object)
     {
         $templatePath = $this->getTemplatePath($object);
-        $templates = $this->getTemplatesByPattern($templatePath.'.*');
+        $templates    = $this->getTemplatesByPattern($templatePath . '.*');
         foreach ($templates as &$template) {
-            $template = basename(str_replace($templatePath.'.', '', $template));
+            $template = basename(str_replace($templatePath . '.', '', $template));
         }
 
         unset($template);
@@ -455,7 +466,7 @@ abstract class AbstractRenderer implements RendererInterface
                     $subcontent = $this->entityManager->getRepository(ClassUtils::getRealClass($value))
 //                        @TODO gvf
 //                            ->load($value, $this->getApplication()->getBBUserToken());
-                            ->load($value);
+                        ->load($value);
                     if (null !== $subcontent) {
                         $value = $subcontent;
                     }
@@ -514,15 +525,15 @@ abstract class AbstractRenderer implements RendererInterface
      * Returns $pathinfo with base url of current page
      * If $site is provided, the url will be pointing on the associate domain.
      *
-     * @param string             $pathinfo
-     * @param string             $defaultExt
+     * @param string                        $pathinfo
+     * @param string                        $defaultExt
      * @param \BackBee\CoreDomain\Site\Site $site
      *
      * @return string
      */
     public function getUri($pathinfo = null, $defaultExt = null, Site $site = null, $url_type = null)
     {
-        return 'https://symfony.dev/app_dev.php/'.$pathinfo;
+        return 'https://symfony.dev/app_dev.php/' . $pathinfo;
 //        @TODO gvf
 //        return $this->getApplication()->getRouting()->getUri($pathinfo, $defaultExt, $site, $url_type);
     }
@@ -533,15 +544,15 @@ abstract class AbstractRenderer implements RendererInterface
 
         if ($this->application->isStarted() && null !== $this->application->getRequest()) {
             $request = $this->application->getRequest();
-            $baseurl = str_replace('\\', '/', $request->getSchemeAndHttpHost().dirname($request->getBaseUrl()));
-            $url = str_replace($baseurl, '', $uri);
+            $baseurl = str_replace('\\', '/', $request->getSchemeAndHttpHost() . dirname($request->getBaseUrl()));
+            $url     = str_replace($baseurl, '', $uri);
 
             if (false !== $ext = strrpos($url, '.')) {
                 $url = substr($url, 0, $ext);
             }
 
             if ('/' != substr($url, 0, 1)) {
-                $url = '/'.$url;
+                $url = '/' . $url;
             }
         }
 
@@ -638,8 +649,7 @@ abstract class AbstractRenderer implements RendererInterface
         } else {
             return $this->application->getEntityManager()
                 ->getRepository('BackBee\CoreDomain\NestedNode\Page')
-                ->getRoot($this->getCurrentSite())
-            ;
+                ->getRoot($this->getCurrentSite());
         }
     }
 
@@ -675,12 +685,14 @@ abstract class AbstractRenderer implements RendererInterface
      * Processes a view script and returns the output.
      *
      * @access public
+     *
      * @param  RenderableInterface $content                        The object to be rendered
-     * @param  string      $mode                           The rendering mode
-     * @param  array       $params                         A force set of parameters
-     * @param  string      $template                       A force template script to be rendered
-     * @param  Boolean     $ignoreIfRenderModeNotAvailable Ignore the rendering if specified render mode is not
-     *                                                     available if TRUE, use the default template otherwise
+     * @param  string              $mode                           The rendering mode
+     * @param  array               $params                         A force set of parameters
+     * @param  string              $template                       A force template script to be rendered
+     * @param  Boolean             $ignoreIfRenderModeNotAvailable Ignore the rendering if specified render mode is not
+     *                                                             available if TRUE, use the default template otherwise
+     *
      * @return string      The view script output
      */
     public function render(RenderableInterface $content = null, $mode = null, $params = null, $template = null, $ignoreIfRenderModeNotAvailable = true)
@@ -711,7 +723,7 @@ abstract class AbstractRenderer implements RendererInterface
     public function reset()
     {
         $this->resetVars()
-             ->resetParams();
+            ->resetParams();
 
         $this->__render = null;
 
@@ -726,11 +738,12 @@ abstract class AbstractRenderer implements RendererInterface
      * @param string  $mode
      * @param Boolean $ignoreIfRenderModeNotAvailable Ignore the rendering if specified render mode is not
      *                                                available if TRUE, use the default template otherwise
+     *
      * @return AbstractRenderer The current renderer
      */
     public function setMode($mode = null, $ignoreIfRenderModeNotAvailable = false)
     {
-        $this->_mode = (null === $mode || '' === $mode ? null : $mode);
+        $this->_mode                           = (null === $mode || '' === $mode ? null : $mode);
         $this->_ignoreIfRenderModeNotAvailable = $ignoreIfRenderModeNotAvailable;
 
         return $this;
@@ -740,6 +753,7 @@ abstract class AbstractRenderer implements RendererInterface
      * @codeCoverageIgnore
      *
      * @param  Page $node
+     *
      * @return AbstractRenderer
      */
     public function setNode(Page $node)
@@ -753,12 +767,13 @@ abstract class AbstractRenderer implements RendererInterface
      * Set the object to render.
      *
      * @param  RenderableInterface $object
+     *
      * @return AbstractRenderer   The current renderer
      */
     public function setObject(RenderableInterface $object = null)
     {
         $this->__currentelement = null;
-        $this->_object = $object;
+        $this->_object          = $object;
 
         if (is_array($this->__vars) && 0 < count($this->__vars)) {
             foreach ($this->__vars as $key => $var) {
@@ -905,12 +920,10 @@ abstract class AbstractRenderer implements RendererInterface
      */
     public function createHelper($method, $argv)
     {
-        $helper = null;
-        $helperClass = 'BackBee\WebBundle\Renderer\Helper\\'.$method;
-        if (true === class_exists($helperClass)) {
-            $this->helpers->set($method, new $helperClass($this, $argv));
-            $helper = $this->helpers->get($method);
-        }
+//        @todo gvf tag services and name them with a prefix such as bbweb or bbapp
+        $helper = $this->serviceContainer->get($method);
+        $helper->setRenderer($this);
+        $this->helpers->set($method, $helper);
 
         return $helper;
     }
@@ -924,6 +937,7 @@ abstract class AbstractRenderer implements RendererInterface
      * Return the relative path from the classname of an object.
      *
      * @param  \BackBee\Renderer\RenderableInterface $object
+     *
      * @return string
      */
     protected function getTemplatePath(RenderableInterface $object)
@@ -986,7 +1000,7 @@ abstract class AbstractRenderer implements RendererInterface
     {
         $layoutfile = $layout->getPath();
         if (null === $layoutfile && 0 < count($this->_includeExtensions)) {
-            $ext = reset($this->_includeExtensions);
+            $ext        = reset($this->_includeExtensions);
             $layoutfile = StringUtils::toPath($layout->getLabel(), array('extension' => $ext));
             $layout->setPath($layoutfile);
         }
@@ -996,16 +1010,15 @@ abstract class AbstractRenderer implements RendererInterface
 
     protected function triggerEvent($eventName = 'render', $object = null, $render = null)
     {
-            $object = null !== $object ? $object : $this->getObject();
+        $object = null !== $object ? $object : $this->getObject();
 //        $a =str_replace('BackBee\CoreDomain\\', '', get_class($object));
 //        $eventName = strtolower(str_replace(NAMESPACE_SEPARATOR, '.', $a).'.'.$name);
 //        $eventName = str_replace('classcontent.','',$eventName);
         $event = new RendererEvent($object, null === $render ? $this : array($this, $render));
 //            $this->eventDispatcher->dispatch($eventName, $event);
 
-
         if (is_a($object, 'BackBee\CoreDomain\ClassContent\AbstractClassContent')) {
-            $r = strtolower('classcontent.'.$eventName);
+            $r = strtolower('classcontent.' . $eventName);
             $this->eventDispatcher->dispatch($r, $event);
 
             foreach (class_parents($object) as $class) {
@@ -1035,7 +1048,7 @@ abstract class AbstractRenderer implements RendererInterface
     private function formatEventName($event_name, $entity)
     {
         if (is_object($entity)) {
-            $event_name = strtolower(str_replace(NAMESPACE_SEPARATOR, '.', get_class($entity)).'.'.$event_name);
+            $event_name = strtolower(str_replace(NAMESPACE_SEPARATOR, '.', get_class($entity)) . '.' . $event_name);
 // @TODO gvf
 //            if ($entity instanceof \Doctrine\ORM\Proxy\Proxy) {
 //                $prefix = str_replace(
@@ -1048,7 +1061,7 @@ abstract class AbstractRenderer implements RendererInterface
 //                $event_name = str_replace(strtolower($prefix), '', $event_name);
 //            }
         } else {
-            $event_name = strtolower(str_replace(NAMESPACE_SEPARATOR, '.', $entity).'.'.$event_name);
+            $event_name = strtolower(str_replace(NAMESPACE_SEPARATOR, '.', $entity) . '.' . $event_name);
         }
 
         $event_name = str_replace(array('backbee.', 'classcontent.', 'coredomain.'), array('', '', ''), $event_name);
@@ -1060,7 +1073,7 @@ abstract class AbstractRenderer implements RendererInterface
     {
         if (null !== $this->_object) {
             $this->_parentuid = $this->_object->getUid();
-            $this->__object = $this->_object;
+            $this->__object   = $this->_object;
         }
 
         $this->__vars = $this->_vars;

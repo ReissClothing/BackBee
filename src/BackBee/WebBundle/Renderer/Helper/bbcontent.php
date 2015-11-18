@@ -23,8 +23,8 @@ namespace BackBee\WebBundle\Renderer\Helper;
 
 use BackBee\CoreDomain\ClassContent\AbstractClassContent;
 use BackBee\CoreDomain\ClassContent\ContentSet;
-use BackBee\WebBundle\Renderer\AbstractRenderer;
 
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 
 /**
@@ -35,6 +35,7 @@ use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundE
  * @subpackage  Helper
  * @copyright   Lp digital system
  * @author      e.chau <eric.chau@lp-digital.fr>
+ * @author      gonzalo.vilaseca <gonzalo.vilaseca@reiss.com>
  */
 class bbcontent extends AbstractHelper
 {
@@ -54,16 +55,19 @@ class bbcontent extends AbstractHelper
      * @var array
      */
     private $options;
+    /**
+     * @var AuthorizationCheckerInterface
+     */
+    private $authorizationChecker;
 
     /**
      * bbcontent helper constructor
      * @param ARenderer $renderer
      */
-    public function __construct(AbstractRenderer $renderer)
+    public function __construct(AuthorizationCheckerInterface $authorizationChecker)
     {
-        parent::__construct($renderer);
-
         $this->reset();
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
@@ -97,16 +101,8 @@ class bbcontent extends AbstractHelper
      */
     private function isGranted()
     {
-//        @todo gvf
-        return true;
-
-        $securityContext = $this->getRenderer()->getApplication()->getSecurityContext();
-
         try {
-            $result = (
-                null !== $this->getRenderer()->getApplication()->getBBUserToken()
-                && $securityContext->isGranted('VIEW', $this->content)
-            );
+            $result = $this->authorizationChecker->isGranted('VIEW', $this->content);
         } catch (AuthenticationCredentialsNotFoundException $e) {
             $result = false;
         }

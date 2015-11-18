@@ -24,6 +24,7 @@
 namespace BackBee\WebBundle\Renderer\Helper;
 
 use BackBee\MetaData\MetaDataBag;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Helper generating <META> tag for the page being rendered
@@ -33,9 +34,20 @@ use BackBee\MetaData\MetaDataBag;
  *
  * @copyright   Lp digital system
  * @author      c.rouillon <charles.rouillon@lp-digital.fr>
+ * @author      gonzalo.vilaseca <gonzalo.vilaseca@reiss.com>
  */
 class metadata extends AbstractHelper
 {
+    /**
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+
+        $this->entityManager = $entityManager;
+    }
     public function __invoke()
     {
         if (null === $renderer = $this->_renderer) {
@@ -49,10 +61,11 @@ class metadata extends AbstractHelper
         $metadata = $page->getMetadata();
 
         if (null === $metadata || $metadata->count() === 0) {
+//            @todo gvf
             $metadata = new MetaDataBag($renderer->getApplication()->getConfig()->getMetadataConfig(), $page);
             $page->setMetaData($metadata);
-            if ($renderer->getApplication()->getEntityManager()->contains($page)) {
-                $renderer->getApplication()->getEntityManager()->flush($page);
+            if ($this->entityManager->contains($page)) {
+                $this->entityManager->flush($page);
             }
         }
 
@@ -87,8 +100,7 @@ class metadata extends AbstractHelper
     {
         $keywords = (array) $keywords;
 
-        return $this->getRenderer()
-            ->getEntityManager()
+        return $this->entityManager
             ->getRepository('BackBee\CoreDomain\NestedNode\KeyWord')
             ->getKeywordsFromElements($keywords)
         ;

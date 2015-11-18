@@ -35,6 +35,7 @@ use BackBee\Utils\StringUtils;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\TwigBundle\TwigEngine;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
@@ -106,9 +107,14 @@ class Renderer extends AbstractRenderer
      * @param array|null    $config
      * @param boolean       $autoloadRendererApdater
      */
-    public function __construct(TwigEngine $twig, EntityManagerInterface $entityManager, EventDispatcherInterface $eventDispatcher)
+    public function __construct(
+        TwigEngine $twig,
+        EntityManagerInterface $entityManager,
+        EventDispatcherInterface $eventDispatcher,
+        Container $container
+    )
     {
-        parent::__construct($eventDispatcher, $entityManager);
+        parent::__construct($eventDispatcher, $entityManager, $container);
         $this->twig = $twig;
         // It is only used in the metadata helper, so this needs to be refactored!
     }

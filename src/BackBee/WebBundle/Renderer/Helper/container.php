@@ -23,7 +23,6 @@
 
 namespace BackBee\WebBundle\Renderer\Helper;
 
-use BackBee\WebBundle\Renderer\AbstractRenderer;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -32,14 +31,14 @@ use Doctrine\Common\Collections\ArrayCollection;
  *
  * @copyright   Lp digital system
  * @author      c.rouillon <charles.rouillon@lp-digital.fr>
+ * @author      gonzalo.vilaseca <gonzalo.vilaseca@reiss.com>
  */
 class container extends AbstractHelper
 {
     protected $_container;
 
-    public function __construct(AbstractRenderer $renderer)
+    public function __construct()
     {
-        parent::__construct($renderer);
 
         $this->_container = new ArrayCollection();
     }
