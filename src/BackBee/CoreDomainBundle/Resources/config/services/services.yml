@@ -14,12 +14,9 @@ parameters:
 #    bbapp.renderer.class: BackBee\Renderer\Renderer
     bbapp.event.dispatcher.class: BackBee\Event\Dispatcher
     bbapp.urlgenerator.class: BackBee\CoreDomainBundle\Rewriting\UrlGenerator
-    bbapp.translator.class: BackBee\Translation\Translator
     bbapp.pagebuilder.class: BackBee\NestedNode\Builder\PageBuilder
     bbapp.registry.class: Symfony\Component\HttpFoundation\ParameterBag
-    bbapp.autoloader.class: BackBee\AutoLoader\AutoLoader
     bbapp.keywordbuilder.class: BackBee\NestedNode\Builder\KeywordBuilder
-    bbapp.controller_resolver.class: BackBee\Controller\ControllerResolver
     bbapp.request.class: Symfony\Component\HttpFoundation\Request
 
     bbapp.script.command: php
@@ -30,33 +27,8 @@ parameters:
 
     bbapp.dbal.logger.profiling.class: BackBee\Logging\DebugStackLogger
 
-    # data collectors
-    bbapp.collector.config.class: BackBee\Profiler\DataCollector\ConfigDataCollector
-    bbapp.collector.request.class: Symfony\Component\HttpKernel\DataCollector\RequestDataCollector
-    bbapp.collector.exception.class: Symfony\Component\HttpKernel\DataCollector\ExceptionDataCollector
-    bbapp.collector.events.class: Symfony\Component\HttpKernel\DataCollector\EventDataCollector
-    bbapp.collector.logger.class: Symfony\Component\HttpKernel\DataCollector\LoggerDataCollector
-    bbapp.collector.time.class: Symfony\Component\HttpKernel\DataCollector\TimeDataCollector
-    bbapp.collector.memory.class: Symfony\Component\HttpKernel\DataCollector\MemoryDataCollector
-    bbapp.collector.routing.class: BackBee\Profiler\DataCollector\RoutingDataCollector
-    bbapp.collector.doctrine.class: BackBee\Profiler\DataCollector\DoctrineDataCollector
-
-    data_collector.templates:
-        config: "%bbapp.base.dir%/Resources/scripts/Collector/config.html.twig"
-        request: "%bbapp.base.dir%/Resources/scripts/Collector/request.html.twig"
-        exception: "%bbapp.base.dir%/Resources/scripts/Collector/exception.html.twig"
-        events: "%bbapp.base.dir%/Resources/scripts/Collector/events.html.twig"
-        logger: "%bbapp.base.dir%/Resources/scripts/Collector/logger.html.twig"
-        # time: "%bbapp.base.dir%/Resources/scripts/Collector/time.html.twig"
-        memory: "%bbapp.base.dir%/Resources/scripts/Collector/memory.html.twig"
-        routing: "%bbapp.base.dir%/Resources/scripts/Collector/routing.html.twig"
-        db: "%bbapp.base.dir%/Resources/scripts/Collector/db.html.twig"
-
-    config.yml_files_to_ignore: ['services', 'bootstrap']
-
     bbapp.config.configurator.class: BackBee\Config\Configurator
     bbapp.config.persistor.class: BackBee\Config\Persistor
-    bbapp.bundle.loader.class: BackBee\Bundle\BundleLoader
     bbapp.classcontent.category_manager.class: BackBee\CoreDomainBundle\ClassContent\CategoryManager
     bbapp.classcontent.manager.class: BackBee\CoreDomainBundle\ClassContent\ClassContentManager
     bbapp.classcontent.exception_on_unknown_classname: true  # true: always throw an exception on class content unknown
@@ -134,11 +106,6 @@ services:
 #        arguments:  [@bbapp]
 #        tags:
 #            - { name: "dumpable", dispatch_event: false }
-
-    config.configurator:
-        class:      %bbapp.config.configurator.class%
-        arguments:  [@bbapp, @bundle.loader]
-        public:     false
 
 #    config.persistor:
 #        class:      %bbapp.config.persistor.class%

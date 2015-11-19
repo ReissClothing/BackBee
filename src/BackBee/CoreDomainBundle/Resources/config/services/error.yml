@@ -1,6 +1,0 @@
-# Definition of templates to be used when something went wrong
-parameters:
-    error.base_folder: %bbapp.base.dir%/Resources/layouts/error/
-    error.404: '404.phtml'
-    error.500: '500.phtml'
-    error.default: 'default.phtml'

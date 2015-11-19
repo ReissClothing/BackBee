@@ -6,9 +6,7 @@ use BackBee\CoreDomain\NestedNode\Page;
 use BackBee\CoreDomainBundle\Event\PageFilterEvent;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 /**
  * @author Gonzalo Vilaseca <gvf.vilaseca@reiss.com>
