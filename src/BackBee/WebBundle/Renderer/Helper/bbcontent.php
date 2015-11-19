@@ -79,13 +79,12 @@ class bbcontent extends AbstractHelper
      */
     public function __invoke(AbstractClassContent $content = null, array $options = [])
     {
-        $result = '';
         $this->reset();
 
         $this->content = $content?: $this->getRenderer()->getObject();
         $this->options = $options;
 
-        if ($this->isGranted()) {
+        if ($a = $this->isGranted()) {
             $this->attributes['class'][] = 'bb-content';
             $result = $this->generateAttributesString();
         } else {
@@ -101,6 +100,8 @@ class bbcontent extends AbstractHelper
      */
     private function isGranted()
     {
+        return true;
+//        @todo gvf BB has acl and sudoers..so quite bizare think of better way
         try {
             $result = $this->authorizationChecker->isGranted('VIEW', $this->content);
         } catch (AuthenticationCredentialsNotFoundException $e) {

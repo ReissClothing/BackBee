@@ -7,96 +7,44 @@ parameters:
     bbapp.securitycontext.role.apiuser: 'API_USER'
 
 services:
-    security.context:
-        class:      %bbapp.securitycontext.class%
-        arguments:  [@bbapp, @security.authentication.manager, @security.access.decision_manager]
-
-    security.authentication.manager:
-        class: BackBee\Security\Authentication\AuthenticationManager
-        arguments: [[], @event.dispatcher]
-
-    security.trust_resolver:
-        class: BackBee\Security\Authentication\TrustResolver
-        arguments:  [BackBee\Security\Token\AnonymousToken, BackBee\Security\Token\RememberMeToken]
-
-    security.voter.sudo:
-        class: BackBee\Security\Authorization\Voter\SudoVoter
-        arguments: [@bbapp]
-
-    security.voter.bb_role:
-        class: Symfony\Component\Security\Core\Authorization\Voter\RoleVoter
-        arguments: [%bbapp.securitycontext.roles.prefix%]
-
-    security.voter.role:
-        class: Symfony\Component\Security\Core\Authorization\Voter\RoleVoter
-        arguments: []
-
-    security.voter.authenticated:
-        class: Symfony\Component\Security\Core\Authorization\Voter\AuthenticatedVoter
-        arguments: [@security.trust_resolver]
+#    security.voter.sudo:
+#        class: BackBee\Security\Authorization\Voter\SudoVoter
+#        arguments: [@bbapp]
 
     security.voter.bb_acl:
-        class: BackBee\Security\Authorization\Voter\BBAclVoter
+        class: BackBee\CoreDomainBundle\Security\Authorization\Voter\BBAclVoter
         arguments:
-            - @security.acl_provider
-            - @security.acl.object_id_retrieval_strategy
-            - @security.acl.security_id_retrieval_strategy
-            - @security.acl.permission.map
-            - @logging
+            - @security.acl.provider
+            - @security.acl.object_identity_retrieval_strategy
+            - @security.acl.security_identity_retrieval_strategy
+            - @bb.security.acl.permission.map
+            - @logger
             - false
-            - @bbapp
+        tags:
+            - { name: security.voter }
 
-    security.acl_provider:
-        class: Symfony\Component\Security\Acl\Dbal\MutableAclProvider
-        arguments:
-            0:
-                @doctrine.connection.default
-            1:
-                @security.acl.permission_strategy
-            2:
-                class_table_name: acl_classes
-                entry_table_name: acl_entries
-                oid_table_name: acl_object_identities
-                oid_ancestors_table_name: acl_object_identity_ancestors
-                sid_table_name: acl_security_identities
+#    security.role_hierarchy:
+#        class: BackBee\Security\Role\RoleHierarchy
+#        arguments: [[]]
 
-    security.acl.object_id_retrieval_strategy:
-        class: Symfony\Component\Security\Acl\Domain\ObjectIdentityRetrievalStrategy
-        public: false
+    bb.security.acl.permission.map:
+        class: BackBee\CoreDomainBundle\Security\Acl\Permission\PermissionMap
 
-    security.acl.security_id_retrieval_strategy:
-        class: BackBee\Security\Acl\Domain\SecurityIdentityRetrievalStrategy
-        arguments: [@security.role_hierarchy, @security.trust_resolver]
+#    security.access.decision_manager:
+#        class: BackBee\Security\Access\DecisionManager
+#        arguments:
+#            - [@security.voter.sudo, @security.voter.bb_role, @security.voter.role, @security.voter.authenticated, @security.voter.bb_acl]
+#            - affirmative
+#            - false
+#            - true
+#        calls:
+#            - [setApplication, [@bbapp]]
 
-    security.role_hierarchy:
-        class: BackBee\Security\Role\RoleHierarchy
-        arguments: [[]]
+#    security.acl_loader_yml:
+#        class:      BackBee\Security\Acl\Loader\YmlLoader
+#        calls:
+#            - [setContainer, [@service_container]]
 
-    security.acl.permission.map:
-        class: BackBee\Security\Acl\Permission\PermissionMap
-
-    security.acl.permission_strategy:
-        class: Symfony\Component\Security\Acl\Domain\PermissionGrantingStrategy
-        public: false
-
-    security.access.decision_manager:
-        class: BackBee\Security\Access\DecisionManager
-        arguments:
-            - [@security.voter.sudo, @security.voter.bb_role, @security.voter.role, @security.voter.authenticated, @security.voter.bb_acl]
-            - affirmative
-            - false
-            - true
-        calls:
-            - [setApplication, [@bbapp]]
-
-    security.acl_loader_yml:
-        class:      BackBee\Security\Acl\Loader\YmlLoader
-        calls:
-            - [setContainer, [@service_container]]
-
-    security.acl_manager:
-        class:      BackBee\Security\Acl\AclManager
-        arguments:  [@security.context, @security.acl.permission.map]
-
-    bb.expression_language:
-        class: %bbapp.expression_language.class%
+#    security.acl_manager:
+#        class:      BackBee\Security\Acl\AclManager
+#        arguments:  [@security.context, @security.acl.permission.map]
