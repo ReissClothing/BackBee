@@ -219,8 +219,6 @@ abstract class AbstractRestController extends Controller implements RestControll
      */
     protected function granted($attributes, $object = null, $message = 'Permission denied')
     {
-//@TODO gvf !!
-        return true;
         if (false === parent::isGranted($attributes, $object)) {
             throw new InsufficientAuthenticationException($message);
         }
