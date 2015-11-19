@@ -16,10 +16,6 @@
     {% endstylesheets %}
 {% endif %}
 
-    {% javascripts '@BackBeeWebBundle/Resources/public/js/require.js' %}
-    <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
-
 <div id="{{ wrapper }}"
      {# TODO gvf leave just version and get it from js#}
     {#data-api="{{ path('/rest/2/', {'version': 2}) }}"#}
@@ -46,9 +42,15 @@
             <div id="circularG_8" class="circularG"></div>
         </div>
     </div>
-    
+
+
+
+    {% javascripts '@BackBeeWebBundle/Resources/public/js/require.js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
     {% javascripts
-        '@BackBeeWebBundle/Resources/public/js/config.js'
+        '@BackBeeWebBundle/Resources/public/js/config.min.js'
     %}
     <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
