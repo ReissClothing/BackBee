@@ -161,14 +161,14 @@ class ClassContentController extends AbstractRestController
         $response = null;
         if (in_array('text/html', $request->getAcceptableContentTypes())) {
             if (false != $pageUid = $request->query->get('page_uid')) {
-                if (null !== $page = $this->getEntityManager()->find('BackBee\CoreDomain\NestedNode\Page', $pageUid)) {
-                    $this->getApplication()->getRenderer()->setCurrentPage($page);
+                if (null !== $page = $this->getDoctrine()->getManager()->find('BackBee\CoreDomain\NestedNode\Page', $pageUid)) {
+                    $this->get('renderer')->setCurrentPage($page);
                 }
             }
 
             $mode = $request->query->get('mode', null);
             $response = $this->createResponse(
-                $this->getApplication()->getRenderer()->render($content, $mode), 200, 'text/html'
+                $this->get('renderer')->render($content, $mode), 200, 'text/html'
             );
         } else {
             $response = $this->createJsonResponse();
@@ -194,10 +194,10 @@ class ClassContentController extends AbstractRestController
         $content = new $classname();
         $this->granted('CREATE', $content);
 
-        $this->getEntityManager()->persist($content);
+        $this->getDoctrine()->getManager()->persist($content);
         $content->setDraft($this->getClassContentManager()->getDraft($content, true));
 
-        $this->getEntityManager()->flush();
+        $this->getDoctrine()->getManager()->flush();
 
         $data = $request->request->all();
         if (0 < count($data)) {
@@ -207,21 +207,19 @@ class ClassContentController extends AbstractRestController
             ]);
 
             $this->updateClassContent($type, $data['uid'], $data);
-            $this->getEntityManager()->flush();
+            $this->getDoctrine()->getManager()->flush();
         }
 
         return $this->createJsonResponse(null, 201, [
             'BB-RESOURCE-UID' => $content->getUid(),
-            'Location'        => $this->getApplication()->getRouting()->getUrlByRouteName(
+            'Location'        => $this->get('router')->generate(
                 'bb.rest.classcontent.get',
                 [
                     'version' => $request->attributes->get('version'),
                     'type'    => $type,
                     'uid'     => $content->getUid(),
-                ],
-                '',
-                false
-            ),
+                ]
+            )
         ]);
     }
 
@@ -238,7 +236,7 @@ class ClassContentController extends AbstractRestController
     public function putAction($type, $uid, Request $request)
     {
         $this->updateClassContent($type, $uid, $request->request->all());
-        $this->getEntityManager()->flush();
+        $this->getDoctrine()->getManager()->flush();
 
         return $this->createJsonResponse(null, 204);
     }
@@ -288,7 +286,7 @@ class ClassContentController extends AbstractRestController
             }
         }
 
-        $this->getEntityManager()->flush();
+        $this->getDoctrine()->getManager()->flush();
 
         return $this->createJsonResponse($result);
     }
@@ -308,8 +306,8 @@ class ClassContentController extends AbstractRestController
         $this->granted('DELETE', $content = $this->getClassContentByTypeAndUid($type, $uid));
 
         try {
-            $this->getEntityManager()->getRepository('BackBee\CoreDomain\ClassContent\AbstractClassContent')->deleteContent($content);
-            $this->getEntityManager()->flush();
+            $this->getDoctrine()->getManager()->getRepository('BackBee\CoreDomain\ClassContent\AbstractClassContent')->deleteContent($content);
+            $this->getDoctrine()->getManager()->flush();
         } catch (\Exception $e) {
             throw new BadRequestHttpException("Unable to delete content with type: `$type` and uid: `$uid`");
         }
@@ -345,7 +343,7 @@ class ClassContentController extends AbstractRestController
     {
         $contents = $this->getEntityManager()
             ->getRepository('BackBee\CoreDomain\ClassContent\Revision')
-            ->getAllDrafts($this->getApplication()->getBBUserToken())
+            ->getAllDrafts($this->get('security.token_storage')->getToken())
         ;
 
         $contents = $this->sortDraftCollection($contents);
@@ -366,7 +364,7 @@ class ClassContentController extends AbstractRestController
     public function putDraftAction($type, $uid, Request $request)
     {
         $this->updateClassContentDraft($type, $uid, $request->request->all());
-        $this->getEntityManager()->flush();
+        $this->getDoctrine()->getManager()->flush();
 
         return $this->createJsonResponse(null, 204);
     }
@@ -413,7 +411,7 @@ class ClassContentController extends AbstractRestController
             }
         }
 
-        $this->getEntityManager()->flush();
+        $this->getDoctrine()->getManager()->flush();
 
         return $this->createJsonResponse($result);
     }
@@ -638,7 +636,7 @@ class ClassContentController extends AbstractRestController
     {
         $criterias = array_merge([
             'only_online' => false,
-            'site_uid'    => $this->getApplication()->getSite()->getUid(),
+            'site_uid'    => $this->get('bbapp.site_context')->getSite()->getUid(),
         ], $this->getRequest()->query->all());
 
         $criterias['only_online'] = (boolean) $criterias['only_online'];
@@ -657,7 +655,7 @@ class ClassContentController extends AbstractRestController
 
         unset($criterias['uids']);
 
-        $contents = $this->getEntityManager()
+        $contents = $this->getDoctrine()->getEntityManager()
             ->getRepository('BackBee\CoreDomain\ClassContent\AbstractClassContent')
             ->findContentsBySearch($classnames, $order_infos, $pagination, $criterias)
         ;

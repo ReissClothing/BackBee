@@ -33,7 +33,8 @@ define(['jsclass'], function () {
             var img;
             if (null === this.find(definition.type)) {
                 img = document.createElement('img');
-                img.src = definition.image;
+                 // @todo gvf get media path here somehow
+                img.src = '/media/' + definition.image;
                 img.style.cssText = 'width: 25px, height: 25px';
                 definition.img = img;
 

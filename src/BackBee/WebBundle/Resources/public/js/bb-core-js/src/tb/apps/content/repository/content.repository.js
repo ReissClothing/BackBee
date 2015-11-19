@@ -117,7 +117,8 @@ define(
                  */
                 getHtml: function (type, uid, renderMode) {
                     var request = new Request(),
-                        url = '/rest/1/' + resourceName + '/' + type + '/' + uid,
+                        // @todo gvf it's not appending app_dev
+                        url =  '/app_dev.php/rest/1/' + resourceName + '/' + type + '/' + uid,
                         currentPageUid = Core.get('page.uid'),
                         data = {};
 

@@ -141,7 +141,7 @@ class KeywordController extends AbstractRestController
             throw new BadRequestHttpException('Invalid patch operation: '.$e->getMessage());
         }
 
-        $this->getEntityManager()->flush();
+        $this->getDoctrine()->getManager()->flush();
 
         return $this->createJsonResponse(null, 204);
     }
@@ -227,20 +227,18 @@ class KeywordController extends AbstractRestController
                 $this->getKeywordRepository()->insertNodeAsLastChildOf($keywordItem, $parent);
             }
 
-            $this->getEntityManager()->persist($keywordItem);
-            $this->getEntityManager()->flush();
+            $this->getDoctrine()->getManager()->persist($keywordItem);
+            $this->getDoctrine()->getManager()->flush();
 
             $response = $this->createJsonResponse(null, 201, [
                 'BB-RESOURCE-UID' => $keywordItem->getUid(),
-                'Location' => $this->getApplication()->getRouting()->getUrlByRouteName(
+                'Location' => $this->get('router')->generate(
                     'bb.rest.keyword.get',
                     [
                         'version' => $request->attributes->get('version'),
                         'uid' => $keywordItem->getUid(),
                     ],
-                    '',
-                    false
-                ),
+                )
             ]);
         } catch (\Exception $e) {
             $response = $this->createErrorResponse($e);
@@ -274,8 +272,8 @@ class KeywordController extends AbstractRestController
 
             $keyword->setKeyWord($keywordLabel);
 
-            $this->getEntityManager()->persist($keyword);
-            $this->getEntityManager()->flush();
+            $this->getDoctrine()->getManager()->persist($keyword);
+            $this->getDoctrine()->getManager()->flush();
 
             $response = $this->createJsonResponse(null, 204);
         } catch (\Exception $e) {
@@ -310,6 +308,6 @@ class KeywordController extends AbstractRestController
 
     private function getKeywordRepository()
     {
-        return $this->getEntityManager()->getRepository('BackBee\CoreDomain\NestedNode\KeyWord');
+        return $this->getDoctrine()->getManager()->getRepository('BackBee\CoreDomain\NestedNode\KeyWord');
     }
 }

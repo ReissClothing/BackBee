@@ -5,8 +5,7 @@ bb.rest.resource.upload:
     path: /rest/{version}/resource/upload
     methods: [POST]
     defaults:
-        _action: uploadAction
-        _controller: BackBee\ApiBundle\Controller\ResourceController
+        _controller: BackBeeApiBundle:Resource:upload
     requirements:
         version: \d+
 
@@ -21,72 +20,72 @@ bb.rest.user.current:
 
 bb.rest.user.get:
     path: /rest/{version}/user/{id}
+    methods: [GET]
     defaults:
-        _action: getAction
-        _controller: BackBee\ApiBundle\Controller\UserController
+        _controller: BackBeeApiBundle:User:get
     requirements:
         version: \d+
         id: \d+
-        _method: GET
 
 bb.rest.user.post:
     path: /rest/{version}/user
+    methods: [POST]
     defaults:
-        _action: postAction
-        _controller: BackBee\ApiBundle\Controller\UserController
+        _controller: BackBeeApiBundle:User:post
     requirements:
         version: \d+
-        _method: POST
 
 bb.rest.user.put:
     path: /rest/{version}/user/{id}
+    methods: [PUT]
     defaults:
         _action: putAction
-        _controller: BackBee\ApiBundle\Controller\UserController
+        _controller: BackBeeApiBundle:User:put
     requirements:
         version: \d+
         id: \d+
-        _method: PUT
 
 bb.rest.user.patch:
     path: /rest/{version}/user/{id}
+    methods: [PATCH]
     defaults:
         _action: patchAction
-        _controller: BackBee\ApiBundle\Controller\UserController
+        _controller: BackBeeApiBundle:User:patch
     requirements:
         version: \d+
         id: \d+
-        _method: PATCH
 
 bb.rest.user.delete:
     path: /rest/{version}/user/{id}
+    methods: [DELETE]
     defaults:
         _action: deleteAction
-        _controller: BackBee\ApiBundle\Controller\UserController
+        _controller: BackBeeApiBundle:User:delete
     requirements:
         version: \d+
         id: \d+
-        _method: DELETE
+
 
 bb.rest.user.get_collection:
     path: /rest/{version}/user
+    methods: [GET]
     defaults:
         _action: getCollectionAction
-        _controller: BackBee\ApiBundle\Controller\UserController
+        _controller: BackBeeApiBundle:User:getCollection
     requirements:
         version: \d+
-        _method: GET
+
 
 # Group Rest Api
 bb.rest.group.get:
     path: /rest/{version}/group/{id}
+    methods: [GET]
     defaults:
-        _action:     getAction
-        _controller: BackBee\ApiBundle\Controller\GroupController
+        _controller: BackBeeApiBundle:Group:get
     requirements:
         version: \d+
         id: \d+
-        _method: GET
+
 
 bb.rest.group.delete:
     path: /rest/{version}/group/{id}
@@ -213,39 +212,36 @@ bb.rest.acl.get_classes:
 
 bb.rest.page.get_available_status:
     path: /rest/{version}/page/status
+    methods: [GET]
     defaults:
-        _action:     getAvailableStatusAction
-        _controller: BackBee\ApiBundle\Controller\PageController
+        _controller: BackBeeApiBundle:Page:getAvailableStatus
     requirements:
-        _method: GET
+        version: \d+
 
 bb.rest.page.get_metadata:
     path: /rest/{version}/page/{uid}/metadata
+    methods: [GET]
     defaults:
-        _action:     getMetadataAction
-        _controller: BackBee\ApiBundle\Controller\PageController
+        _controller: BackBeeApiBundle:Page:getMetadata
     requirements:
         uid: \w{32}
-        _method: GET
 
 bb.rest.page.get_ancestors:
   path: /rest/{version}/page/{uid}/ancestors
+  methods: [GET]
   defaults:
-    _action: getAncestorsAction
-    _controller: BackBee\ApiBundle\Controller\PageController
+    _controller: BackBeeApiBundle:Page:getAncestors
   requirements:
     uid: \w{32}
-    _method: GET
 
 bb.rest.page.put_metadata:
     path: /rest/{version}/page/{uid}/metadata
+    methods: [PUT]
     defaults:
-        _action:     putMetadataAction
-        _controller: BackBee\ApiBundle\Controller\PageController
+        _controller: BackBeeApiBundle:Page:putMetadata
     requirements:
         version: \d+
         uid: \w{32}
-        _method: PUT
 
 bb.rest.page.get_collection:
     path: /rest/{version}/page
@@ -266,60 +262,55 @@ bb.rest.page.get:
 
 bb.rest.page.post:
     path: /rest/{version}/page
+    methods: [POST]
     defaults:
-        _action:     postAction
-        _controller: BackBee\ApiBundle\Controller\PageController
+        _controller: BackBeeApiBundle:Page:post
     requirements:
         version: \d+
-        _method: POST
 
 bb.rest.page.clone:
     path: /rest/{version}/page/{uid}/clone
+    methods: [POST]
     defaults:
-        _action:     cloneAction
-        _controller: BackBee\ApiBundle\Controller\PageController
+        _controller: BackBeeApiBundle:Page:clone
     requirements:
         version: \d+
-        _method: POST
 
 bb.rest.page.put:
     path: /rest/{version}/page/{uid}
+    methods: [PUT]
     defaults:
-        _action:     putAction
-        _controller: BackBee\ApiBundle\Controller\PageController
+        _controller: BackBeeApiBundle:Page:put
     requirements:
         version: \d+
         uid: \w{32}
-        _method: PUT
 
 bb.rest.page.patch:
     path: /rest/{version}/page/{uid}
+    methods: [PATCH]
     defaults:
         _action:     patchAction
-        _controller: BackBee\ApiBundle\Controller\PageController
+        _controller: BackBeeApiBundle:Page:patch
     requirements:
         version: \d+
         uid: \w{32}
-        _method: PATCH
 
 bb.rest.page.put_collection:
     path: /rest/{version}/page
+    methods: [PUT]
     defaults:
-        _action:     putCollectionAction
-        _controller: BackBee\ApiBundle\Controller\PageController
+        _controller: BackBeeApiBundle:Page:putCollection
     requirements:
         version: \d+
-        _method: PUT
 
 bb.rest.page.delete:
     path: /rest/{version}/page/{uid}
+    methods: [DELETE]
     defaults:
-        _action: deleteAction
-        _controller: BackBee\ApiBundle\Controller\PageController
+        _controller: BackBeeApiBundle:Page:delete
     requirements:
         version: \d+
         uid: \w{32}
-        _method: DELETE
 
 bb.rest.layout.get_workflow_state:
     path: /rest/{version}/layout/{uid}/workflow_state
@@ -331,22 +322,20 @@ bb.rest.layout.get_workflow_state:
 
 bb.rest.layout.get_collection:
     path: /rest/{version}/layout
+    methods:[GET]
     defaults:
-        _action: getCollectionAction
-        _controller: BackBee\ApiBundle\Controller\LayoutController
+        _controller: BackBeeApiBundle:Layout:getCollection
     requirements:
         version: \d+
-        _method: GET
 
 bb.rest.layout.get:
     path: /rest/{version}/layout/{uid}
+    method: [GET]
     defaults:
-        _action: getAction
-        _controller: BackBee\ApiBundle\Controller\LayoutController
+        _controller: BackBeeApiBundle:Layout:get
     requirements:
         version: \d+
-        _method: GET
-
+# Commented out in BB original repo
 # bb.rest.layout.post:
 #     path: /rest/{version}/layout
 #     defaults:
@@ -356,41 +345,40 @@ bb.rest.layout.get:
 #         uid: \w{32}
 #         _method: POST
 
-bb.rest.layout.put:
-    path: /rest/{version}/layout/{uid}
-    defaults:
-        _action: putAction
-        _controller: BackBee\ApiBundle\Controller\LayoutController
-    requirements:
-        version: \d+
-        _method: PUT
-
-bb.rest.layout.delete:
-    path: /rest/{version}/layout/{uid}
-    defaults:
-        _action: deleteAction
-        _controller: BackBee\ApiBundle\Controller\LayoutController
-    requirements:
-        version: \d+
-        _method: DELETE
+# @todo gvf put action doesnt exist in controller
+#bb.rest.layout.put:
+#    path: /rest/{version}/layout/{uid}
+#    defaults:
+#        _action: putAction
+#        _controller: BackBee\ApiBundle\Controller\LayoutController
+#    requirements:
+#        version: \d+
+#        _method: PUT
+# @todo gvf delete action doesnt exist in controller
+#bb.rest.layout.delete:
+#    path: /rest/{version}/layout/{uid}
+#    defaults:
+#        _action: deleteAction
+#        _controller: BackBee\ApiBundle\Controller\LayoutController
+#    requirements:
+#        version: \d+
+#        _method: DELETE
 
 bb.rest.site.get_collection:
     path: /rest/{version}/site
+    methods: [GET]
     defaults:
-        _action: getCollectionAction
-        _controller: BackBee\ApiBundle\Controller\SiteController
+        _controller: BackBeeApiBundle:Site:getCollection
     requirements:
         version: \d+
-        _method: GET
 
 bb.rest.classcontent.category.get:
     path: /rest/{version}/classcontent-category/{id}
+    method: [GET]
     defaults:
-        _action: getCategoryAction
-        _controller: BackBee\ApiBundle\Controller\ClassContentController
+        _controller: BackBeeApiBundle:ClassContent:getCategory
     requirements:
         version: \d+
-        _method: GET
 
 bb.rest.classcontent.category.get_collection:
     path: /rest/{version}/classcontent-category
@@ -402,14 +390,13 @@ bb.rest.classcontent.category.get_collection:
 
 bb.rest.classcontent.get:
     path: /rest/{version}/classcontent/{type}/{uid}
+    methods: [GET]
     defaults:
-        _action: getAction
-        _controller: BackBee\ApiBundle\Controller\ClassContentController
+        _controller: BackBeeApiBundle:ClassContent:get
     requirements:
         version: \d+
         uid: "[a-f0-9]{32}"
         type: .+
-        _method: GET
 
 bb.rest.classcontent.get_collection_by_type:
     path: /rest/{version}/classcontent/{type}
@@ -430,124 +417,120 @@ bb.rest.classcontent.get_collection:
 
 bb.rest.classcontent.put_collection:
     path: /rest/{version}/classcontent
+    methods: [PUT]
     defaults:
-        _action: putCollectionAction
-        _controller: BackBee\ApiBundle\Controller\ClassContentController
+        _controller: BackBeeApiBundle:ClassContent:putCollection
     requirements:
         version: \d+
         uid: \w{32}
-        _method: PUT
 
 bb.rest.classcontent.post:
     path: /rest/{version}/classcontent/{type}
+    methods: [POST]
     defaults:
         _action: postAction
-        _controller: BackBee\ApiBundle\Controller\ClassContentController
+        _controller: BackBeeApiBundle:ClassContent:post
     requirements:
         uid: \w{32}
         type: .+
-        _method: POST
 
 bb.rest.classcontent.put:
     path: /rest/{version}/classcontent/{type}/{uid}
+    methods: [PUT]
     defaults:
-        _action: putAction
-        _controller: BackBee\ApiBundle\Controller\ClassContentController
+        _controller: BackBeeApiBundle:ClassContent:put
     requirements:
         version: \d+
         uid: \w{32}
         type: "[a-zA-Z_\/]+"
-        _method: PUT
 
 bb.rest.classcontent.delete:
     path: /rest/{version}/classcontent/{type}/{uid}
+    methods: [DELETE]
     defaults:
-        _action: deleteAction
-        _controller: BackBee\ApiBundle\Controller\ClassContentController
+        _controller: BackBeeApiBundle:ClassContent:delete
     requirements:
         version: \d+
         uid: \w{32}
         type: .+
-        _method: DELETE
 
 bb.rest.classcontent.get_draft:
     path: /rest/{version}/classcontent-draft/{type}/{uid}
+    methods: [GET]
     defaults:
         _action: getDraftAction
-        _controller: BackBee\ApiBundle\Controller\ClassContentController
+        _controller: BackBeeApiBundle:ClassContent:getDraft
     requirements:
         version: \d+
         uid: \w{32}
         type: "[a-zA-Z_\/]+"
-        _method: GET
 
 bb.rest.classcontent.get_draft_collection:
     path: /rest/{version}/classcontent-draft
+    methods: [GET]
     defaults:
-        _action: getDraftCollectionAction
-        _controller: BackBee\ApiBundle\Controller\ClassContentController
+        _controller: BackBeeApiBundle:ClassContent:getDraftCollection
     requirements:
         version: \d+
-        _method: GET
 
 bb.rest.classcontent.put_draft:
     path: /rest/{version}/classcontent-draft/{type}/{uid}
+    methods: [PUT]
     defaults:
-        _action: putDraftAction
-        _controller: BackBee\ApiBundle\Controller\ClassContentController
+        _controller: BackBeeApiBundle:ClassContent:putDraft
     requirements:
         version: \d+
         uid: \w{32}
         type: "[a-zA-Z_\/]+"
-        _method: PUT
 
 bb.rest.classcontent.put_draft_collection:
     path: /rest/{version}/classcontent-draft
+    methods: [PUT]
     defaults:
         _action: putDraftCollectionAction
-        _controller: BackBee\ApiBundle\Controller\ClassContentController
+        _controller: BackBeeApiBundle:ClassContent:putDraftCollection
     requirements:
         version: \d+
-        _method: PUT
 
-bb.rest.bundle.get_collection:
-    path: /rest/{version}/bundle
-    defaults:
-        _action: getCollectionAction
-        _controller: BackBee\ApiBundle\Controller\BundleController
-    requirements:
-        version: \d+
-        _method: GET
-
-bb.rest.bundle.get:
-    path: /rest/{version}/bundle/{id}
-    defaults:
-        _action: getAction
-        _controller: BackBee\ApiBundle\Controller\BundleController
-    requirements:
-        version: \d+
-        _method: GET
-
-bb.rest.bundle.patch:
-    path: /rest/{version}/bundle/{id}
-    defaults:
-        _action: patchAction
-        _controller: BackBee\ApiBundle\Controller\BundleController
-    requirements:
-        version: \d+
-        _method: PATCH
-
-bb.rest.bundle.exposed_actions:
-    path: /rest/{version}/bundle/{bundleName}/{controllerName}/{actionName}{parameters}
-    defaults:
-        _action: accessBundleExposedRoutesAction
-        _controller: BackBee\ApiBundle\Controller\BundleController
-    requirements:
-        version: \d+
-        bundleName: "[a-zA-Z]+"
-        controllerName: "[a-zA-Z]+"
-        actionName: "[a-zA-Z]+"
-        parameters: "^\/.+|"
+# These are not going to be user as such, as we're moving to symfony bundles
+#bb.rest.bundle.get_collection:
+#    path: /rest/{version}/bundle
+#    defaults:
+#        _action: getCollectionAction
+#        _controller: BackBee\ApiBundle\Controller\BundleController
+#    requirements:
+#        version: \d+
+#        _method: GET
+#
+#bb.rest.bundle.get:
+#    path: /rest/{version}/bundle/{id}
+#    defaults:
+#        _action: getAction
+#        _controller: BackBee\ApiBundle\Controller\BundleController
+#    requirements:
+#        version: \d+
+#        _method: GET
+#
+#bb.rest.bundle.patch:
+#    path: /rest/{version}/bundle/{id}
+#    defaults:
+#        _action: patchAction
+#        _controller: BackBee\ApiBundle\Controller\BundleController
+#    requirements:
+#        version: \d+
+#        _method: PATCH
+#
+#bb.rest.bundle.exposed_actions:
+#    path: /rest/{version}/bundle/{bundleName}/{controllerName}/{actionName}{parameters}
+#    defaults:
+#        _action: accessBundleExposedRoutesAction
+#        _controller: BackBee\ApiBundle\Controller\BundleController
+#    requirements:
+#        version: \d+
+#        bundleName: "[a-zA-Z]+"
+#        controllerName: "[a-zA-Z]+"
+#        actionName: "[a-zA-Z]+"
+#        parameters: "^\/.+|"
 
 bb.rest.media_folder.get_collection:
     path: /rest/{version}/media-folder
@@ -645,57 +628,56 @@ bb.media.list:
     _controller: BackBee\ApiBundle\Controller\MediaController
   requirements:
     _method: GET
+    version: \d+
 
 bb.keyword.get_collection:
-  path: /rest/{version}/keyword
-  defaults:
-    _action: getCollectionAction
-    _controller: BackBee\ApiBundle\Controller\KeywordController
-  requirements:
-    _method: GET
+    path: /rest/{version}/keyword
+    methods: [GET]
+    defaults:
+        _controller: BackBeeApiBundle:Keyword:getCollection
+    requirements:
+        version: \d+
 
 bb.keyword.get:
-  path: /rest/{version}/keyword/{uid}
-  defaults:
-    _action: getAction
-    _controller: BackBee\ApiBundle\Controller\KeywordController
-  requirements:
-    _method: GET
-    version: \d+
-    uid: \w{32}
+    path: /rest/{version}/keyword/{uid}
+    methods: [GET]
+    defaults:
+        _controller: BackBeeApiBundle:Keyword:get
+    requirements:
+        version: \d+
+        uid: \w{32}
 
 bb.keyword.post:
-  path: /rest/{version}/keyword
-  defaults:
-    _action: postAction
-    _controller: BackBee\ApiBundle\Controller\KeywordController
-  requirements:
-    _method: POST
+    path: /rest/{version}/keyword
+    methods: [POST]
+    defaults:
+        _controller: BackBeeApiBundle:Keyword:post
+    requirements:
+        version: \d+
 
 bb.keyword.put:
-  path: /rest/{version}/keyword/{uid}
-  defaults:
-    _action: putAction
-    _controller: BackBee\ApiBundle\Controller\KeywordController
-  requirements:
-    _method: PUT
+    path: /rest/{version}/keyword/{uid}
+    methods: [PUT]
+    defaults:
+        _controller: BackBeeApiBundle:Keyword:put
+    requirements:
+        version: \d+
 
 bb.keyword.delete:
-  path: /rest/{version}/keyword/{uid}
-  defaults:
-    _action: deleteAction
-    _controller: BackBee\ApiBundle\Controller\KeywordController
-  requirements:
-    _method: DELETE
+    path: /rest/{version}/keyword/{uid}
+    methods: [DELETE]
+    defaults:
+        _controller: BackBeeApiBundle:Keyword:delete
+    requirements:
+        version: \d+
 
 bb.rest.keyword.patch:
     path: /rest/{version}/keyword/{uid}
+    methods: [PATCH]
     defaults:
-        _action: patchAction
-        _controller: BackBee\ApiBundle\Controller\KeywordController
+        _controller: BackBeeApiBundle:Keyword:patch
     requirements:
         version: \d+
-        _method: PATCH
 
 # @todo gvf this is used in JS I guess to get base api url, should be removed
 bb.rest.api.dummy:
