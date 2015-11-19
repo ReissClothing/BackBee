@@ -237,7 +237,7 @@ class KeywordController extends AbstractRestController
                     [
                         'version' => $request->attributes->get('version'),
                         'uid' => $keywordItem->getUid(),
-                    ],
+                    ]
                 )
             ]);
         } catch (\Exception $e) {

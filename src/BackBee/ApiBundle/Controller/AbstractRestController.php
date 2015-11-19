@@ -180,19 +180,6 @@ abstract class AbstractRestController extends Controller implements RestControll
     }
 
     /**
-     * Returns a RedirectResponse to the given URL.
-     *
-     * @param string $url    The URL to redirect to
-     * @param int    $status The status code to use for the Response
-     *
-     * @return RedirectResponse
-     */
-    protected function redirect($url, $status = 302)
-    {
-        return new RedirectResponse($url, $status);
-    }
-
-    /**
      * @param type $message
      *
      * @return type

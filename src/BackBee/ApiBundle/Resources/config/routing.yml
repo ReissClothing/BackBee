@@ -322,7 +322,7 @@ bb.rest.layout.get_workflow_state:
 
 bb.rest.layout.get_collection:
     path: /rest/{version}/layout
-    methods:[GET]
+    methods: [GET]
     defaults:
         _controller: BackBeeApiBundle:Layout:getCollection
     requirements:
@@ -330,7 +330,7 @@ bb.rest.layout.get_collection:
 
 bb.rest.layout.get:
     path: /rest/{version}/layout/{uid}
-    method: [GET]
+    methods: [GET]
     defaults:
         _controller: BackBeeApiBundle:Layout:get
     requirements:
@@ -374,7 +374,7 @@ bb.rest.site.get_collection:
 
 bb.rest.classcontent.category.get:
     path: /rest/{version}/classcontent-category/{id}
-    method: [GET]
+    methods: [GET]
     defaults:
         _controller: BackBeeApiBundle:ClassContent:getCategory
     requirements:
