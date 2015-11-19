@@ -7,9 +7,19 @@ parameters:
     bbapp.securitycontext.role.apiuser: 'API_USER'
 
 services:
-#    security.voter.sudo:
-#        class: BackBee\Security\Authorization\Voter\SudoVoter
-#        arguments: [@bbapp]
+    security.voter.sudo:
+        class: BackBee\CoreDomainBundle\Security\Authorization\Voter\SudoVoter
+        arguments:
+            - @security.acl.provider
+            - @security.acl.object_identity_retrieval_strategy
+            - @security.acl.security_identity_retrieval_strategy
+            - @bb.security.acl.permission.map
+            - @logger
+            - false
+        calls:
+            - [setSudoers, [%sudoers%]]
+        tags:
+            - { name: security.voter }
 
     security.voter.bb_acl:
         class: BackBee\CoreDomainBundle\Security\Authorization\Voter\BBAclVoter
