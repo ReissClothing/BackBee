@@ -86,7 +86,7 @@ class ResourceController extends AbstractRestController
      */
     private function doRequestUpload(UploadedFile $file)
     {
-        $tmpDirectory = $this->getApplication()->getTemporaryDir();
+        $tmpDirectory = $this->getParameter("kernel.cache_dir");
         $data = [];
 
         if (null !== $file) {

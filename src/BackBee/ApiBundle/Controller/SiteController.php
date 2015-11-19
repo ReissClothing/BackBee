@@ -45,7 +45,7 @@ class SiteController extends AbstractRestController
             throw new AccessDeniedHttpException("Your account's api access is disabled");
         }
 
-        $site = $this->getEntityManager()->getRepository('BackBee\CoreDomain\Site\Site')->find($uid);
+        $site = $this->getDoctrine()->getManager()->getRepository('BackBee\CoreDomain\Site\Site')->find($uid);
 
         if (!$site) {
             return $this->create404Response(sprintf('Site not found: %s', $uid));
@@ -86,7 +86,7 @@ class SiteController extends AbstractRestController
             throw new AccessDeniedHttpException('Your account\'s api access is disabled');
         }
         $sitesAvailable = [];
-        $sites = $this->getEntityManager()->getRepository('BackBee\CoreDomain\Site\Site')->findAll();
+        $sites = $this->getDoctrine()->getManager()->getRepository('BackBee\CoreDomain\Site\Site')->findAll();
 
         foreach ($sites as $site) {
             if ($this->isGranted('VIEW', $site)) {

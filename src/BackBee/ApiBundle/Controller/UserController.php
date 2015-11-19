@@ -23,6 +23,7 @@
 
 namespace BackBee\ApiBundle\Controller;
 
+use BackBee\CoreDomainBundle\Event\Event;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,7 +34,6 @@ use Symfony\Component\Security\Core\Exception\InsufficientAuthenticationExceptio
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validation;
 
-use BackBee\Event\Event;
 use BackBee\ApiBundle\Controller\Annotations as Rest;
 use BackBee\ApiBundle\Exception\ValidationException;
 use BackBee\ApiBundle\Patcher\EntityPatcher;
@@ -78,14 +78,14 @@ class UserController extends AbstractRestController
         $group = $request->query->get('groups', null);
 
         if ($group !== null) {
-            $group = $this->getEntityManager()->find('BackBee\Security\Group', $group);
+            $group = $this->getDoctrine()->getManager()->find('BackBee\Security\Group', $group);
             $users = $group->getUsers();
         } elseif (count($request->query->all()) !== 0) {
-            $users = $this->getEntityManager()
+            $users = $this->getDoctrine()->getManager()
                         ->getRepository(get_class($this->getUser()))
                         ->getCollection($request->query->all());
         } else {
-            $users = $this->getEntityManager()->getRepository(get_class($this->getUser()))->findAll();
+            $users = $this->getDoctrine()->getManager()->getRepository(get_class($this->getUser()))->findAll();
         }
 
         return new Response($this->formatCollection($users), 200, ['Content-Type' => 'application/json']);
@@ -102,7 +102,7 @@ class UserController extends AbstractRestController
             throw new InsufficientAuthenticationException('You must be authenticated to access');
         }
 
-//        $user = $this->getEntityManager()->find(get_class($this->getUser()), $this->getUser()->getId());
+//        $user = $this->getDoctrine()->getManager()->find(get_class($this->getUser()), $this->getUser()->getId());
 //@gvf todo we are returning a new user class, FE should be changed or we should use BBUser
 //        return new Response($this->formatItem($this->getUser()), 200, ['Content-Type' => 'application/json']);
         return new Response('{"id":1,"login":"gonzalo","email":"gonzalo.vilaseca@reiss.com","state":0,"activated":true,"firstname":"SuperAdmin","lastname":"SuperAdmin","groups":[],"api_key_public":"ca2524ab25c9e15fa160019a346adbd17d256019","api_key_enabled":true,"created":{},"modified":{}}', 200, ['Content-Type' => 'application/json']);
@@ -119,7 +119,7 @@ class UserController extends AbstractRestController
             throw new InsufficientAuthenticationException('You must be authenticated to delete users');
         }
 
-        $user = $this->getEntityManager()->find(get_class($this->getUser()), $id);
+        $user = $this->getDoctrine()->getManager()->find(get_class($this->getUser()), $id);
 
         if (!$user) {
             return $this->create404Response(sprintf('User not found with id %d', $id));
@@ -147,7 +147,7 @@ class UserController extends AbstractRestController
             throw new InsufficientAuthenticationException('You can remove the user of your current session.');
         }
 
-        $user = $this->getEntityManager()->find(get_class($this->getUser()), $id);
+        $user = $this->getDoctrine()->getManager()->find(get_class($this->getUser()), $id);
 
         if (!$user) {
             return $this->create404Response(sprintf('User not found with id %d', $id));
@@ -157,8 +157,8 @@ class UserController extends AbstractRestController
             throw new InsufficientAuthenticationException(sprintf('You are not authorized to delete user with id %s', $id));
         }
 
-        $this->getEntityManager()->remove($user);
-        $this->getEntityManager()->flush();
+        $this->getDoctrine()->getManager()->remove($user);
+        $this->getDoctrine()->getManager()->flush();
 
         return new Response("", 204);
     }
@@ -199,7 +199,7 @@ class UserController extends AbstractRestController
             throw new InsufficientAuthenticationException('You must be authenticated to view users');
         }
 
-        $user = $this->getEntityManager()->find(get_class($this->getUser()), $id);
+        $user = $this->getDoctrine()->getManager()->find(get_class($this->getUser()), $id);
 
         if (!$user) {
             return $this->create404Response(sprintf('User not found with id %d', $id));
@@ -212,7 +212,7 @@ class UserController extends AbstractRestController
         $user = $this->deserializeEntity($request->request->all(), $user);
 
         if ($request->request->has('password')) {
-            $encoderFactory = $this->getContainer()->get('security.context')->getEncoderFactory();
+            $encoderFactory = $this->get('security.encoder_factory');
             $password = $request->request->get('password', '');
 
             if ($encoderFactory && $encoder = $encoderFactory->getEncoder($user)) {
@@ -222,8 +222,8 @@ class UserController extends AbstractRestController
             $user->setPassword($password);
         }
 
-        $this->getEntityManager()->persist($user);
-        $this->getEntityManager()->flush($user);
+        $this->getDoctrine()->getManager()->persist($user);
+        $this->getDoctrine()->getManager()->flush();
 
         return new Response("", 204);
     }
@@ -246,8 +246,8 @@ class UserController extends AbstractRestController
             throw new InsufficientAuthenticationException('You must be authenticated to view users');
         }
 
-        $userExists = $this->getApplication()
-                           ->getEntityManager()
+        $userExists = $this->getDoctrine()
+                           ->getManager()
                            ->getRepository(get_class($this->getUser()))
                            ->findBy(array('_username' => $request->request->get('username')));
 
@@ -276,7 +276,7 @@ class UserController extends AbstractRestController
         }
 
         $user->setRawPassword($password);
-        $encoderFactory = $this->getContainer()->get('security.context')->getEncoderFactory();
+        $encoderFactory = $this->get('security.encoder_factory');
 
         if ($encoderFactory && $encoder = $encoderFactory->getEncoder($user)) {
             $password = $encoder->encodePassword($password, '');
@@ -284,11 +284,11 @@ class UserController extends AbstractRestController
 
         $user->setPassword($password);
 
-        $this->getEntityManager()->persist($user);
-        $this->getEntityManager()->flush($user);
+        $this->getDoctrine()->getManager()->persist($user);
+        $this->getDoctrine()->getManager()->flush();
 
         $event = new Event($user);
-        $this->getApplication()->getEventDispatcher()->dispatch('rest.user.creation', $event);
+        $this->get('event_dispatcher')->dispatch('rest.user.creation', $event);
 
         return new Response($this->formatItem($user), 200, ['Content-Type' => 'application/json']);
     }
@@ -345,7 +345,7 @@ class UserController extends AbstractRestController
 
     private function patchUserStatus($id, $operations)
     {
-        $user = $this->getEntityManager()->find(get_class($this->getUser()), $id);
+        $user = $this->getDoctrine()->getManager()->find(get_class($this->getUser()), $id);
 
         if (!$this->isGranted('EDIT', $user)) {
             throw new InsufficientAuthenticationException(sprintf('You are not authorized to edit user with id %s', $id));
@@ -354,15 +354,15 @@ class UserController extends AbstractRestController
         $operation = reset($operations);
 
         $user->setActivated((boolean) $operation['value']);
-        $this->getEntityManager()->persist($user);
-        $this->getEntityManager()->flush($user);
+        $this->getDoctrine()->getManager()->persist($user);
+        $this->getDoctrine()->getManager()->flush();
 
         return true;
     }
 
     private function patchUserGroups($id, $operations)
     {
-        $user = $this->getEntityManager()->find(get_class($this->getUser()), $id);
+        $user = $this->getDoctrine()->getManager()->find(get_class($this->getUser()), $id);
 
         if (!$this->isGranted('EDIT', $user)) {
             throw new InsufficientAuthenticationException(sprintf('You are not authorized to edit user with id %s', $id));
@@ -372,7 +372,7 @@ class UserController extends AbstractRestController
 
         foreach ($operations['groups'] as $key => $value) {
             if ($value == 'added' || $value == 'removed') {
-                $group = $this->getEntityManager()->find('BackBee\Security\Group', $key);
+                $group = $this->getDoctrine()->getManager()->find('BackBee\Security\Group', $key);
 
                 if ($value == 'added') {
                     $group->addUser($user);
@@ -380,8 +380,8 @@ class UserController extends AbstractRestController
                     $group->removeUser($user);
                 }
 
-                $this->getEntityManager()->persist($group);
-                $this->getEntityManager()->flush($group);
+                $this->getDoctrine()->getManager()->persist($group);
+                $this->getDoctrine()->getManager()->flush();
             }
         }
 
@@ -404,14 +404,14 @@ class UserController extends AbstractRestController
             throw new ValidationException($violations);
         }
 
-        $user = $this->getEntityManager()->find(get_class($this->getUser()), $id);
+        $user = $this->getDoctrine()->getManager()->find(get_class($this->getUser()), $id);
 
         $user->setFirstname($operations['firstname']);
         $user->setLastname($operations['lastname']);
         $user->setEmail($operations['email']);
 
-        $this->getEntityManager()->persist($user);
-        $this->getEntityManager()->flush($user);
+        $this->getDoctrine()->getManager()->persist($user);
+        $this->getDoctrine()->getManager()->flush();
 
         return true;
     }
@@ -429,7 +429,7 @@ class UserController extends AbstractRestController
             throw new InsufficientAuthenticationException('Password can only be changed by its owner.');
         }
 
-        $user = $this->getEntityManager()->find(get_class($this->getUser()), $id);
+        $user = $this->getDoctrine()->getManager()->find(get_class($this->getUser()), $id);
 
         $operations = $this->flattenPatchRequest($operations);
 
@@ -453,7 +453,7 @@ class UserController extends AbstractRestController
             ], 400);
         }
 
-        $encoderFactory = $this->getContainer()->get('security.context')->getEncoderFactory();
+        $encoderFactory = $this->get('security.encoder_factory');
 
         if ($encoderFactory && $encoder = $encoderFactory->getEncoder($user)) {
             $password = $encoder->encodePassword($password, '');
@@ -461,8 +461,8 @@ class UserController extends AbstractRestController
 
 
         $user->setPassword($password);
-        $this->getEntityManager()->persist($user);
-        $this->getEntityManager()->flush($user);
+        $this->getDoctrine()->getManager()->persist($user);
+        $this->getDoctrine()->getManager()->flush();
 
         return true;
     }

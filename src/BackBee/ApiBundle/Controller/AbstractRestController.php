@@ -27,6 +27,7 @@ use JMS\Serializer\DeserializationContext;
 use JMS\Serializer\SerializationContext;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Security\Core\Exception\InsufficientAuthenticationException;
@@ -146,6 +147,22 @@ abstract class AbstractRestController extends Controller implements RestControll
     }
 
     /**
+     * Create a JsonResponse.
+     *
+     * @see JsonResponse::__construct()
+     *
+     * @param mixed   $data
+     * @param integer $status
+     * @param array   $headers
+     *
+     * @return JsonResponse
+     */
+    protected function createJsonResponse($data = null, $status = 200, $headers = array())
+    {
+        return new JsonResponse($data, $status, $headers);
+    }
+
+    /**
      * Create a RESTful response.
      *
      * @return \Symfony\Component\HttpFoundation\Response
@@ -202,7 +219,8 @@ abstract class AbstractRestController extends Controller implements RestControll
      */
     protected function granted($attributes, $object = null, $message = 'Permission denied')
     {
-
+//@TODO gvf !!
+        return true;
         if (false === parent::isGranted($attributes, $object)) {
             throw new InsufficientAuthenticationException($message);
         }

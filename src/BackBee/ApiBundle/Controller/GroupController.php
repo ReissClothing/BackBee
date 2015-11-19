@@ -54,10 +54,12 @@ class GroupController extends AbstractRestController
             $site_uid = $request->request->get('site_uid');
             $this->checkSiteUid($site_uid);
         } else {
-            $site_uid = $this->getApplication()->getSite()->getUid();
+            $site_uid = $this->get('bbapp.site_context')->getSite()->getUid();
         }
 
-        $groups = $this->getEntityManager()
+        $groups = $this
+                ->getDoctrine()
+                ->getManager()
                 ->getRepository('BackBee\Security\Group')
                 ->createQueryBuilder('g')
                 ->where('g._site = :siteUid')

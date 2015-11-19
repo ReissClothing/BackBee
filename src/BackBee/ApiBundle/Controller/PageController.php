@@ -124,7 +124,7 @@ class PageController extends AbstractRestController
         }
 
         $page->setMetaData($metadatas->compute($page));
-        $this->getApplication()->getEntityManager()->flush($page);
+        $this->getDoctrine()->getEntityManager()->flush($page);
 
         return $this->createJsonResponse(null, 204);
     }
@@ -242,7 +242,7 @@ class PageController extends AbstractRestController
             $this->granted('EDIT', $parent);
         }
 
-        $builder = $this->getApplication()->getContainer()->get('pagebuilder');
+        $builder = $this->get('pagebuilder');
         $builder->setLayout($layout);
 
         if (null !== $parent) {
@@ -254,7 +254,7 @@ class PageController extends AbstractRestController
                 return $this->createFinalResponse($parent->getLayout());
             }
         } else {
-            $builder->setSite($this->getApplication()->getSite());
+            $builder->setSite($this->get('bbapp.site_context')->getSite());
         }
 
         $requestRedirect = $request->request->get('redirect');
@@ -291,13 +291,13 @@ class PageController extends AbstractRestController
             }
 
             $em->persist($page);
-            $em->flush($page);
+            $em->flush();
         } catch (\Exception $e) {
             return $this->createResponse('Internal server error: '.$e->getMessage(), 500);
         }
 
         return $this->createJsonResponse('', 201, array(
-            'Location' => $this->getApplication()->getRouting()->getUrlByRouteName(
+            'Location' => $this->get('router')->generate(
                 'bb.rest.page.get',
                 array(
                     'version' => $request->attributes->get('version'),
@@ -407,7 +407,7 @@ class PageController extends AbstractRestController
             $this->granted('PUBLISH', $page);
         }
 
-        $this->getEntityManager()->flush($page);
+        $this->getDoctrine()->getManager()->flush();
 
         return $this->createJsonResponse(null, 204);
     }
@@ -428,7 +428,7 @@ class PageController extends AbstractRestController
             }
 
             try {
-                $page = $this->getEntityManager()->getRepository('BackBee\CoreDomain\NestedNode\Page')->find($data['uid']);
+                $page = $this->getDoctrine()->getManager()->getRepository('BackBee\CoreDomain\NestedNode\Page')->find($data['uid']);
 
                 $this->granted('EDIT', $page);
                 if (isset($data['state'])) {
@@ -481,7 +481,7 @@ class PageController extends AbstractRestController
             $this->updatePageState($page, $data['state']);
         }
         if (isset($data['parent_uid'])) {
-            $repo = $this->getEntityManager()->getRepository('BackBee\CoreDomain\NestedNode\Page');
+            $repo = $this->getDoctrine()->getManager()->getRepository('BackBee\CoreDomain\NestedNode\Page');
             $parent = $repo->find($data['parent_uid']);
 
             if (null !== $parent) {
@@ -520,8 +520,8 @@ class PageController extends AbstractRestController
 
     private function hardDelete(Page $page)
     {
-        $this->getEntityManager()->getRepository('BackBee\CoreDomain\NestedNode\Page')->deletePage($page);
-        $this->getEntityManager()->flush();
+        $this->getDoctrine()->getManager()->getRepository('BackBee\CoreDomain\NestedNode\Page')->deletePage($page);
+        $this->getDoctrine()->getManager()->flush();
     }
 
     /**
@@ -565,7 +565,7 @@ class PageController extends AbstractRestController
             $this->granted('PUBLISH', $page);
         }
 
-        $this->getEntityManager()->flush();
+        $this->getDoctrine()->getManager()->flush();
 
         return $this->createJsonResponse(null, 204);
     }
@@ -630,7 +630,7 @@ class PageController extends AbstractRestController
         if (null !== $parent) {
             $this->granted('EDIT', $parent);
         } else {
-            $this->granted('EDIT', $this->getApplication()->getSite());
+            $this->granted('EDIT', $this->get('bbapp.site_context')->getSite());
         }
 
         $page = $this->getPageRepository()->duplicate(
@@ -638,28 +638,26 @@ class PageController extends AbstractRestController
             $request->request->get('title'),
             $parent,
             true,
-            $this->getApplication()->getBBUserToken()
+            $this->get('security.token_storage')->getToken()
         );
 
-        $this->getApplication()->getEntityManager()->persist($page);
-        $this->getApplication()->getEntityManager()->flush();
+        $this->getDoctrine()->getManager()->persist($page);
+        $this->getDoctrine()->getManager()->flush();
 
         if (null !== $sibling) {
             $this->getPageRepository()->moveAsPrevSiblingOf($page, $sibling);
         }
 
         return $this->createJsonResponse(null, 201, [
-            'Location' => $this->getApplication()->getRouting()->getUrlByRouteName(
+            'Location' => $this->get('router')->generate(
                 'bb.rest.page.get',
                 [
                     'version' => $request->attributes->get('version'),
                     'uid'     => $page->getUid(),
-                ],
-                '',
-                false
-            ),
-            'BB-PAGE-URL' => $page->getUrl()
-        ]);
+                ]
+                )
+            ]
+        );
     }
 
     /**
@@ -927,7 +925,7 @@ class PageController extends AbstractRestController
             }
 
             if ($code = (int) array_shift($states)) {
-                $workflowState = $this->getApplication()->getEntityManager()
+                $workflowState = $this->getDoctrine()->getManager()
                     ->getRepository('BackBee\CoreDomain\Workflow\State')
                     ->findOneBy([
                         '_code'   => $code,
@@ -1039,7 +1037,7 @@ class PageController extends AbstractRestController
      */
     private function getPageByUid($uid)
     {
-        if (null === $page = $this->getApplication()->getEntityManager()->find('BackBee\CoreDomain\NestedNode\Page', $uid)) {
+        if (null === $page = $this->getDoctrine()->getManager()->find('BackBee\CoreDomain\NestedNode\Page', $uid)) {
             throw new NotFoundHttpException("Unable to find page with uid `$uid`");
         }
 
