@@ -32,5 +32,27 @@ class BackBeeCoreDomainExtension extends Extension
         $loader->load('rest.yml');
         $loader->load('site.yml');
         $loader->load('security.yml');
+
+        $container->setParameter('bbapp.classcontent_namespace', $config['classcontent_namespace']);
+//        @gvf todo IMO the categories shouldn't be created this way, as it creates all of them in memory even if not used, they should be
+//        an entity persisted to doctrine and retrieved from there
+        $container->setParameter('bbapp.classcontent_list', $this->classContentList($config['classcontent'], $config['classcontent_namespace']));
+
+        $container->setParameter('bbapp.classcontent_config', $config['classcontent']);
+    }
+
+    /**
+     * Build and/or hydrate Category object with provided classcontent.
+     *
+     * @param AbstractClassContent $content
+     */
+    private function classContentList($classes, $defaultClasscontentNamespace)
+    {
+        $classList = [];
+        foreach($classes as $class => $properties){
+            $classList[] = $defaultClasscontentNamespace . $class;
+        }
+
+        return $classList;
     }
 }

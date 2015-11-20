@@ -1015,7 +1015,7 @@ abstract class AbstractClassContent extends AbstractContent
             $properties['indexation'],
             $properties['labelized-by'],
             $properties['clonemode'],
-            $properties['cache-lifetime']
+            $properties['cache_lifetime']
         );
 
         $data = array_merge([

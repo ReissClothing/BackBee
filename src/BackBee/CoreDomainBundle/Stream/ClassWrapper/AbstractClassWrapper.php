@@ -45,13 +45,6 @@ use BackBee\CoreDomainBundle\Stream\StreamWrapperInterface;
 abstract class AbstractClassWrapper implements StreamWrapperInterface
 {
     /**
-     * The registered BackBee autoloader.
-     *
-     * @var \BackBee\Autoloader\Autoloader
-     */
-    protected $_autoloader;
-
-    /**
      * The data of the stream.
      *
      * @var string
@@ -79,12 +72,6 @@ abstract class AbstractClassWrapper implements StreamWrapperInterface
      */
     protected $_stat;
 
-    /**
-     * the class content name to load.
-     *
-     * @var string
-     */
-    protected $classname;
 
     /**
      * The class to be extended by the class content loaded.
@@ -94,20 +81,6 @@ abstract class AbstractClassWrapper implements StreamWrapperInterface
     protected $extends = '\BackBee\CoreDomain\ClassContent\AbstractClassContent';
 
     /**
-     * Interface(s) used by the class content.
-     *
-     * @var string
-     */
-    protected $interfaces;
-
-    /**
-     * Trait(s) used by the class content.
-     *
-     * @var string
-     */
-    protected $traits;
-
-    /**
      * The doctrine repository associated to the class content loaded.
      *
      * @var string
@@ -115,40 +88,12 @@ abstract class AbstractClassWrapper implements StreamWrapperInterface
     protected $repository = 'BackBee\CoreDomainBundle\ClassContent\Repository\ClassContentRepository';
 
     /**
-     * The elements of the class content.
-     *
-     * @var array
-     */
-    protected $elements;
-
-    /**
-     * The namespace of the class content loaded.
-     *
-     * @var string
-     */
-    protected $namespace = 'BackBee\CoreDomain\ClassContent';
-
-    /**
-     * the user parameters of the class content.
-     *
-     * @var array
-     */
-    protected $parameters;
-
-    /**
-     * the properties of the class content.
-     *
-     * @var array
-     */
-    protected $properties;
-
-    /**
      * Default php template to build the class file.
      *
      * @var string
      */
     protected $template =
-            '<?php
+        '<?php
 namespace <namespace>;
 
 /**
@@ -183,21 +128,7 @@ class <classname> extends <extends> <interface>
      */
     public function __construct()
     {
-        foreach (spl_autoload_functions() as $autoloader) {
-            if (true === is_array($autoloader) && $autoloader[0] instanceof \BackBee\CoreDomainBundle\AutoLoader\AutoLoader) {
-//                 @gvf todo this should not be done this way
-//                if ($autoloader[0] !== null && $autoloader[0]->getApplication()) {
-                    $this->_autoloader = $autoloader[0];
-//                    break;
-//                }
-            }
-        }
-// @todo gvf
-//        if (null !== $this->_autoloader && null !== $this->_autoloader->getApplication()) {
-//            $this->_cache = $this->_autoloader->getApplication()->getBootstrapCache();
-//        }
-
-        $this->elements = array();
+        $this->elements   = array();
         $this->properties = array();
         $this->parameters = array();
     }
@@ -207,12 +138,21 @@ class <classname> extends <extends> <interface>
      *
      * @return string The generated php code
      */
-    protected function _buildClass()
+    protected function _buildClass($data)
     {
-        $defineData = $this->_extractData($this->elements);
+        $defineData = [];
+        if (array_key_exists('elements', $data)) {
+            $defineData = $this->_extractData($data['elements']);
+        }
 
-        $defineParam = $this->parameters;
-        $defineProps = $this->properties;
+        $defineParam = [];
+        if (array_key_exists('parameters', $data)) {
+            $defineParam = $data['parameters'];
+        }
+        $defineProps = [];
+        if (array_key_exists('properties', $data)) {
+            $defineProps = $data['properties'];
+        }
 
         $docBlock = '';
         foreach ($defineData as $key => $element) {
@@ -221,18 +161,18 @@ class <classname> extends <extends> <interface>
                 $type = 'string';
             }
 
-            $docBlock .= "\n * @property ".$type.' $'.$key.' '.(isset($element['options']['label']) ? $element['options']['label'] : '');
+            $docBlock .= "\n * @property " . $type . ' $' . $key . ' ' . (isset($element['options']['label']) ? $element['options']['label'] : '');
         }
 
         array_walk($defineData, function (&$value, $key) {
-                    $value = "->defineData('".$key."', '".$value['type']."', ".var_export($value['options'], true).")";
-                });
+            $value = "->defineData('" . $key . "', '" . $value['type'] . "', " . var_export($value['options'], true) . ")";
+        });
         array_walk($defineParam, function (&$value, $key) {
-                    $value = "->defineParam('".$key."', ".var_export($value, true).")";
-                });
+            $value = "->defineParam('" . $key . "', " . var_export($value, true) . ")";
+        });
         array_walk($defineProps, function (&$value, $key) {
-                    $value = "->defineProperty('".$key."', ".var_export($value, true).")";
-                });
+            $value = "->defineProperty('" . $key . "', " . var_export($value, true) . ")";
+        });
 
         $phpCode = str_replace(array('<namespace>',
             '<classname>',
@@ -243,16 +183,16 @@ class <classname> extends <extends> <interface>
             '<defineDatas>',
             '<defineParam>',
             '<defineProps>',
-            '<docblock>', ), array($this->namespace,
-            $this->classname,
-            $this->repository,
-            $this->extends,
-            $this->interfaces,
-            $this->traits,
-            (0 < count($defineData)) ? '$this'.implode('', $defineData).';' : '',
-            (0 < count($defineParam)) ? '$this'.implode('', $defineParam).';' : '',
-            (0 < count($defineProps)) ? '$this'.implode('', $defineProps).';' : '',
-            $docBlock, ), $this->template);
+            '<docblock>',), array($data['namespace'],
+            $data['classname'],
+            array_key_exists('repository', $data) ? $data['repository'] : $this->repository,
+            array_key_exists('extends', $data) ? $data['extends'] : $this->extends,
+            array_key_exists('interfaces', $data)? $data['interfaces']:'',
+            array_key_exists('traits', $data)? $data['traits']:'',
+            (0 < count($defineData)) ? '$this' . implode('', $defineData) . ';' : '',
+            (0 < count($defineParam)) ? '$this' . implode('', $defineParam) . ';' : '',
+            (0 < count($defineProps)) ? '$this' . implode('', $defineProps) . ';' : '',
+            $docBlock,), $this->template);
 
         return $phpCode;
     }
@@ -270,7 +210,7 @@ class <classname> extends <extends> <interface>
             $var = explode(NAMESPACE_SEPARATOR, $var);
         }
 
-        $vars = (array) $var;
+        $vars = (array)$var;
 
         $pattern = "/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/";
 
@@ -283,122 +223,4 @@ class <classname> extends <extends> <interface>
         return implode(($includeSeparator) ? NAMESPACE_SEPARATOR : '', $vars);
     }
 
-    /**
-     * @see ClassWrapperInterface::stream_close()
-     */
-    public function stream_close()
-    {
-    }
-
-    /**
-     * @see ClassWrapperInterface::stream_write()
-     */
-    public function stream_write($data)
-    {
-    }
-
-    /**
-     * @see ClassWrapperInterface::unlink()
-     */
-    public function unlink($path)
-    {
-    }
-
-    /**
-     * @see ClassWrapperInterface::stream_eof()
-     */
-    public function stream_eof()
-    {
-        return $this->_pos >= strlen($this->_data);
-    }
-
-    /**
-     * @see ClassWrapperInterface::stream_read()
-     */
-    public function stream_read($count)
-    {
-        $ret = substr($this->_data, $this->_pos, $count);
-        $this->_pos += strlen($ret);
-
-        return $ret;
-    }
-
-    /**
-     * @see ClassWrapperInterface::stream_seek()
-     */
-    public function stream_seek($offset, $whence = \SEEK_SET)
-    {
-        switch ($whence) {
-            case \SEEK_SET:
-                if ($offset < strlen($this->_data) && $offset >= 0) {
-                    $this->_pos = $offset;
-
-                    return true;
-                } else {
-                    return false;
-                }
-                break;
-
-            case \SEEK_CUR:
-                if ($offset >= 0) {
-                    $this->_pos += $offset;
-
-                    return true;
-                } else {
-                    return false;
-                }
-                break;
-
-            case \SEEK_END:
-                if (strlen($this->_data) + $offset >= 0) {
-                    $this->_pos = strlen($this->_data) + $offset;
-
-                    return true;
-                } else {
-                    return false;
-                }
-                break;
-
-            default:
-                return false;
-        }
-    }
-
-    /**
-     * @see ClassWrapperInterface::stream_stat()
-     */
-    public function stream_stat()
-    {
-        return $this->_stat;
-    }
-
-    /**
-     * @see ClassWrapperInterface::stream_tell()
-     */
-    public function stream_tell()
-    {
-        return $this->_pos;
-    }
-
-    /**
-     * @see ClassWrapperInterface::url_stat()
-     */
-    public function url_stat($path, $flags)
-    {
-        return $this->_stat;
-    }
-
-    /**
-     * Extract and format datas from parser.
-     *
-     * @param array $data
-     *
-     * @return the extracted datas
-     */
-    abstract protected function _extractData($data);
-
-    /**
-     * @see ClassWrapperInterface::glob()
-     */
-    abstract public function glob($pattern);
 }

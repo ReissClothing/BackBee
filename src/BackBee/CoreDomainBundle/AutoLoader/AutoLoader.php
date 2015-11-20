@@ -70,34 +70,6 @@ if (false === defined('NAMESPACE_SEPARATOR')) {
 class AutoLoader
 {
     /**
-     * Current BackBee application.
-     *
-     * @var \BackBee\BBApplication
-     */
-    private $_application;
-
-    /**
-     * Availables wrappers to resolve loading.
-     *
-     * @var array
-     */
-    private $_availableWrappers;
-
-    /**
-     * Extensions to include searching file.
-     *
-     * @var array
-     */
-    private $_includeExtensions = array('.php');
-
-    /**
-     * Namespaces locations.
-     *
-     * @var array
-     */
-    private $_namespaces;
-
-    /**
      * Namespaces wrappers.
      *
      * @var array
@@ -128,119 +100,18 @@ class AutoLoader
      * @var EventDispatcherInterface
      */
     private $eventDispatcher;
+    private $classContentNamespace;
+    private $classBuilder;
 
     /**
      * Class constructor.
      *
      */
-    public function __construct(EventDispatcherInterface $eventDispatcher)
+    public function __construct(EventDispatcherInterface $eventDispatcher, $classContentNamespace, $classBuilder)
     {
-        $this->_availableWrappers = stream_get_wrappers();
         $this->eventDispatcher = $eventDispatcher;
-    }
-
-    /**
-     * Looks for class definition throw declared wrappers according to the namespace.
-     *
-     * @param string $namespace the namespace's class
-     * @param string $classname the class name looked for
-     *
-     * @return Boolean TRUE if the class is found FALSE else
-     *
-     * @throws \BackBee\Stream\ClassWrapper\Exception\ClassWrapperException Occurs when the wrapper can not build PHP code
-     * @throws \BackBee\AutoLoader\Exception\SyntaxErrorException           Occurs when the generated PHP code is not valid
-     */
-    private function autoloadThrowWrappers($namespace, $classname)
-    {
-        if (false === is_array($this->_streamWrappers)) {
-            return false;
-        }
-
-        foreach ($this->_streamWrappers as $n => $wrappers) {
-            if (0 === strpos($namespace, $n)) {
-                $classpath = str_replace(array($n, NAMESPACE_SEPARATOR), array('', DIRECTORY_SEPARATOR), $namespace);
-                if (DIRECTORY_SEPARATOR == substr($classpath, 0, 1)) {
-                    $classpath = substr($classpath, 1);
-                }
-
-                foreach ($wrappers as $wrapper) {
-                    try {
-                        @include sprintf('%s://%s/%s', $wrapper['protocol'], $classpath, $classname);
-
-                        return true;
-                    } catch (ClassWrapperException $e) {
-                        // The class wrapper cannot return a valid class
-                        throw $e;
-                    } catch (\RuntimeException $e) {
-                        // The include php file is not valid
-                        throw new Exception\SyntaxErrorException($e->getMessage(), null, $e->getPrevious());
-//                    } catch (BBException $e) {
-//                     @TODO gvf why silence the exception??
-//                    } catch (\Exception $e) {
-//                         Nothing to do
-                    }
-                }
-
-                $this->_registeredNamespace = true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Looks for class definition using the PHP 5.3 standards to the namespace.
-     *
-     * @param string $namespace the namespace's class
-     * @param string $classname the class name looked for
-     *
-     * @return Boolean TRUE if the class is found FALSE else
-     *
-     * @throws \BackBee\AutoLoader\Exception\SyntaxErrorException Occurs when the found PHP code is not valid
-     */
-    private function autoloadThrowFilesystem($namespace, $classname)
-    {
-        if (false === is_array($this->_namespaces)) {
-            return false;
-        }
-
-        $pathfiles = array();
-        if (false === is_array($this->_includeExtensions)
-                || 0 == count($this->_includeExtensions)) {
-            $pathfiles[] = str_replace(NAMESPACE_SEPARATOR, DIRECTORY_SEPARATOR, $namespace).DIRECTORY_SEPARATOR.$classname;
-        } else {
-            foreach ($this->_includeExtensions as $ext) {
-                $pathfiles[] = str_replace(NAMESPACE_SEPARATOR, DIRECTORY_SEPARATOR, $namespace).DIRECTORY_SEPARATOR.$classname.$ext;
-            }
-        }
-
-        foreach ($this->_namespaces as $n => $paths) {
-            if (strpos($namespace, $n) === 0) {
-                foreach ($paths as $path) {
-                    foreach ($pathfiles as $pathfile) {
-                        $filename = $path.DIRECTORY_SEPARATOR.$pathfile;
-                        if (false === file_exists($filename)) {
-                            $filename = $path.DIRECTORY_SEPARATOR.str_replace(str_replace(NAMESPACE_SEPARATOR, DIRECTORY_SEPARATOR, $n), '', $pathfile);
-                        }
-
-                        if (true === file_exists($filename) && true === is_readable($filename)) {
-                            try {
-                                include_once $filename;
-
-                                return true;
-                            } catch (\RuntimeException $e) {
-                                // The include php file is not valid
-                                throw new Exception\SyntaxErrorException($e->getMessage(), null, $e->getPrevious());
-                            }
-                        }
-                    }
-                }
-
-                $this->_registeredNamespace = true;
-            }
-        }
-
-        return false;
+        $this->classContentNamespace = $classContentNamespace;
+        $this->classBuilder = $classBuilder;
     }
 
     /**
@@ -279,21 +150,6 @@ class AutoLoader
     }
 
     /**
-     * Registers pre-defined stream wrappers.
-     */
-    private function registerStreams()
-    {
-        foreach ($this->_streamWrappers as $wrappers) {
-            foreach ($wrappers as $wrapper) {
-                if (false === in_array($wrapper['protocol'], $this->_availableWrappers)) {
-                    stream_wrapper_register($wrapper['protocol'], $wrapper['classname']);
-                    $this->_availableWrappers = stream_get_wrappers();
-                }
-            }
-        }
-    }
-
-    /**
      * Looks for the class name, call back function for spl_autolad_register()
      * First using the defined wrappers then throw filesystem.
      *
@@ -303,84 +159,31 @@ class AutoLoader
      */
     public function autoload($classpath)
     {
-        $this->_registeredNamespace = false;
+        if (0 === strpos($classpath, $this->classContentNamespace)) {
 
-        list($namespace, $classname) = $this->normalizeClassname($classpath);
-
-        if ($this->autoloadThrowWrappers($namespace, $classname)) {
-            if (NAMESPACE_SEPARATOR == substr($classpath, 0, 1)) {
-                $classpath = substr($classpath, 1);
-            }
-
-            if (is_subclass_of($classpath, 'BackBee\CoreDomain\ClassContent\AbstractClassContent')) {
-                $event = new Event(new $classpath());
-                $this->eventDispatcher->dispatch('classcontent.include', $event);
-            }
-
-            return;
-        }
-
-        if (true === $this->_registeredNamespace) {
-            throw new Exception\ClassNotFoundException(sprintf('Class %s%s%s not found.', $namespace, NAMESPACE_SEPARATOR, $classname));
-        }
-    }
-
-    /**
-     * Returns the wrappers registered for provided namespaces and protocols.
-     *
-     * @param string|array $namespace The namespaces to look for
-     * @param string|array $protocol  The protocols to use
-     *
-     * @return array An array of wrappers registered for these namespaces and protocols
-     */
-    public function getStreamWrapperClassname($namespace, $protocol)
-    {
-        $namespace = (array) $namespace;
-        $protocol = (array) $protocol;
-
-        $result = array();
-        foreach ($this->_streamWrappers as $ns => $wrappers) {
-            if (true === in_array($ns, $namespace)) {
-                foreach ($wrappers as $wrapper) {
-                    if (true === in_array($wrapper['protocol'], $protocol)) {
-                        $result[] = $wrapper['classname'];
+            if ($classString = $this->classBuilder->build($classpath)) {
+                if (0 == strpos(base64_encode($classString),'PD9waHAKbmFtZXNwYWNlIEJhY2tCZWVcQ29yZURvbWFpblxDbGFzc0NvbnRlbnRcQmxvY2s7CgovKioKICogQFxEb2N0cmluZVxPUk1cTWFwcGluZ1xFbnRpdHkocmVwb3NpdG9yeUNsYXNzPSJCYWNrQmVlXENvcmVEb21haW5CdW5kbGVcQ2xhc3NDb250ZW50XFJlcG9zaXRvcnlcQ2xhc3NDb250ZW50UmVwb3NpdG9yeSIpCiAqIEBcRG9jdHJpbmVcT1JNXE1hcHBpbmdcVGFibGUobmFtZT0iY29udGVudCIpCiAqIEBcRG9jdHJpbmVcT1JNXE1hcHBpbmdcSGFzTGlmZWN5Y2xlQ2FsbGJhY2tzCiAqIAogKiBAcHJvcGVydHkgQmFja0JlZVxDb3JlRG9tYWluXENsYXNzQ29udGVudFxFbGVtZW50XFRleHQgJGJvZHkgcGFyYWdyYXBoIGNvbnRhaW5lcgogKi8KY2xhc3MgQXV0b0Jsb2NrIGV4dGVuZHMgXEJhY2tCZWVcQ29yZURvbWFpblxDbGFzc0NvbnRlbnRcQmxvY2tcQXV0b0Jsb2NrIAp7CiAgICAKICAgIHB1YmxpYyBmdW5jdGlvbiBfX2NvbnN0cnVjdCgkdWlkID0gTlVMTCwgJG9wdGlvbnMgPSBOVUxMKQogICAgewogICAgICAgIHBhcmVudDo6X19jb25zdHJ1Y3QoJHVpZCwgJG9wdGlvbnMpOwogICAgICAgICR0aGlzLT5pbml0RGF0YSgpOwogICAgfQoKICAgIHByb3RlY3RlZCBmdW5jdGlvbiBpbml0RGF0YSgpCiAgICB7CiAgICAgICAgJHRoaXMtPmRlZmluZURhdGEoJ2JvZHknLCAnQmFja0JlZVxDb3JlRG9tYWluXENsYXNzQ29udGVudFxFbGVtZW50XFRleHQnLCBhcnJheSAoCiAgJ2RlZmF1bHQnID0+IAogIGFycmF5ICgKICAgICd2YWx1ZScgPT4gJ1lvdXIgdGV4dCBoZXJlLi4uJywKICApLAogICdsYWJlbCcgPT4gJ3BhcmFncmFwaCBjb250YWluZXInLAogICdtYXhlbnRyeScgPT4gMSwKICAncGFyYW1ldGVycycgPT4gCiAgYXJyYXkgKAogICAgJ3J0ZScgPT4gJ3BhcmFncmFwaCcsCiAgKSwKKSk7CiAgICAgICAgJHRoaXMtPmRlZmluZVBhcmFtKCdkZWx0YScsIGFycmF5ICgKICAndHlwZScgPT4gJ3RleHQnLAogICd2YWx1ZScgPT4gMCwKICAnbGFiZWwnID0+ICdJZ25vcmUgdGhlICJ4IiBmaXJzdCBlbGVtZW50cycsCikpLT5kZWZpbmVQYXJhbSgncGFyZW50X25vZGUnLCBhcnJheSAoCiAgJ3R5cGUnID0+ICdub2RlU2VsZWN0b3InLAogICd2YWx1ZScgPT4gCiAgYXJyYXkgKAogICksCiAgJ2xhYmVsJyA9PiAnUGFnZScsCikpLT5kZWZpbmVQYXJhbSgnc3RhcnQnLCBhcnJheSAoCiAgJ3ZhbHVlJyA9PiAwLAopKS0+ZGVmaW5lUGFyYW0oJ2NvbnRlbnRfdG9fc2hvdycsIGFycmF5ICgKICAndmFsdWUnID0+IAogIGFycmF5ICgKICAgIDAgPT4gJ0JhY2tCZWVcXENvcmVEb21haW5cXENsYXNzQ29udGVudFxcQXJ0aWNsZVxcQXJ0aWNsZScsCiAgKSwKKSktPmRlZmluZVBhcmFtKCdsaW1pdCcsIGFycmF5ICgKICAndHlwZScgPT4gJ3RleHQnLAogICd2YWx1ZScgPT4gMTAsCiAgJ2xhYmVsJyA9PiAnTnVtYmVyIG9mIGVsZW1lbnRzIHRvIGRpc3BsYXknLAopKS0+ZGVmaW5lUGFyYW0oJ211bHRpcGFnZScsIGFycmF5ICgKICAndHlwZScgPT4gJ2NoZWNrYm94JywKICAnb3B0aW9ucycgPT4gCiAgYXJyYXkgKAogICAgJ211bHRpcGFnZScgPT4gJ011bHRpcGFnZScsCiAgKSwKICAndmFsdWUnID0+IAogIGFycmF5ICgKICApLAopKS0+ZGVmaW5lUGFyYW0oJ3JlY3Vyc2l2ZScsIGFycmF5ICgKICAndHlwZScgPT4gJ2NoZWNrYm94JywKICAnb3B0aW9ucycgPT4gCiAgYXJyYXkgKAogICAgJ3JlY3Vyc2l2ZScgPT4gJ1JlY3Vyc2l2ZScsCiAgKSwKICAndmFsdWUnID0+IAogIGFycmF5ICgKICAgIDAgPT4gJ3JlY3Vyc2l2ZScsCiAgKSwKKSk7CiAgICAgICAgJHRoaXMtPmRlZmluZVByb3BlcnR5KCduYW1lJywgJ0F1dG9ibG9jaycpLT5kZWZpbmVQcm9wZXJ0eSgnZGVzY3JpcHRpb24nLCAnQXV0b21hdGVkIGNvbnRlbnQgbGlzdGluZycpLT5kZWZpbmVQcm9wZXJ0eSgnY2F0ZWdvcnknLCBhcnJheSAoCiAgMCA9PiAnIUFydGljbGUnLAopKS0+ZGVmaW5lUHJvcGVydHkoJ2luZGV4YXRpb24nLCBhcnJheSAoCikpOwogICAgICAgIHBhcmVudDo6aW5pdERhdGEoKTsKICAgIH0')){
+                $a =1;
                     }
+                @include 'data://text/plain;base64,'.base64_encode($classString);
+
+                if (NAMESPACE_SEPARATOR == substr($classpath, 0, 1)) {
+                    $classpath = substr($classpath, 1);
                 }
+
+                if (is_subclass_of($classpath, 'BackBee\CoreDomain\ClassContent\AbstractClassContent')) {
+                    $event = new Event(new $classpath());
+                    $this->eventDispatcher->dispatch('classcontent.include', $event);
+                }
+
+                return;
             }
-        }
 
-        return $result;
-    }
-
-    /**
-     * Returns AClassContent whom classname matches the provided pattern.
-     *
-     * @param string $pattern The pattern to test
-     *
-     * @param  string      $pattern The pattern to test
-     * @return array|FALSE An array of classnames matching the pattern of FALSE if none found
-     */
-    public function glob($pattern)
-    {
-        // $pattern = 'Media'.DIRECTORY_SEPARATOR.'*'
-        $wrappers = $this->getStreamWrapperClassname('BackBee\CoreDomain\ClassContent', 'bb.class');
-        if (0 == count($wrappers)) {
-            return false;
-        }
-
-        $classnames = array();
-        foreach ($wrappers as $classname) {
-            $wrapper = new $classname();
-            if (false !== $matchingclass = $wrapper->glob($pattern)) {
-                $classnames = array_merge($classnames, $matchingclass);
+            if (true === $this->_registeredNamespace) {
+                throw new Exception\ClassNotFoundException(sprintf('Class %s%s%s not found.', $namespace, NAMESPACE_SEPARATOR, $classname));
             }
-        }
 
-        if (0 == count($classnames)) {
-            return false;
         }
-
-        return array_unique($classnames);
     }
 
     /**
@@ -398,29 +201,6 @@ class AutoLoader
     public function register($throw = true, $prepend = false)
     {
         spl_autoload_register(array($this, 'autoload'), $throw, $prepend);
-
-        return $this;
-    }
-
-    /**
-     * Registers stream wrappers.
-     *
-     * @param string $namespace The namespace
-     * @param string $protocol  The wrapper's protocol
-     * @param string $classname The class name implementing the wrapper
-     *
-     * @return \BackBee\AutoLoader\AutoLoader The current instance of the autoloader class
-     */
-    public function registerStreamWrapper($namespace, $protocol, $classname)
-    {
-        if (!isset($this->_namespaces[$namespace])) {
-            $this->_namespaces[$namespace] = array();
-        }
-
-        $this->_streamWrappers[$namespace][] = array('protocol' => $protocol, 'classname' => $classname);
-        ksort($this->_streamWrappers);
-
-        $this->registerStreams();
 
         return $this;
     }

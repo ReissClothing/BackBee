@@ -1,6 +1,0 @@
-Text:
-  properties:
-    name: Text
-    description: A simple text input
-  elements:
-    value: !!scalar

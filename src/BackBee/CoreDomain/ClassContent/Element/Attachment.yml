@@ -1,8 +1,0 @@
-Attachment:
-  extends: \BackBee\CoreDomain\ClassContent\Element\File
-  properties:
-    name: Attachment
-    description: An attachment
-  parameters:
-    mimetype: ~
-    authorized: ~

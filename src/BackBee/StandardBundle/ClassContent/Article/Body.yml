@@ -1,6 +1,0 @@
-Body:
-  extends: \BackBee\CoreDomain\ClassContent\ContentSet
-  properties:
-    category: [!Article]
-    cache-lifetime: 60
-    clonemode: force

@@ -53,13 +53,14 @@ class CategoryManager
      * @var array
      */
     private $options;
+    private $classContentList;
 
     /**
      * CategoryManager's constructor.
      *
      * @param ApplicationInterface $application application from where we will extract classcontent's categories
      */
-    public function __construct()
+    public function __construct($classContentList)
     {
         $this->categories = [];
 //        $this->options = [
@@ -71,6 +72,7 @@ class CategoryManager
 //        ];
 
         $this->loadCategoriesFromClassContentDirectories();
+        $this->classContentList = $classContentList;
     }
 
     /**
@@ -119,20 +121,7 @@ class CategoryManager
      */
     private function loadCategoriesFromClassContentDirectories()
     {
-// @gvf todo all this should come from configuration of classes in config, not in folders
-        $classcontents = [
-            'BackBee\CoreDomain\ClassContent\Article\Article',
-            'BackBee\CoreDomain\ClassContent\Article\ArticleContainer',
-            'BackBee\CoreDomain\ClassContent\Article\Body',
-            'BackBee\CoreDomain\ClassContent\Article\LatestArticle',
-            'BackBee\CoreDomain\ClassContent\Article\Quote',
-            'BackBee\CoreDomain\ClassContent\Article\Related',
-            'BackBee\CoreDomain\ClassContent\Article\RelatedContainer',
-            'BackBee\CoreDomain\ClassContent\Home\Slider',
-        ];
-
-
-        foreach ($classcontents as $class) {
+        foreach ($this->classContentList as $class) {
             try {
                 if (class_exists($class)) {
                     $this->buildCategoryFromClassContent(new $class());
@@ -163,7 +152,12 @@ class CategoryManager
                 ksort($this->categories);
             }
 
-            $this->categories[$id]->addBlock($content, $visible);
+            $this->categories[$id]->addBlock(
+                 $content->getProperty('name'),
+                $content->getProperty('description'),
+                $content->getContentType(),
+                $visible
+            );
         }
     }
 
