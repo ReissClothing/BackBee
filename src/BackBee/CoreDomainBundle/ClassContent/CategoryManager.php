@@ -36,6 +36,7 @@ use BackBee\Utils\File\File;
  *
  * @copyright   Lp digital system
  * @author      e.chau <eric.chau@lp-digital.fr>
+ * @author      g.vilaseca <gonzalo.vilaseca@reiss.com>
  */
 class CategoryManager
 {
