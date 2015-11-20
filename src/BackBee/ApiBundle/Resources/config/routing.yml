@@ -155,14 +155,8 @@ bb.rest.security.authenticate:
 #        firewall: "[a-z_-]+"
 #        _method: GET
 
-bb.rest.security_session_delete:
+logout:
     path: /rest/{version}/security/session
-    defaults:
-        _action: deleteSessionAction
-        _controller: BackBee\ApiBundle\Controller\SecurityController
-    requirements:
-        version: \d+
-        _method: DELETE
 
 bb.rest.acl.permissions:
     path: /rest/{version}/acl/permissions

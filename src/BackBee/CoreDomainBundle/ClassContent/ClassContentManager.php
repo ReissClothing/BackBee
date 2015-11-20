@@ -58,16 +58,12 @@ class ClassContentManager
     private $iconizer;
 
     /**
-     * @var string[]
-     */
-    private $contentClassnames;
-
-    /**
      * @var \BackBee\Cache\AbstractCache
      */
     private $cache;
     private $context;
     private $env;
+    private $classcontentList;
 
     /**
      * Instantiate a ClassContentManager.
@@ -78,6 +74,7 @@ class ClassContentManager
 //    @todo gvf et context and env as app config and pass it here
     public function __construct(
         EntityManagerInterface $entityManager,
+        $classcontentList,
         IconizerInterface $iconizer = null,
         $context = '',
         $env =''
@@ -89,6 +86,7 @@ class ClassContentManager
         $this->entityManager = $entityManager;
         $this->context = $context;
         $this->env = $env;
+        $this->classcontentList = $classcontentList;
     }
 
     /**
@@ -216,57 +214,7 @@ class ClassContentManager
      */
     public function getAllClassContentClassnames()
     {
-        if (null === $this->contentClassnames) {
-//            $cacheId = md5('all_classcontents_classnames_'.$this->context.'_'.$this->env);
-//            if (!$this->app->isDebugMode() && false !== $value = $this->cache->load($cacheId)) {
-//                $this->contentClassnames = json_decode($value, true);
-//            } else {
-//            @todo gvf this should be provided by a parameter, to be done when they are moved to configuration
-
-                $this->contentClassnames =
-                    array (
-                        'BackBee\\CoreDomain\\ClassContent\\ContentSet',
-                        'BackBee\\CoreDomain\\ClassContent\\Article\\Article',
-                         'BackBee\\CoreDomain\\ClassContent\\Article\\ArticleContainer',
-                         'BackBee\\CoreDomain\\ClassContent\\Article\\Body',
-                         'BackBee\\CoreDomain\\ClassContent\\Article\\LatestArticle',
-                         'BackBee\\CoreDomain\\ClassContent\\Article\\Quote',
-                         'BackBee\\CoreDomain\\ClassContent\\Article\\Related',
-                         'BackBee\\CoreDomain\ClassContent\\Article\\RelatedContainer',
-                        'BackBee\\CoreDomain\ClassContent\\Block\\AutoBlock',
-                        'BackBee\\CoreDomain\ClassContent\\Block\\ColumnDivider',
-                         'BackBee\\CoreDomain\ClassContent\\Container\\OneColumn',
-                         'BackBee\\CoreDomain\ClassContent\\Home\\HomeArticleContainer',
-                         'BackBee\\CoreDomain\ClassContent\\Home\\HomeContainer',
-                         'BackBee\\CoreDomain\ClassContent\\Home\\Slider',
-                         'BackBee\\CoreDomain\ClassContent\\Media\\ClickableThumbnail',
-                         'BackBee\\CoreDomain\ClassContent\\Media\\Iframe',
-                         'BackBee\\CoreDomain\ClassContent\\Media\\Image',
-                         'BackBee\\CoreDomain\ClassContent\\Social\\Facebook',
-                        'BackBee\\CoreDomain\ClassContent\\Social\\Twitter',
-                         'BackBee\\CoreDomain\ClassContent\\Text\\Paragraph',
-                         'BackBee\\CoreDomain\ClassContent\\Element\\Attachment',
-                         'BackBee\\CoreDomain\ClassContent\\Element\\Date',
-                         'BackBee\\CoreDomain\ClassContent\\Element\\File',
-                         'BackBee\\CoreDomain\ClassContent\\Element\\Image',
-                        'BackBee\\CoreDomain\ClassContent\\Element\\Keyword',
-                         'BackBee\\CoreDomain\ClassContent\\Element\\Link',
-                         'BackBee\\CoreDomain\ClassContent\\Element\\Select',
-                         'BackBee\\CoreDomain\\ClassContent\\Element\\Text',
-                    );
-
-//                foreach ($this->app->getClassContentDir() as $directory) {
-//                    $this->contentClassnames = array_merge(
-//                            $this->contentClassnames,
-//                            CategoryManager::getClassContentClassnamesFromDir($directory)
-//                    );
-//                }
-
-//                $this->cache->save($cacheId, json_encode($this->contentClassnames));
-//            }
-        }
-
-        return $this->contentClassnames;
+        return $this->classcontentList;
     }
 
     /**

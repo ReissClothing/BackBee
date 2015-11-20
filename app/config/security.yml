@@ -12,8 +12,8 @@ security:
         bbapi.in_memory:
             memory:
                 users:
-                    gonzalo:
-                        password: gonzalo
+                    admin:
+                        password: admin
                         roles: 'ROLE_USER'
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
@@ -37,10 +37,13 @@ security:
 
 #                @TODO gvf add api version as placeholder
                 check_path: /rest/2/security/authentication
-#                @todo remove require_previous_session:  and post_only only here for testing
-#                require_previous_session: false
+#                @todo remove require_previous_session and post_only only here for testing
+#                @if require_previous_session is removed ajax login doesnt work
+                require_previous_session: false
 #                post_only:      false
             # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
+            logout:
+                path: /rest/2/security/session
 #        main:
             anonymous: ~
             # activate different ways to authenticate

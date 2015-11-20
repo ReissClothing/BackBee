@@ -533,6 +533,7 @@ abstract class AbstractRenderer implements RendererInterface
      */
     public function getUri($pathinfo = null, $defaultExt = null, Site $site = null, $url_type = null)
     {
+//        this is used for image and resources location, should be done in other ways
         return 'https://symfony.dev/app_dev.php/' . $pathinfo;
 //        @TODO gvf
 //        return $this->getApplication()->getRouting()->getUri($pathinfo, $defaultExt, $site, $url_type);
