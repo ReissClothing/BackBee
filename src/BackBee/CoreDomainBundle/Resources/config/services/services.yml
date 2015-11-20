@@ -123,6 +123,8 @@ services:
 
     classcontent.category_manager:
         class:      %bbapp.classcontent.category_manager.class%
+        arguments:
+            - %bbapp.classcontent_list%
 
     classcontent.manager:
         class:      %bbapp.classcontent.manager.class%
@@ -241,3 +243,8 @@ services:
 #        class: Symfony\Component\Validator\ConstraintValidatorFactory
 
 
+    bbapp.stream_wrapper.adapter.yml:
+        class: BackBee\CoreDomainBundle\Stream\ClassWrapper\Adapter\Yaml
+        arguments:
+            - %bbapp.classcontent_config%
+            - %bbapp.classcontent_namespace%

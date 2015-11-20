@@ -1,7 +1,0 @@
-Select:
-  extends: \BackBee\CoreDomain\ClassContent\Element\Text
-  properties:
-    name: Select
-    description: A select input box
-  parameters:
-    options: ~

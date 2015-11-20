@@ -30,6 +30,9 @@ framework:
         handler_id:  ~
     fragments:       ~
     http_method_override: true
+#    SUPER IMPORTANT BC we create classes from file so filemtime fails with file cache
+    annotations:
+        cache: none
 
 # Twig Configuration
 twig:
@@ -87,6 +90,7 @@ swiftmailer:
     spool:     { type: memory }
 
 back_bee_core_domain:
+    classcontent_namespace: "BackBee\CoreDomain\ClassContent\\"
     renderer:
         bb_scripts_directory:
             common: %bbapp.base.dir%/Resources/scripts
@@ -104,3 +108,485 @@ back_bee_core_domain:
             scriptdir: Templates/scripts
             layoutdir: Layouts
 
+    classcontent:
+#    Main
+        Element\Attachment:
+          extends: \BackBee\CoreDomain\ClassContent\Element\File
+          properties:
+            name: Attachment
+            description: An attachment
+          parameters:
+            mimetype: ~
+            authorized: ~
+        Element\Date:
+          properties:
+            name: Date
+            description: An attached date
+          elements:
+            value: !!scalar
+#          fixture:
+#            value: dateTime
+        Element\File:
+          repository: \BackBee\CoreDomainBundle\ClassContent\Repository\Element\FileRepository
+          traits: [BackBee\CoreDomain\ClassContent\Traits\Element\FileJsonSerializeTrait]
+          properties:
+            name: File
+            description: An attached file
+          elements:
+            path: !!scalar
+            originalname: !!scalar
+          parameters:
+            stat: ~
+#          fixture:
+#            path: picture
+#            originalname: word
+
+        Element\Image:
+          extends: \BackBee\CoreDomain\ClassContent\Element\File
+          repository: \BackBee\CoreDomainBundle\ClassContent\Repository\Element\ImageRepository
+          traits: [BackBee\CoreDomain\ClassContent\Traits\Element\ImageJsonSerializeTrait]
+          properties:
+            name: Image
+            description: An inline image
+            iconized-by: path
+          parameters:
+            width: 50
+            height: ~
+            crop: ~
+        Element\Keyword:
+          repository: \BackBee\CoreDomainBundle\ClassContent\Repository\Element\KeywordRepository
+          properties:
+            name: Keyword
+            description: An attached keywords
+          elements:
+            value: !!scalar
+#          fixture:
+#            value: word
+          parameters:
+            objectkeyword: []
+
+        Element\Link:
+          properties:
+            name: Link
+            description: A link address
+          elements:
+            value: !!scalar
+          parameters:
+            target: _self
+            title: link title
+
+        Element\Select:
+          extends: \BackBee\CoreDomain\ClassContent\Element\Text
+          properties:
+            name: Select
+            description: A select input box
+          parameters:
+            options: ~
+
+        Element\Text:
+          properties:
+            name: Text
+            description: A simple text input
+          elements:
+            value: !!scalar
+
+#    Extra
+        Article\Article:
+            properties:
+                name: Article
+                description: "An article contains a title, an author, an abstract, a primary image and a body"
+                category: [Article]
+                indexation: [permid, title->value]
+                labelized_by: title->value
+                iconized_by: image->image->path
+            elements:
+                title:
+                    type: BackBee\CoreDomain\ClassContent\Element\Text
+                    label: Title
+                    default:
+                        value: Your title here...
+                    maxentry: 1
+                    parameters:
+                        rte: lite
+                permid: !!scalar
+                abstract:
+                    type: BackBee\CoreDomain\ClassContent\Element\Text
+                    label: Abstract
+                    default:
+                        value: '<span class="first-letter">Y</span>our abstract here'
+                    maxentry: 1
+                    parameters:
+                        rte: lite
+                body:
+                    type: BackBee\CoreDomain\ClassContent\Article\Body
+                image:
+                    type: BackBee\CoreDomain\ClassContent\Media\Image
+                keywords:
+                    type: BackBee\CoreDomain\ClassContent\Element\Keyword
+                    label: Keywords
+                    maxentry: 0
+                related:
+                    type: BackBee\CoreDomain\ClassContent\Article\Related
+                signature: !!scalar
+                permid: !!scalar
+            parameters:
+                link:
+                    type: "linkSelector"
+                    label: "Link"
+                    value: []
+                keyword_selector:
+                    type: keywordSelector
+                    label: 'Select a keyword'
+                    value: []
+                rendermode_autoblock:
+                    type: select
+                    label: 'Rendermode in autoblock'
+                    options:
+                        block-fullwidth: 'Image full width'
+                        block-right: 'Image right'
+                        no-image: 'No image'
+                    value: ['block-fullwidth']
+                exclude_from_autoblock:
+                    type: checkbox
+                    options:
+                        exclude: 'Exclude from autoblock'
+                    value: []
+        Article\Body:
+          extends: \BackBee\CoreDomain\ClassContent\ContentSet
+          properties:
+            category: [!Article]
+            cache_lifetime: 60
+            clonemode: force
+        Article\LatestArticle:
+            extends: \BackBee\CoreDomain\ClassContent\Block\AutoBlock
+            properties:
+                name : Latest Articles
+                description: "List the latest articles"
+                category: [Article]
+            elements:
+                title:
+                    type: BackBee\CoreDomain\ClassContent\Element\Text
+                    label: Title
+                    default:
+                        value: Latest news
+                    parameters:
+                        rte: lite
+                link:
+                    type: BackBee\CoreDomain\ClassContent\Element\Text
+                    label: Link
+                    default:
+                        value: More news
+                    parameters:
+                        rte: lite
+
+        Article\ArticleContainer:
+            extends: \BackBee\CoreDomain\ClassContent\Block\AutoBlock
+            properties:
+                name : Article Container
+                description: "Automated article listing"
+                category: [!Article]
+
+        Home\HomeArticleContainer:
+            extends: \BackBee\CoreDomain\ClassContent\Block\AutoBlock
+            properties:
+                name: Home article container
+                description: "Home article container"
+                category: [Home]
+            parameters:
+                rendermode:
+                    type: 'select'
+                    value: []
+        Home\HomeContainer:
+            properties:
+                name: home container
+                description: ""
+                category: [!Home]
+            elements:
+                container:
+                    type: BackBee\CoreDomain\ClassContent\Container\OneColumn
+            parameters:
+                container_title: ~
+                container_bottom: ~
+
+
+        Home\Slider:
+            properties:
+                name: "Slider"
+                description: "Slider containing image, text and link slides"
+                category: [Home]
+            parameters:
+                medias:
+                    type: mediaSelector
+                    label: Medias
+                    value: []
+                links:
+                    type: linkSelector
+                    label: Links
+                    value: []
+        Article\ListArticleContainer:
+            extends: \BackBee\CoreDomain\ClassContent\Block\AutoBlock
+            properties:
+                name : Article Container
+                description: "Automated article listing"
+                category: [!Article]
+        Article\Quote:
+            properties:
+                name : Quote
+                description: "Quote"
+                category: [Article]
+            elements:
+                title:
+                    type: BackBee\CoreDomain\ClassContent\Element\Text
+                    label: Title
+                    default:
+                        value: "CONTENT HEADER: LOREM IPSUM"
+                    parameters:
+                        rte: lite
+                text:
+                    type: BackBee\CoreDomain\ClassContent\Element\Text
+                    label: Title
+                    default:
+                        value: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer gravida dolor nisl, sed maximus ipsum ultrices sed. Vestibulum varius turpis non varius blandit."
+                    parameters:
+                        rte: lite
+            parameters:
+                link:
+                    type: "linkSelector"
+                    label: "Link"
+                    value: []
+                    max_entry: 1
+        Article\Related:
+            properties:
+                name: Linked articles
+                description: "A block that display linked articles. Contains: ContentSet, Article"
+                category: [!Article]
+            elements:
+                left:
+                    type: BackBee\CoreDomain\ClassContent\Article\RelatedContainer
+                middle:
+                    type: BackBee\CoreDomain\ClassContent\Article\RelatedContainer
+                right:
+                    type: BackBee\CoreDomain\ClassContent\Article\RelatedContainer
+        Article\RelatedContainer:
+            extends: \BackBee\CoreDomain\ClassContent\ContentSet
+            properties:
+                name: Linked article container
+                description: "A block that display linked article. Contains: ContentSet, Article"
+                category: [!Article]
+            parameters:
+                rendermode: related
+                accept: [BackBee\CoreDomain\ClassContent\Article\Article]
+
+        Block\AutoBlock:
+            properties:
+                name : Autoblock
+                description: "Automated content listing"
+                category: [!Article]
+            parameters:
+                delta:
+                    type: text
+                    value: 0
+                    label: 'Ignore the "x" first elements'
+                parent_node:
+                    type: nodeSelector
+                    value: []
+                    label: 'Page'
+                start:
+                    value: 0
+                content_to_show:
+                    value: [BackBee\CoreDomain\ClassContent\Article\Article]
+                limit:
+                    type: text
+                    value: 10
+                    label: "Number of elements to display"
+                multipage:
+                    type: checkbox
+                    options:
+                        'multipage': 'Multipage'
+                    value: []
+                recursive:
+                    type: checkbox
+                    options:
+                        'recursive': 'Recursive'
+                    value: ['recursive']
+        Block\ColumnDivider:
+            properties:
+                name : Column divider
+                description: "Column divider"
+                category: [Block]
+            elements:
+                first_container:
+                    type: \BackBee\CoreDomain\ClassContent\ContentSet
+                second_container:
+                    type: \BackBee\CoreDomain\ClassContent\ContentSet
+                third_container:
+                    type: \BackBee\CoreDomain\ClassContent\ContentSet
+                fourth_container:
+                    type: \BackBee\CoreDomain\ClassContent\ContentSet
+            parameters:
+                rendermode:
+                    type: "select"
+                    value: []
+
+        Container\OneColumn:
+            extends: \BackBee\CoreDomain\ClassContent\ContentSet
+            properties:
+                name: One column
+                category: [!Container]
+        Social\Facebook:
+            properties:
+                name: Facebook block
+                description: Facebook block
+                category: [Social]
+            parameters:
+                link:
+                    type: "text"
+                    value: ~
+                    label: "Link"
+                height:
+                    type: "text"
+                    value: "300"
+                    label: "Height (px)"
+                hide_cover:
+                    type: "checkbox"
+                    options:
+                        'hide_cover': 'Hide cover'
+                    value: []
+                    inline: true
+                show_post:
+                    type: "checkbox"
+                    options:
+                        'show_post': 'Show post'
+                    value: ["show_post"]
+                    inline: true
+
+        Social\Twitter:
+            properties:
+                name: Twitter block
+                description: Twitter block
+                category: [Social]
+            parameters:
+                widget_id:
+                    type: "text"
+                    value: ~
+                    label: "Widget id"
+
+        Text\Paragraph:
+            properties:
+                name: Paragraph
+                description: Paragraph
+                category: [Article]
+            elements:
+                body:
+                    type: BackBee\CoreDomain\ClassContent\Element\Text
+                    label: paragraph container
+                    default:
+                        value: Your text here...
+                    maxentry: 1
+                    parameters:
+                        rte: paragraph
+        Media\ClickableThumbnail:
+            properties:
+                name: Clickable Thumbnail
+                description: A clickable media image
+                labelized-by: title->value
+                iconized-by: image->path
+                category: [Media]
+            traits: [BackBee\StandardBundle\Traits\MediaImageNameTrait,BackBee\StandardBundle\Traits\MediaImageJsonSerializeTrait]
+            elements:
+                title:
+                    type: BackBee\CoreDomain\ClassContent\Element\Text
+                    label: Title
+                    default:
+                        value: "Clickable thumbnail"
+                    parameters:
+                        rte: lite
+                image:
+                    type: BackBee\CoreDomain\ClassContent\Media\Image
+                    label: Image
+                text_caption:
+                    type: BackBee\CoreDomain\ClassContent\Element\Text
+                    label: Text caption
+                    default:
+                        value: "Text caption"
+                    parameters:
+                        rte: lite
+            parameters:
+                link_image:
+                    type: "url"
+                    value: "http://"
+                    label: ""
+                    placeholder: "http://www.backbee.com/img/link-image.html"
+                link_caption:
+                    type: "url"
+                    value: ""
+                    placeholder: "http://www.backbee.com/img/link.html"
+                    label: "Caption link: if empty Image link is used"
+        Media\Iframe:
+            properties:
+                name: Iframe
+                description: "A block video"
+                category: [Media]
+            elements:
+                videoframe:
+                    type: BackBee\CoreDomain\ClassContent\Element\Text
+                    label: Iframe integration
+                    default:
+                        value: '<iframe width="560" height="315" src="https://www.youtube.com/embed/YeWZaLfAYN4" frameborder="0" allowfullscreen></iframe>'
+                    maxentry: 1
+        Media\Image:
+            properties:
+                name: Media image
+                description: A media image
+                labelized-by: title->value
+                iconized-by: image->path
+                category: [Media]
+            traits: [BackBee\Traits\MediaImageNameTrait,BackBee\Traits\MediaImageJsonSerializeTrait]
+            elements:
+                title:
+                    type: BackBee\CoreDomain\ClassContent\Element\Text
+                    label: Titre
+                    maxentry: 1
+                    default:
+                        value: ""
+                description:
+                    type: BackBee\CoreDomain\ClassContent\Element\Text
+                    label: Description
+                    maxentry: 1
+                    default:
+                        value: ""
+                copyrights:
+                    type: BackBee\CoreDomain\ClassContent\Element\Text
+                    label: Copyrights
+                    maxentry: 1
+                    default:
+                        value: "Picture credits: author name/source"
+                image:
+                    type: BackBee\CoreDomain\ClassContent\Element\Image
+                    label: Image
+        Media\Pdf:
+            properties:
+                name: Pdf file
+                description: A pdf file
+                labelized-by: title->value
+                category: [Media]
+            traits: [BackBee\CoreDomain\ClassContent\Traits\Element\FileJsonSerializeTrait]
+            elements:
+                title:
+                    type: BackBee\CoreDomain\ClassContent\Element\Text
+                    label: Titre
+                    maxentry: 1
+                    default:
+                        value: ""
+                description:
+                    type: BackBee\CoreDomain\ClassContent\Element\Text
+                    label: Description
+                    maxentry: 1
+                    default:
+                        value: ""
+                file:
+                    type: BackBee\CoreDomain\ClassContent\Element\File
+                    label: fichier
+                    extra:
+                        dropzone:
+                            acceptedFiles: '.pdf'

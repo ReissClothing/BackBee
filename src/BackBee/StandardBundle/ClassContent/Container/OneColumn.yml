@@ -1,5 +1,0 @@
-OneColumn:
-  extends: \BackBee\CoreDomain\ClassContent\ContentSet
-  properties:
-    name: One column
-    category: [!Container]

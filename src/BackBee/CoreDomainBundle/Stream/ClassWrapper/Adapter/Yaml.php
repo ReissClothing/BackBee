@@ -60,38 +60,24 @@ class Yaml extends AbstractClassWrapper
      * @var array
      */
     private $_classcontentdir;
+    /**
+     * @var
+     */
+    private $classConfigConfiguration;
+    /**
+     * @var
+     */
+    private $classContentNamespace;
 
     /**
      * Class constructor.
      */
-    public function __construct()
+    public function __construct($classConfigConfiguration, $classContentNamespace)
     {
         parent::__construct();
 
-        if (null === $this->_autoloader) {
-            throw new ClassWrapperException('The BackBee autoloader can not be retreived.');
-        }
-
-//        $this->_application = $this->_autoloader->getApplication();
-//        if (null !== $this->_application) {
-//            $this->_classcontentdir = $this->_application->getClassContentDir();
-//        }
-//        Values where:
-//        $this->_classcontentdir = [
-//            '/var/www/vendor/backbee/demo-bundle/ClassContent',
-//            '/var/www/repository/ClassContent',
-//            '/var/www/vendor/backbee/backbee/ClassContent',
-//        ];
-//        @todo gvf do it dynamically
-        $this->_classcontentdir = [
-            '/var/www/src/BackBee/StandardBundle/ClassContent',
-            '/var/www/src/BackBee/CoreDomain/ClassContent',
-//            '/var/www/vendor/backbee/demo-bundle/ClassContent',
-        ];
-
-        if (null === $this->_classcontentdir || 0 == count($this->_classcontentdir)) {
-            throw new ClassWrapperException('None ClassContent repository defined.');
-        }
+        $this->classConfigConfiguration = $classConfigConfiguration;
+        $this->classContentNamespace = $classContentNamespace;
     }
 
     /**
@@ -164,33 +150,27 @@ class Yaml extends AbstractClassWrapper
      */
     private function checkDatas($yamlData)
     {
+        //  Converts yamlstructure to the structure needed for the build
+        $buildData = [];
         try {
-            if ($yamlData === false || !is_array($yamlData) || count($yamlData) > 1) {
+            if ($yamlData === false || !is_array($yamlData)  ) {
                 throw new ClassWrapperException('Malformed class content description');
             }
 
-            foreach ($yamlData as $classname => $contentDesc) {
-                if ($this->classname != $this->_normalizeVar($this->classname)) {
-                    throw new ClassWrapperException("Class Name don't match with the filename");
-                }
-
-                if (!is_array($contentDesc)) {
-                    throw new ClassWrapperException('None class content description found');
-                }
-
+                $contentDesc = $yamlData;
                 foreach ($contentDesc as $key => $data) {
                     switch ($key) {
                         case 'extends':
-                            $this->extends = $this->_normalizeVar($data, true);
-                            if (substr($this->extends, 0, 1) != NAMESPACE_SEPARATOR) {
-                                $this->extends = NAMESPACE_SEPARATOR.$this->namespace.
-                                    NAMESPACE_SEPARATOR.$this->extends;
+                            $buildData['extends'] = $this->_normalizeVar($data, true);
+                            if (substr($buildData['extends'], 0, 1) != NAMESPACE_SEPARATOR) {
+                                $buildData['extends'] = NAMESPACE_SEPARATOR.$this->namespace.
+                                    NAMESPACE_SEPARATOR.$buildData['extends'];
                             }
 
                             break;
                         case 'interfaces':
                             $data = false === is_array($data) ? array($data) : $data;
-                            $this->interfaces = array();
+                            $buildData['interfaces'] = array();
 
                             foreach ($data as $i) {
                                 $interface = $i;
@@ -200,27 +180,27 @@ class Yaml extends AbstractClassWrapper
 
                                 // add interface only if it exists
                                 if (true === interface_exists($interface)) {
-                                    $this->interfaces[] = $interface;
+                                    $buildData['interfaces'][] = $interface;
                                 }
                             }
 
                             // build up interface use string
-                            $str = implode(', ', $this->interfaces);
-                            if (0 < count($this->interfaces)) {
-                                $this->interfaces = 'implements '.$str;
+                            $str = implode(', ', $buildData['interfaces']);
+                            if (0 < count($data['interfaces'])) {
+                                $buildData['interfaces'] = 'implements '.$str;
                             } else {
-                                $this->interfaces = '';
+                                $buildData['interfaces'] = '';
                             }
 
                             break;
                         case 'repository':
                             if (class_exists($data)) {
-                                $this->repository = $data;
+                                $buildData['repository'] = $data;
                             }
                             break;
                         case 'traits':
                             $data = false === is_array($data) ? array($data) : $data;
-                            $this->traits = array();
+                            $buildData['traits'] = array();
 
                             foreach ($data as $t) {
                                 $trait = $t;
@@ -230,16 +210,16 @@ class Yaml extends AbstractClassWrapper
 
                                 // add traits only if it exists
                                 if (true === trait_exists($trait)) {
-                                    $this->traits[] = $trait;
+                                    $buildData['traits'][] = $trait;
                                 }
                             }
 
                             // build up trait use string
-                            $str = implode(', ', $this->traits);
-                            if (0 < count($this->traits)) {
-                                $this->traits = 'use '.$str.';';
+                            $str = implode(', ', $buildData['traits']);
+                            if (0 < count($buildData['traits'])) {
+                                $buildData['traits'] = 'use '.$str.';';
                             } else {
-                                $this->traits = '';
+                                $buildData['traits'] = '';
                             }
 
                             break;
@@ -252,71 +232,17 @@ class Yaml extends AbstractClassWrapper
                                 $values[strtolower($this->_normalizeVar($var))] = $value;
                             }
 
-                            $this->$key = $values;
+                            $buildData[$key] = $values;
                             break;
                     }
                 }
-            }
         } catch (ClassWrapperException $e) {
             throw new ClassWrapperException($e->getMessage(), 0, null, $this->_path);
         }
 
-        return true;
+        return $buildData;
     }
 
-    /**
-     * Return the real yaml file path of the loading class.
-     *
-     * @param string $path
-     *
-     * @return string The real path if found
-     */
-    private function resolveFilePath($path)
-    {
-        $path = str_replace(array($this->_protocol.'://', '/'), array('', DIRECTORY_SEPARATOR), $path);
-
-        foreach ($this->_includeExtensions as $ext) {
-            $filename = $path.$ext;
-            File::resolveFilepath($filename, null, array('include_path' => $this->_classcontentdir));
-            if (true === is_file($filename)) {
-                return $filename;
-            }
-        }
-
-        return $path;
-    }
-
-    /**
-     * @see ClassWrapperInterface::glob()
-     */
-    public function glob($pattern)
-    {
-        $classnames = [];
-        foreach ($this->_classcontentdir as $repository) {
-            foreach ($this->_includeExtensions as $ext) {
-                if (false !== $files = glob($repository.DIRECTORY_SEPARATOR.$pattern.$ext)) {
-                    foreach ($files as $file) {
-                        $classnames[] = $this->namespace.NAMESPACE_SEPARATOR.str_replace(
-                            [$repository.DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR],
-                            ['', NAMESPACE_SEPARATOR],
-                            $file
-                        );
-                    }
-                }
-            }
-        }
-
-        if (0 == count($classnames)) {
-            return false;
-        }
-
-        foreach ($classnames as &$classname) {
-            $classname = str_replace($this->_includeExtensions, '', $classname);
-        }
-        unset($classname);
-
-        return array_unique($classnames);
-    }
 
     /**
      * Opens a stream content for a yaml file.
@@ -326,20 +252,10 @@ class Yaml extends AbstractClassWrapper
      * @throws BBException           Occurs when none yamel files were found
      * @throws ClassWrapperException Occurs when yaml file is not a valid class content description
      */
-    public function stream_open($path, $mode, $options, &$opened_path)
+    public function build($classpath)
     {
-        $path = str_replace(array($this->_protocol.'://', '/'), array('', DIRECTORY_SEPARATOR), $path);
+        list($classname, $namespace, $classConfigKey) = $this->normalizeClassname($classpath);
 
-        $this->classname = basename($path);
-        if (dirname($path) && dirname($path) != DIRECTORY_SEPARATOR) {
-            $this->namespace .= NAMESPACE_SEPARATOR.str_replace(
-                DIRECTORY_SEPARATOR, NAMESPACE_SEPARATOR, dirname($path)
-            );
-        }
-
-        $this->_path = $this->resolveFilePath($path);
-        if (is_file($this->_path) && is_readable($this->_path)) {
-            $this->_stat = @stat($this->_path);
 
 // @todo gvf
 //            if (null !== $this->_cache) {
@@ -351,50 +267,62 @@ class Yaml extends AbstractClassWrapper
 //                    return true;
 //                }
 //            }
+            if (!array_key_exists($classConfigKey, $this->classConfigConfiguration)) {
+                throw new \Exception(sprintf('Couldn\'t find class definition \'%s\'', $classpath));
 
-            try {
-                $yamlDatas = parserYaml::parse(file_get_contents($this->_path));
-            } catch (ParseException $e) {
-                throw new ClassWrapperException($e->getMessage());
             }
-
-            if ($this->checkDatas($yamlDatas)) {
-                $this->_data = $this->_buildClass();
-                $opened_path = $this->_path;
+            if ($data = $this->checkDatas($this->classConfigConfiguration[$classConfigKey])) {
+                $data['classname'] = $classname;
+                $data['namespace'] = $namespace;
+                return $this->_buildClass($data);
 
 //                @todo gvf
 //                if (null !== $this->_cache) {
 //                    $this->_cache->save(md5($this->_path), $this->_data);
 //                }
 
-                return true;
             }
-        }
 
 //@todo gvf
 //        seguir por aqui, cambiar la excepcion, no encuentra el fichero yml
 //        throw new BBException(sprintf('Class \'%s\' not found', $this->namespace.NAMESPACE_SEPARATOR.$this->classname));
-        throw new \Exception(sprintf('Couldn\'t find file %s for class definition \'%s\'', $this->_path, $this->namespace.NAMESPACE_SEPARATOR.$this->classname));
+
     }
 
     /**
-     * Retrieve information about a yaml file.
+     * Returns the namespace and the class name to be found.
      *
-     * @see BackBee\Stream\ClassWrapper.AbstractClassWrapper::url_stat()
+     * @param string $classpath the absolute class name
+     *
+     * @return array array($namespace, $classname)
+     *
+     * @throws \BackBee\AutoLoader\Exception\InvalidNamespaceException Occurs when the namespace is not valid
+     * @throws \BackBee\AutoLoader\Exception\InvalidClassnameException Occurs when the class name is not valid
      */
-    public function url_stat($path, $flag)
+    private function normalizeClassname($classpath)
     {
-        $path = str_replace(array($this->_protocol.'://', '/'), array('', DIRECTORY_SEPARATOR), $path);
+        $classConfigKey = substr($classpath, strlen($this->classContentNamespace));
 
-        $this->_path = $this->resolveFilePath($path);
-        if (is_file($this->_path) && is_readable($this->_path)) {
-            $fd = fopen($this->_path, 'rb');
-            $this->_stat = fstat($fd);
-            fclose($fd);
-
-            return $this->_stat;
+        if (NAMESPACE_SEPARATOR == substr($classpath, 0, 1)) {
+            $classpath = substr($classpath, 1);
         }
 
-        return;
+        if (false !== ($pos = strrpos($classpath, NAMESPACE_SEPARATOR))) {
+            $namespace = substr($classpath, 0, $pos);
+            $classname = substr($classpath, $pos + 1);
+        } else {
+            $namespace = '';
+            $classname = $classpath;
+        }
+
+        if (false === preg_match("/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/", $namespace)) {
+            throw new Exception\InvalidNamespaceException(sprintf('Invalid namespace provided: %s.', $namespace));
+        }
+
+        if (false === preg_match("/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/", $classname)) {
+            throw new Exception\InvalidClassnameException(sprintf('Invalid class name provided: %s.', $classname));
+        }
+
+        return array($classname, $namespace, $classConfigKey);
     }
 }

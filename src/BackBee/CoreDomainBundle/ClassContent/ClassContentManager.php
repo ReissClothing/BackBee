@@ -233,7 +233,7 @@ class ClassContentManager
                          'BackBee\\CoreDomain\\ClassContent\\Article\\Quote',
                          'BackBee\\CoreDomain\\ClassContent\\Article\\Related',
                          'BackBee\\CoreDomain\ClassContent\\Article\\RelatedContainer',
-                        'BackBee\\CoreDomain\ClassContent\\Block\\Autoblock',
+                        'BackBee\\CoreDomain\ClassContent\\Block\\AutoBlock',
                         'BackBee\\CoreDomain\ClassContent\\Block\\ColumnDivider',
                          'BackBee\\CoreDomain\ClassContent\\Container\\OneColumn',
                          'BackBee\\CoreDomain\ClassContent\\Home\\HomeArticleContainer',

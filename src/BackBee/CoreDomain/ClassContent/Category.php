@@ -77,13 +77,18 @@ class Category implements \JsonSerializable
      * @return self
      */
 //    @todo GVF $options is unused, is only pased for base image url.
-    public function addBlock(AbstractClassContent $content, $visible = true, array $options = array())
+    public function addBlock(
+        $blockName,
+        $blockDescription,
+        $blockContentType,
+        $visible = true,
+        array $options = array())
     {
         $block = new \stdClass();
         $block->visible = $visible;
-        $block->label = $content->getProperty('name');
-        $block->description = $content->getProperty('description');
-        $block->type = $content->getContentType();
+        $block->label = $blockName;
+        $block->description = $blockDescription;
+        $block->type = $blockContentType;
 
         if (array_key_exists('thumbnail_url_pattern', $options)) {
             $block->thumbnail = sprintf($options['thumbnail_url_pattern'], $block->type);
