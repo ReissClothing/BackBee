@@ -72,8 +72,8 @@ class CategoryManager
 //            ),
 //        ];
 
-        $this->loadCategoriesFromClassContentDirectories();
         $this->classContentList = $classContentList;
+        $this->loadCategoriesFromClassContentDirectories();
     }
 
     /**

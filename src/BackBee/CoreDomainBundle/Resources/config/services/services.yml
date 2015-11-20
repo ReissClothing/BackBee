@@ -128,7 +128,10 @@ services:
 
     classcontent.manager:
         class:      %bbapp.classcontent.manager.class%
-        arguments: [@doctrine.orm.default_entity_manager, @classcontent.iconizer.chained]
+        arguments:
+            - @doctrine.orm.default_entity_manager
+            - %bbapp.classcontent_list%
+            - @classcontent.iconizer.chained
 
 #    controller_resolver:
 #        class:      %bbapp.controller_resolver.class%
