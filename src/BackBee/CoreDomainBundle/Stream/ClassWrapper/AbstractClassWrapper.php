@@ -41,38 +41,11 @@ use BackBee\CoreDomainBundle\Stream\StreamWrapperInterface;
  *
  * @copyright   Lp digital system
  * @author      c.rouillon <charles.rouillon@lp-digital.fr>
+ * @author      g.vilaseca <gonzalo.vilaseca@reiss.com>
  */
-abstract class AbstractClassWrapper implements StreamWrapperInterface
+//@tod gvf these are no stream wrappers anymore
+abstract class AbstractClassWrapper
 {
-    /**
-     * The data of the stream.
-     *
-     * @var string
-     */
-    protected $_data;
-
-    /**
-     * The seek position in the stream.
-     *
-     * @var int
-     */
-    protected $_pos = 0;
-
-    /**
-     * The protocol handled by the wrapper.
-     *
-     * @var string
-     */
-    protected $_protocol = "bb.class";
-
-    /**
-     * Information about the stream ressource.
-     *
-     * @var array
-     */
-    protected $_stat;
-
-
     /**
      * The class to be extended by the class content loaded.
      *
@@ -120,18 +93,6 @@ class <classname> extends <extends> <interface>
     }
 }
 ';
-    protected $_cache;
-
-    /**
-     * Class constructor
-     * Retrieve the registered BackBee autoloader.
-     */
-    public function __construct()
-    {
-        $this->elements   = array();
-        $this->properties = array();
-        $this->parameters = array();
-    }
 
     /**
      * Build the php code corresponding to the loading class.

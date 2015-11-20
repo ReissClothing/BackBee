@@ -37,29 +37,10 @@ use BackBee\Utils\File\File;
  *
  * @copyright   Lp digital system
  * @author      c.rouillon <charles.rouillon@lp-digital.fr>
+ * @author      g.vilaseca <gonzalo.vilaseca@reiss.com>
  */
 class Yaml extends AbstractClassWrapper
 {
-    /**
-     * Extensions to include searching file.
-     *
-     * @var array
-     */
-    private $_includeExtensions = array('.yml', '.yaml');
-
-    /**
-     * Path to the yaml file.
-     *
-     * @var string
-     */
-    private $_path;
-
-    /**
-     * Ordered directories file path to look for yaml file.
-     *
-     * @var array
-     */
-    private $_classcontentdir;
     /**
      * @var
      */
@@ -74,8 +55,6 @@ class Yaml extends AbstractClassWrapper
      */
     public function __construct($classConfigConfiguration, $classContentNamespace)
     {
-        parent::__construct();
-
         $this->classConfigConfiguration = $classConfigConfiguration;
         $this->classContentNamespace = $classContentNamespace;
     }
