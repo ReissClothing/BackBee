@@ -998,7 +998,8 @@ abstract class AbstractClassContent extends AbstractContent
         }
 
         if (self::JSON_CONCISE_FORMAT === $format) {
-            $data['image'] = $this->getImageName();
+//            @todo somehow get path or resolve it to allow custom locations?
+            $data['image'] = '/media/' . $this->getImageName();
 
             return $data;
         }

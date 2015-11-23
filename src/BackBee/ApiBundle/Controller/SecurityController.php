@@ -49,47 +49,29 @@ class SecurityController extends AbstractRestController
      * @Rest\RequestParam(name="username", requirements={@Assert\NotBlank})
      * @Rest\RequestParam(name="password", requirements={@Assert\NotBlank})
      */
+//not used anymore
     public function authenticateAction(Request $request)
     {
-        $created = date('Y-m-d H:i:s');
-        $token = new BBUserToken();
-        $token->setUser($request->request->get('username'));
-        $token->setCreated($created);
-        $token->setNonce(md5(uniqid('', true)));
-        $token->setDigest(md5($token->getNonce().$created.md5($request->request->get('password'))));
-
-        $tokenAuthenticated = $this->getApplication()->getSecurityContext()->getAuthenticationManager()
-            ->authenticate($token)
-        ;
-
-        if (!$tokenAuthenticated->getUser()->getApiKeyEnabled()) {
-            throw new DisabledException('API access forbidden');
-        }
-
-        $this->getApplication()->getSecurityContext()->setToken($tokenAuthenticated);
-
-        return $this->createJsonResponse(null, 201, array(
-            'X-API-KEY'       => $tokenAuthenticated->getUser()->getApiKeyPublic(),
-            'X-API-SIGNATURE' => $tokenAuthenticated->getNonce(),
-        ));
-    }
-
-    /**
-     * @Rest\Security(expression="is_fully_authenticated()")
-     */
-    public function deleteSessionAction(Request $request)
-    {
-        if (null === $request->getSession()) {
-            throw new NotFoundHttpException('Session doesn\'t exist');
-        }
-
-        $event = new GetResponseEvent(
-            $this->getApplication()->getController(),
-            $request,
-            HttpKernelInterface::MASTER_REQUEST
-        );
-        $this->getApplication()->getEventDispatcher()->dispatch('frontcontroller.request.logout', $event);
-
-        return new Response('', 204);
-    }
+//        $created = date('Y-m-d H:i:s');
+//        $token = new BBUserToken();
+//        $token->setUser($request->request->get('username'));
+//        $token->setCreated($created);
+//        $token->setNonce(md5(uniqid('', true)));
+//        $token->setDigest(md5($token->getNonce().$created.md5($request->request->get('password'))));
+//
+//        $tokenAuthenticated = $this->getApplication()->getSecurityContext()->getAuthenticationManager()
+//            ->authenticate($token)
+//        ;
+//
+//        if (!$tokenAuthenticated->getUser()->getApiKeyEnabled()) {
+//            throw new DisabledException('API access forbidden');
+//        }
+//
+//        $this->getApplication()->getSecurityContext()->setToken($tokenAuthenticated);
+//
+//        return $this->createJsonResponse(null, 201, array(
+//            'X-API-KEY'       => $tokenAuthenticated->getUser()->getApiKeyPublic(),
+//            'X-API-SIGNATURE' => $tokenAuthenticated->getNonce(),
+//        ));
+//    }
 }
