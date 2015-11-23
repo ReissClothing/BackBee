@@ -46,11 +46,11 @@ Configure db parameters in ``app/config/parameters.yml``
 
 Clone this repo and run
  
-    - ``composer install``
+    ``composer install``
  
-    - ``app/console assets:install --symlink``
+    ``app/console assets:install --symlink``
  
-    - ``app/console assetic:dump``
+    ``app/console assetic:dump``
 
 Edit ``BackBee\WebBundle\Renderer\AbstractRenderer.php`` line 537 and change it according to your setup.
 
