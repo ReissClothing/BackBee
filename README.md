@@ -1,5 +1,8 @@
 This repo is a complete migration of BackBee to Symfony framework.
 
+#It's in a pre alpha state so please don't review yet. I'd like to have everything working, and once verything is working, we can focus on detaills such as docblocks, typos etc. but before that I'd like to have all the missing tass done.
+
+
 This is still a WIP and any help will be more than welcome.
 
 ##Current status
@@ -10,7 +13,7 @@ If you wish to colaborate please open an issue stating the task you'd like to pe
 There are quite a los @todo's in the code that need fixing, also there are this issues:
 
 ##Urgent
-In BB twig throws pre and post render events, we should wrap twig to throw them too.
+In BB twig throws ``pre`` and ``post`` render events, we should wrap twig to throw them too.
 
 The whole front end setup needs to be done in a proper way, at least file locations and includes. So far it more or less works, but I'm not an expert at FE flow so this need to be double checked.
 
