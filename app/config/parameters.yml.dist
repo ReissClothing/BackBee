@@ -1,28 +1,156 @@
-# This file is a "template" of what your parameters.yml file should look like
-# Set parameters here that may be different on each deployment target of the app, e.g. development, staging, production.
-# http://symfony.com/doc/current/best_practices/configuration.html#infrastructure-related-configuration
+# This file is auto-generated during the composer install
 parameters:
-    database_host:     127.0.0.1
-    database_port:     ~
-    database_name:     symfony
-    database_user:     root
-    database_password: ~
-    # You should uncomment this if you want use pdo_sqlite
-    # database_path: "%kernel.root_dir%/data.db3"
-
-    mailer_transport:  smtp
-    mailer_host:       127.0.0.1
-    mailer_user:       ~
-    mailer_password:   ~
-
-    # A secret key that's used to generate certain security-related tokens
-    secret:            ThisTokenIsNotSoSecretChangeIt
-
+    database_host: 127.0.0.1
+    database_port: null
+    database_name:
+    database_user:
+    database_password:
+    mailer_transport: smtp
+    mailer_host: 127.0.0.1
+    mailer_user: null
+    mailer_password: null
+    secret: ThisTokenIsNotSoSecretChangeIt
     bbapp.base.dir: /var/www
     bbapp.storage.dir: /var/www/repository/Data/Storage
     bbapp.temporary.dir: /var/www/repository/Data/Tmp;
-    bbapp.base.repository.dir:  /var/www/repository;
+    bbapp.base.repository.dir: /var/www/repository;
     bbapp.cache.dir: /var/www/cache
     bbapp.log.dir: /var/www/log
     bbapp.data.dir: /var/www/repository/Data
     secret_key: ThisSecretKeyMustBeChanged
+#  @todo gvf  this is used in voters, users defined here are sudores, this should be done properly!!
+    sudoers:
+        - admin
+#    @todo gvf this should be moved to config
+    back_bee_toolbar:
+        core:
+            ApplicationManager:
+                appPath: /bundles/backbeeweb/js/bb-core-js/src/tb/apps
+                active: main
+                route: ""
+                applications:
+                    main:
+                        label: Main
+                        config:
+                            mainRoute: appMain/index
+
+                    content:
+                        label: Edition du contenu
+                        config: []
+
+                    bundle:
+                        label: Bundle
+                        config:
+                            mainRoute: bundle/index
+
+                    page:
+                        label: Page
+                        config:
+                            mainRoute: page/index
+
+                    contribution:
+                        label: Contribution
+                        config:
+                            mainRoute: contribution/index
+
+                    user:
+                        label: User
+                        config:
+                            mainRoute: user/index
+                        scope:
+                            global:
+                                open: user.showCurrent
+        wrapper_toolbar_id: bb5-ui
+        default_url: content/contridution/edit
+        component:
+            logger:
+                level: 8
+                mode: 'devel'
+
+            exceptions-viewer:
+                show: true
+                showInConsole: true
+
+            medialibrary:
+                available_media:
+                  - {title: 'Image', type: 'Media/Image', ico: 'fa fa-picture'}
+                  - {title: 'Pdf', type: 'Media/Pdf', ico: 'fa fa-file-pdf-o'}
+
+            translator:
+                base: '/bundles/backbeeweb/js/bb-core-js/src/tb/i18n/'
+                default_locale: 'en_US'
+                locales:
+                    en_US: 'EN'
+                    fr_FR: 'FR'
+                    ru_RU: 'RU'
+        unclickable_contents:
+            contents:
+                - 'Element/Text'
+                - 'Element/Attachment'
+                - 'Element/Date'
+                - 'Element/File'
+                - 'Element/Image'
+                - 'Element/Keyword'
+                - 'Element/Link'
+                - 'Element/Select'
+        plugins:
+            namespace:
+                core: src/tb/apps/content/plugins/
+                demo: ~
+
+            core:
+                contentselector:
+                    accept: ['*']
+                    config: []
+
+                parameters:
+                    accept: ['*']
+                    config: []
+
+                contentsetplus:
+                    accept: ['*']
+                    config: []
+
+                remove:
+                    accept: ['*']
+                    config: []
+
+                imagepicker:
+                    accept: ['*']
+                    config: []
+
+                edition:
+                    accept: ['*']
+                    config: []
+
+                dnd:
+                   accept: ['*']
+                   config: []
+
+                rte:
+                    accept: ['*']
+                    config:
+                        adapter: 'cke'
+                        aloha:
+                            libPath: ''
+                        cke:
+                            libName: 'ckeeditor'
+                            skin: 'backbee,/resources/toolbar/src/tb/component/cke/skins/backbee/'
+                            editableConfig:
+                                basic:
+                                    title: ''
+                                    toolbarGroups:
+                                        - {name: 'editing', groups: ['basicstyles', 'links']}
+                                        - {name: 'undo'}
+                                        - {name: 'clipboard', groups: ['selection', 'clipboard']}
+                                        - {name: 'about'}
+                                    removePlugins: 'colorbutton,find,flash,font,forms,iframe,newpage,removeformat,smiley,specialchar,stylescombo,templates'
+                                    removeButtons: 'About,Anchor'
+                                    extraAllowedContent: 'span(*)[id];div(*)[id];p(*)[id];h1(*)[id];h2(*)[id];h3(*)[id];h4(*)[id];h5(*)[id];ol(*)[id];ul(*)[id];li(*)[id]'
+                                lite:
+                                    title: "lite editor"
+                                    toolbarGroups: []
+                                    removePlugins: 'colorbutton,specialchar,links'
+                                    removeButtons: 'About,Anchor'
+                                    extraAllowedContent: 'span(*)[id];div(*)[id];p(*)[id];h1(*)[id];h2(*)[id];h3(*)[id];h4(*)[id];h5(*)[id];ol(*)[id];ul(*)[id];li(*)[id]'
+            demo: []
