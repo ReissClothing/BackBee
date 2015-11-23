@@ -25,6 +25,7 @@ If authentication fails FE doesn't display error.
 
 Security is implemented with a mix or voters and acl permissions, but I think a simpler security configuration would work too as I don't see where to assign fine grain permissions to users.
 
+
 ##Not so urgent:
 Behat and phpspecs.
 
@@ -35,6 +36,8 @@ Move away from annotations: they're evil.
 Content classes are generated on the fly, this I believe should be just a single class with different config parameters
 
 Implement installation as BB has (including fixtures).
+
+``Metadata`` class names are saved in some db fields, but the classes need to be moved to ``CoreDomain``, so a migration should be done to change ``MetaData\MetaData`` to ``CoreDomain\MetaData\MetaData``.
 
 ##Installation
 Restore sample db ``bb-symfony.dump.bz2`` located in this repo into your db.
@@ -57,3 +60,14 @@ pswd: admin
 
 ###Notes: 
 To make things easier for now, security uses in memory user provider.
+
+###Source structure:
+CoreDomain: Core doamin classes, framework agnostic.
+
+CoreDomainBundle: Integration of Core doamin classes into Symfony framework.
+
+WebBundle: Anything that is used to display content on the frontend.
+
+ApiBundle: All APi related stuff (this is used by js in web bundle).
+
+StandardBundle: Same as BB standard bundle: an example implementation of a real site.
