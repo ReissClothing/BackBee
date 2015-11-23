@@ -71,3 +71,5 @@ WebBundle: Anything that is used to display content on the frontend.
 ApiBundle: All APi related stuff (this is used by js in web bundle).
 
 StandardBundle: Same as BB standard bundle: an example implementation of a real site.
+
+ToolbarBundle: Just gets the toolbar config. Original BB repo had a toolbar bundle too, not sure if this should be kept or moved to another bundle.
