@@ -1,6 +1,8 @@
 <?php
 
-namespace BackBee\WebBundle\Renderer\Helper;
+namespace BackBee\StandardBundle\Renderer\Helper;
+
+use BackBee\WebBundle\Renderer\Helper\AbstractHelper;
 
 class navbar extends AbstractHelper
 {

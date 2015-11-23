@@ -1,14 +1,15 @@
 <?php
 
-namespace BackBee\WebBundle\Renderer\Helper;
+namespace BackBee\StandardBundle\Renderer\Helper;
+
+use BackBee\WebBundle\Renderer\Helper\AbstractHelper;
 
 class socialNetwork extends AbstractHelper
 {
 
     public function __invoke($showCurrentItem = true)
     {
-        $application = $this->_renderer->getApplication();
-// @todo gvf
+// @todo gvf move to either a parameter or bundle config
 //        $socialsNetworks = $application->getConfig()->getSection('social_network');
         $socialsNetworks =  array (
             'facebook' =>

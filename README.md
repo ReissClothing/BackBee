@@ -25,6 +25,7 @@ If authentication fails FE doesn't display error.
 
 Security is implemented with a mix or voters and acl permissions, but I think a simpler security configuration would work too as I don't see where to assign fine grain permissions to users.
 
+Authentication is done via standard symfony cookie/session, so there is no need to use ``X-API-KEY`` and ``X-API-SIGNATURE``, unless we want a remote API. Fe should be adapted to this scenario. 
 
 ##Not so urgent:
 Behat and phpspecs.
@@ -44,7 +45,7 @@ Restore sample db ``bb-symfony.dump.bz2`` located in this repo into your db.
 
 Configure db parameters in ``app/config/parameters.yml``
 
-Clone this repo and run
+Clone this repo and run:
  
     ``composer install``
  

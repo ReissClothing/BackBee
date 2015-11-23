@@ -1,6 +1,8 @@
 <?php
 
-namespace BackBee\WebBundle\Renderer\Helper;
+namespace BackBee\StandardBundle\Renderer\Helper;
+
+use BackBee\WebBundle\Renderer\Helper\AbstractHelper;
 
 /**
  * @author e.chau <eric.chau@lp-digital.fr>

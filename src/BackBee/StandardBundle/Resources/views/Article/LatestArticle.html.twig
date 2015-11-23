@@ -6,10 +6,9 @@
         <div class="content-inner-pad">
             <ul class="list-unstyled">
                 {% for content in contents %}
-                    {#@todo gvf#}
-                    {#{% if item.getParamValue('exclude_from_autoblock') is empty %}#}
+                    {% if item.getParamValue('exclude_from_autoblock') is empty %}
                         {{ this.render(content, 'latest')|raw }}
-                    {#{% endif %}#}
+                    {% endif %}
                 {% endfor %}
             </ul>
         </div>
