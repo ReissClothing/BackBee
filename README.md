@@ -1,6 +1,6 @@
 This repo is a complete migration of BackBee to Symfony framework.
 
-#It's in a pre alpha state so please don't review yet. I'd like to have everything working, and once verything is working, we can focus on detaills such as docblocks, typos etc. but before that I'd like to have all the missing tass done.
+#It's in a pre alpha state so please don't review yet. I'd like to have everything working, and once verything is working, we can focus on detaills such as docblocks, typos etc. but before that I'd like to have all the missing tasks done.
 
 
 This is still a WIP and any help will be more than welcome.
