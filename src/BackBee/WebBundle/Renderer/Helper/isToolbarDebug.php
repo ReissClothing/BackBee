@@ -31,41 +31,21 @@ namespace BackBee\WebBundle\Renderer\Helper;
 class isToolbarDebug extends AbstractHelper
 {
     /**
+     * @var
+     */
+    private $debug;
+
+    public function __construct($debug)
+    {
+        $this->debug = $debug;
+    }
+    /**
      * Return true if the application is in the debug mode.
      *
      * @return boolean
      */
     public function __invoke()
     {
-//        @TODO gvf
-//        $config = $this->getRenderer()->getApplication()->getContainer()->get('bundle.toolbar.config')->getBundleConfig();
-        $config = array (
-            'name' => 'Toolbar bundle',
-            'description' => NULL,
-            'author' => 'Eric Chau <eric.chau@lp-digital.fr>',
-            'version' => 1,
-            'enable' => true,
-            'bundle_loader_recipes' =>
-                array (
-                    'helper' =>
-                        array (
-                            0 => 'BackBee\\Bundle\\ToolbarBundle\\Toolbar',
-                            1 => 'loadHelpers',
-                        ),
-                    'template' =>
-                        array (
-                            0 => 'BackBee\\Bundle\\ToolbarBundle\\Toolbar',
-                            1 => 'loadTemplates',
-                        ),
-                    'resource' =>
-                        array (
-                            0 => 'BackBee\\Bundle\\ToolbarBundle\\Toolbar',
-                            1 => 'loadResources',
-                        ),
-                ),
-            'debug' => false,
-        );
-        return array_key_exists('debug', $config) ? $config['debug'] : false;
-
+        return $this->debug;
     }
 }

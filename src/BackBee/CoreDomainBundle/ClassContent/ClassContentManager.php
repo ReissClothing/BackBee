@@ -71,7 +71,7 @@ class ClassContentManager
      * @param ApplicationInterface   $app      The current application.
      * @param IconizerInterface|null $iconizer Optional, an content iconizer.
      */
-//    @todo gvf et context and env as app config and pass it here
+//    @todo gvf set context and env as app config and pass it here
     public function __construct(
         EntityManagerInterface $entityManager,
         $classcontentList,

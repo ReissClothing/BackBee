@@ -58,3 +58,12 @@ services:
             - @doctrine.orm.default_entity_manager
         tags:
             - { name: "kernel.event_listener", event: "home.slider.render", method: onRender }
+
+    brand:
+        class: BackBee\StandardBundle\Renderer\Helper\brand
+    breadcrumb:
+        class: BackBee\StandardBundle\Renderer\Helper\breadcrumb
+    navbar:
+        class: BackBee\StandardBundle\Renderer\Helper\navbar
+    socialnetwork:
+        class: BackBee\StandardBundle\Renderer\Helper\socialNetwork

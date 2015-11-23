@@ -2,12 +2,27 @@
 
 namespace BackBee\CoreDomainBundle;
 
+use BackBee\CoreDomainBundle\AutoLoader\AutoLoader;
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class BackBeeCoreDomainBundle extends Bundle
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function boot()
+    {
+        $stringLoader = new AutoLoader(
+            $this->container->get('event_dispatcher'),
+            $this->container->getParameter('bbapp.classcontent_namespace'),
+            $this->container->get('bbapp.stream_wrapper.adapter.yml')
+        );
+
+        $stringLoader->register();
+    }
+
     /**
      * {@inheritdoc}
      */

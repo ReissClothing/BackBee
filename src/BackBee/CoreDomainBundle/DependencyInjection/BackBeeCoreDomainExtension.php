@@ -35,7 +35,7 @@ class BackBeeCoreDomainExtension extends Extension
 
         $container->setParameter('bbapp.classcontent_namespace', $config['classcontent_namespace']);
 //        @gvf todo IMO the categories shouldn't be created this way, as it creates all of them in memory even if not used, they should be
-//        an entity persisted to doctrine and retrieved from there
+//        an entity persisted to doctrine and retrieved from there, or a config array built dynamically.
         $container->setParameter('bbapp.classcontent_list', $this->classContentList($config['classcontent'], $config['classcontent_namespace']));
 
         $container->setParameter('bbapp.classcontent_config', $config['classcontent']);
