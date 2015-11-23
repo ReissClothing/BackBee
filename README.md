@@ -10,7 +10,7 @@ In short, everything more or less works, but it needs that final touch that migh
 
 If you wish to colaborate please open an issue stating the task you'd like to perform.
 
-There are quite a los @todo's in the code that need fixing, also there are this issues:
+###There are quite a lot of @todo's pending in the code that need fixing, also there are this issues:
 
 ##Urgent
 In BB twig throws ``pre`` and ``post`` render events, we should wrap twig to throw them too.
