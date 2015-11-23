@@ -34,7 +34,7 @@ Move away from annotations: they're evil.
 
 Content classes are generated on the fly, this I believe should be just a single class with different config parameters
 
-Implement installation as BB has.
+Implement installation as BB has (including fixtures).
 
 ##Installation
 Restore sample db ``bb-symfony.dump.bz2`` located in this repo into your db.
