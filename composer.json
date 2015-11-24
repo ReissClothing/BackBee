@@ -1,8 +1,19 @@
 {
-    "name": "symfony/framework-standard-edition",
-    "license": "MIT",
+    "name": "backbee/backbee-standard",
+    "description": "BackBee CMS Standard Edition distribution",
+    "keywords": ["CMS", "Core", "Content Management", "No backend CMS", "User Management"],
     "type": "project",
-    "description": "The \"Symfony Standard Edition\" distribution",
+    "license": "GPL-3.0+",
+    "authors": [
+        {
+            "name": "Eric Chau",
+            "email": "eric.chau@lp-digital.fr"
+        },
+        {
+            "name": "Gonzalo Vilaseca",
+            "email": "gonzalo.vilaseca@gmail.com"
+        }
+    ],
     "autoload": {
         "psr-4": { "": "src/" }
     },
@@ -54,7 +65,7 @@
             "file": "app/config/parameters.yml"
         },
         "branch-alias": {
-            "dev-master": "2.7-dev"
+            "dev-master": "0.1-alpha"
         }
     }
 }
