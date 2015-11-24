@@ -27,7 +27,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 use BackBee\ApiBundle\Controller\Annotations as Rest;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use BackBee\CoreDomain\Site\Layout;
 
 /**
@@ -45,7 +44,7 @@ class LayoutController extends AbstractRestController
      *
      * @return Symfony\Component\HttpFoundation\Response
      *
-     * @ParamConverter("layout", class="BackBee\CoreDomain\Site\Layout", options={"id" = "uid"})
+     * @Rest\ParamConverter(name="layout", class="BackBee\CoreDomain\Site\Layout")
      */
     public function getWorkflowStateAction(Layout $layout)
     {
@@ -87,11 +86,6 @@ class LayoutController extends AbstractRestController
         ));
     }
 
-    /**
-     * @ParamConverter(
-     *   "site", id_name="site_uid", id_source="query", class="BackBee\CoreDomain\Site\Site", required=false, options={"id" = "uid"}
-     * )
-     */
     public function getCollectionAction(Request $request)
     {
         $qb = $this->getDoctrine()->getManager()
@@ -102,10 +96,10 @@ class LayoutController extends AbstractRestController
             ->leftJoin('l._states', 'st')
         ;
 
-        if (null !== ($site = $request->attributes->get('site'))) {
+        if ($site_uid= ($site = $request->get('site_uid'))) {
             $qb->select('l, st, si')
                 ->innerJoin('l._site', 'si', 'WITH', 'si._uid = :site_uid')
-                ->setParameter('site_uid', $site->getUid())
+                ->setParameter('site_uid', $site_uid)
             ;
         } else {
             $qb->select('l, st')
