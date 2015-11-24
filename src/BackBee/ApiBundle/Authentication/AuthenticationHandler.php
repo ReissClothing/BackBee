@@ -38,11 +38,7 @@ class AuthenticationHandler implements AuthenticationSuccessHandlerInterface, Au
         // if AJAX login
         if ($request->isXmlHttpRequest()) {
 
-            return new JsonResponse(
-                ['X-API-KEY'       => 1,
-                 'X-API-SIGNATURE' => 1,
-                ]
-            );
+            return new JsonResponse();
         }
 
 // @todo            form login not used, what should we do?
@@ -68,11 +64,7 @@ class AuthenticationHandler implements AuthenticationSuccessHandlerInterface, Au
         // if AJAX login
         if ($request->isXmlHttpRequest()) {
 
-            return new JsonResponse(
-                ['X-API-KEY'       => null,
-                 'X-API-SIGNATURE' => null,
-                ]
-            );
+            return new JsonResponse(null, 401);
         }
 
 //  @todo          form login not used, what should we do?
