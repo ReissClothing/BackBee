@@ -22,8 +22,6 @@ class BackBeeCoreDomainExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $container->setParameter('bbapp.config.renderer', $config['renderer']);
-
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config/services'));
         $loader->load('bb.yml');
         $loader->load('new.yml');

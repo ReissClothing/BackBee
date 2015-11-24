@@ -27,6 +27,8 @@ Security is implemented with a mix or voters and acl permissions, but I think a 
 
 Authentication is done via standard symfony cookie/session, so there is no need to use ``X-API-KEY`` and ``X-API-SIGNATURE``, unless we want a remote API. Fe should be adapted to this scenario. 
 
+Fixtures 
+
 ##Not so urgent:
 Behat and phpspecs.
 

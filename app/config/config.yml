@@ -1,7 +1,6 @@
 imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
-    - { resource: services.yml }
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
@@ -91,23 +90,6 @@ swiftmailer:
 
 back_bee_core_domain:
     classcontent_namespace: "BackBee\CoreDomain\ClassContent\\"
-    renderer:
-        bb_scripts_directory:
-            common: %bbapp.base.dir%/Resources/scripts
-            form: %bbapp.base.dir%/Form/Templates/scripts
-
-        adapter:
-            twig:
-                class: BackBee\Renderer\Adapter\Twig
-                config: []
-            phtml:
-                class: BackBee\Renderer\Adapter\phtml
-                config: []
-
-        path:
-            scriptdir: Templates/scripts
-            layoutdir: Layouts
-
     classcontent:
 #    Main
         Element\Attachment:
