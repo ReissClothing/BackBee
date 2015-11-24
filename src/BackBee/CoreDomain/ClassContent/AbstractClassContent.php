@@ -53,7 +53,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @author      c.rouillon <charles.rouillon@lp-digital.fr>
  * @ORM\Entity(repositoryClass="BackBee\CoreDomainBundle\ClassContent\Repository\ClassContentRepository")
  * @ORM\Table(
- *   name="content",
+ *   name="bb_content",
  *   indexes={
  *     @ORM\Index(name="IDX_MODIFIED", columns={"modified"}),
  *     @ORM\Index(name="IDX_STATE", columns={"state"}),
