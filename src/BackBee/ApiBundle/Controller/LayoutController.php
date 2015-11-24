@@ -44,10 +44,11 @@ class LayoutController extends AbstractRestController
      *
      * @return Symfony\Component\HttpFoundation\Response
      *
-     * @Rest\ParamConverter(name="layout", class="BackBee\CoreDomain\Site\Layout")
      */
-    public function getWorkflowStateAction(Layout $layout)
+    public function getWorkflowStateAction($uid)
     {
+        $layout = $this->getLayoutOr404($uid);
+
         $layout_states = $this->getDoctrine()->getManager()
             ->getRepository('BackBee\CoreDomain\Workflow\State')
             ->getWorkflowStatesForLayout($layout)
@@ -91,19 +92,19 @@ class LayoutController extends AbstractRestController
         $qb = $this->getDoctrine()->getManager()
             ->getRepository('BackBee\CoreDomain\Site\Layout')
             ->createQueryBuilder('l')
-            ->select('l, st')
-            ->orderBy('l._label', 'ASC')
-            ->leftJoin('l._states', 'st')
+//            ->select('l, st')
+            ->orderBy('l.label', 'ASC')
+            ->leftJoin('l.states', 'st')
         ;
 
         if ($site_uid= ($site = $request->get('site_uid'))) {
             $qb->select('l, st, si')
-                ->innerJoin('l._site', 'si', 'WITH', 'si._uid = :site_uid')
+                ->innerJoin('l.site', 'si', 'WITH', 'si._uid = :site_uid')
                 ->setParameter('site_uid', $site_uid)
             ;
         } else {
             $qb->select('l, st')
-                ->andWhere('l._site IS NULL')
+                ->andWhere('l.site IS NULL')
             ;
         }
 
@@ -119,14 +120,24 @@ class LayoutController extends AbstractRestController
     }
 
     /**
-     * @ParamConverter("layout", class="BackBee\CoreDomain\Site\Layout", options={"id" = "uid"})
      * @Rest\Security("is_fully_authenticated() & has_role('ROLE_API_USER') & is_granted('VIEW', layout)")
      */
-    public function getAction(Layout $layout)
+    public function getAction($uid)
     {
+        $layout = $this->getLayoutOr404($uid);
+
         $response = new JsonResponse();
         $response->setContent($this->formatItem($layout));
 
         return $response;
+    }
+
+    protected function getLayoutOr404($uid)
+    {
+        if (!$layout = $this->getDoctrine()->getManager()->getRepository('BackBee\CoreDomain\Site\Layout')->find($uid)) {
+            return new JsonResponse(null, 404);
+        }
+
+        return $layout;
     }
 }

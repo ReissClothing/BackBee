@@ -1,0 +1,11 @@
+services:
+#    back_bee_layout_generator.example:
+#        class: BackBee\LayoutGeneratorBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]
+    bbapp.layout_generator.uid_generator:
+        class: BackBee\LayoutGeneratorBundle\UidGenerator\DefaultGenerator
+    bbapp.layout_generator.builder:
+        class: BackBee\LayoutGeneratorBundle\Builder\Builder
+        arguments:
+            - @bbapp.layout_generator.uid_generator
+            - %bbapp.layout_generator.config%

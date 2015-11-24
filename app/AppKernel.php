@@ -23,6 +23,7 @@ class AppKernel extends Kernel
             new BackBee\ApiBundle\BackBeeApiBundle(),
             new BackBee\ToolbarBundle\BackBeeToolbarBundle(),
             new JMS\SerializerBundle\JMSSerializerBundle(),
+            new BackBee\LayoutGeneratorBundle\BackBeeLayoutGeneratorBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
