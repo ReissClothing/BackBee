@@ -25,39 +25,24 @@ define('tb.component/session/session', ['Core', 'Core/Utils', 'jsclass'], functi
          * This constant define a Key of API KEY
          * @type {String}
          */
-        HEADER_API_KEY: 'X-API-KEY',
+        //HEADER_API_KEY: 'X-API-KEY',
 
         /**
          * This constant define a Key of API SIGNATURE
          * @type {String}
          */
-        HEADER_API_SIGNATURE: 'X-API-SIGNATURE',
+        //HEADER_API_SIGNATURE: 'X-API-SIGNATURE',
 
         STORAGE_KEY: 'bb-session-auth',
 
         initialize: function () {
-            this.key = null;
-            this.signature = null;
+            this.status = null;
             this.storage = window.localStorage;
 
-            Core.Mediator.subscribe('request:send:before', this.onBeforeSend, this);
             Core.Mediator.subscribe('request:send:fail', this.onRequestFail, this);
 
             this.load();
             Core.Mediator.publish('on:session:start', this);
-        },
-
-        /**
-         * Event
-         * He check in Session storage if an item with key 'bb5-session-auth' exist and
-         * add the headers to the request if he found it.
-         * @param {Object} Request
-         */
-        onBeforeSend: function (Request) {
-            if (this.isValidAuthentication()) {
-                Request.addHeader(this.HEADER_API_KEY, this.key);
-                Request.addHeader(this.HEADER_API_SIGNATURE, this.signature);
-            }
         },
 
         /**
@@ -95,8 +80,7 @@ define('tb.component/session/session', ['Core', 'Core/Utils', 'jsclass'], functi
 
         persist: function () {
             var data = {
-                key: this.key,
-                signature: this.signature
+                status: this.status
             };
             this.storage.setItem(this.STORAGE_KEY, JSON.stringify(data));
         },
@@ -105,8 +89,7 @@ define('tb.component/session/session', ['Core', 'Core/Utils', 'jsclass'], functi
             if (this.storage.hasOwnProperty(this.STORAGE_KEY)) {
                 try {
                     var data = JSON.parse(this.storage.getItem(this.STORAGE_KEY));
-                    this.key = data.key;
-                    this.signature = data.signature;
+                    this.status = data.status;
                 } catch (e) {
                     Core.exception.silent('SessionException', 500, 'Error during the session loading', {error: e});
                     return;
@@ -118,29 +101,20 @@ define('tb.component/session/session', ['Core', 'Core/Utils', 'jsclass'], functi
         destroy: function () {
             Core.Mediator.publish('before:session:destruct', this);
 
-            this.key = null;
-            this.signature = null;
+            this.status = null;
 
             if (this.storage.hasOwnProperty(this.STORAGE_KEY)) {
                 this.storage.removeItem(this.STORAGE_KEY);
             }
         },
 
-        setKey: function (key) {
-            this.key = key;
-            return this;
-        },
-
-        setSignature: function (signature) {
-            this.signature = signature;
+        setStatus: function (status) {
+            this.status = status;
             return this;
         },
 
         isValidAuthentication: function () {
-            if (null !== this.key && null !== this.signature) {
-                return true;
-            }
-            return false;
+            return (200 === this.status);
         },
 
         isAuthenticated: function () {
