@@ -102,10 +102,7 @@ class UserController extends AbstractRestController
             throw new InsufficientAuthenticationException('You must be authenticated to access');
         }
 
-//        $user = $this->getDoctrine()->getManager()->find(get_class($this->getUser()), $this->getUser()->getId());
-//@gvf todo we are returning a new user class, FE should be changed or we should use BBUser
-//        return new Response($this->formatItem($this->getUser()), 200, ['Content-Type' => 'application/json']);
-        return new Response('{"id":1,"login":"gonzalo","email":"gonzalo.vilaseca@reiss.com","state":0,"activated":true,"firstname":"SuperAdmin","lastname":"SuperAdmin","groups":[],"api_key_public":"ca2524ab25c9e15fa160019a346adbd17d256019","api_key_enabled":true,"created":{},"modified":{}}', 200, ['Content-Type' => 'application/json']);
+        return new Response($this->formatItem($this->getUser()), 200, ['Content-Type' => 'application/json']);
     }
 
     /**
@@ -249,7 +246,7 @@ class UserController extends AbstractRestController
         $userExists = $this->getDoctrine()
                            ->getManager()
                            ->getRepository(get_class($this->getUser()))
-                           ->findBy(array('_username' => $request->request->get('username')));
+                           ->findBy(array('username' => $request->request->get('username')));
 
         if ($userExists) {
             throw new ConflictHttpException(sprintf('User with that login already exists: %s', $request->request->get('login')));

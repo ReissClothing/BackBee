@@ -17,7 +17,7 @@ In BB twig throws ``pre`` and ``post`` render events, we should wrap twig to thr
 
 The whole front end setup needs to be done in a proper way, at least file locations and includes. So far it more or less works, but I'm not an expert at FE flow so this need to be double checked.
 
-Make BB annotations in controllers work.
+Make BB annotations in controllers work, or even better, achieve same functionality without annotations. 
 
 Check how API bundle should catch exceptions and return them: probably a format listener?
 
@@ -47,11 +47,13 @@ Configure db parameters in ``app/config/parameters.yml``
 
 Clone this repo and run:
  
-    ``composer install``
+    composer install
+    
+    app/console doctrine:migrations:migrate
  
-    ``app/console assets:install --symlink``
+    app/console assets:install --symlink
  
-    ``app/console assetic:dump``
+    app/console assetic:dump
 
 Edit ``BackBee\WebBundle\Renderer\AbstractRenderer.php`` line 537 and change it according to your setup.
 

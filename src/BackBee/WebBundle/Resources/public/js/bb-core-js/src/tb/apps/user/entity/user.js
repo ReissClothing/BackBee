@@ -31,7 +31,7 @@ define(['Core/Utils', 'cryptojs.md5', 'jsclass'], function (Utils, CryptoJS) {
             this.map = [
                 'id',
                 'email',
-                'login',
+                'username',
                 'picture',
                 'firstname',
                 'lastname',
@@ -62,8 +62,8 @@ define(['Core/Utils', 'cryptojs.md5', 'jsclass'], function (Utils, CryptoJS) {
             return this.data.id;
         },
 
-        login: function () {
-            return this.data.login === undefined ? this.ude : this.data.login;
+        username: function () {
+            return this.data.username === undefined ? this.ude : this.data.username;
         },
 
         email: function () {

@@ -55,7 +55,7 @@ define(
             render: function () {
                 var locales = Core.config('component:translator').locales,
                     dataTemplate = {
-                        'login': this.user.login(),
+                        'username': this.user.username(),
                         'locales': locales,
                         'current_locale': Translator.locale
                     };

@@ -16,7 +16,6 @@ parameters:
     bbapp.base.repository.dir: /var/www/repository;
     bbapp.cache.dir: /var/www/cache
     bbapp.log.dir: /var/www/log
-    bbapp.data.dir: /var/www/repository/Data
     secret_key: ThisSecretKeyMustBeChanged
 #  @todo gvf  this is used in voters, users defined here are sudores, this should be done properly!!
     sudoers:

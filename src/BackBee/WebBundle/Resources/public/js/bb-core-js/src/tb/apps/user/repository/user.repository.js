@@ -32,7 +32,7 @@ define(
              */
             initialize: function () {
                 this.class_name = 'user';
-                this.mandatories_attribute = ['login', 'email', 'firstname', 'lastname', 'activated'];
+                this.mandatories_attribute = ['username', 'email', 'firstname', 'lastname', 'activated'];
                 this.identifier = 'id';
 
                 this.initializeRestDriver();

@@ -7,14 +7,14 @@ security:
         bbapi_user_provider:
             entity:
                 class: BackBee\CoreDomain\Security\User
-                property: _username
+                property: username
 
-        bbapi.in_memory:
-            memory:
-                users:
-                    admin:
-                        password: admin
-                        roles: 'ROLE_USER'
+#        bbapi.in_memory:
+#            memory:
+#                users:
+#                    admin:
+#                        password: admin
+#                        roles: 'ROLE_USER'
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
         dev:
@@ -26,8 +26,8 @@ security:
         main:
 #            pattern:    ^/rest
             form_login:
-#                provider: bbapi_user_provider
-                provider: bbapi.in_memory
+                provider: bbapi_user_provider
+#                provider: bbapi.in_memory
                 # field names for the username and password fields
                 username_parameter: username
                 password_parameter: password
@@ -62,4 +62,4 @@ security:
 
     access_control:
         - { path: ^/rest/2/security/authentication, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/rest, roles: ROLE_USER }
+        - { path: ^/rest, roles: ROLE_API_USER }

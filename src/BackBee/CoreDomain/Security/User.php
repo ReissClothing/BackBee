@@ -41,7 +41,7 @@ use JMS\Serializer\Annotation as Serializer;
  *
  * @Serializer\ExclusionPolicy("all")
  * @ORM\Entity(repositoryClass="BackBee\CoreDomain\Security\Repository\UserRepository")
- * @ORM\Table(name="user", uniqueConstraints={@ORM\UniqueConstraint(name="UNI_username",columns={"username"})})
+ * @ORM\Table(name="user", uniqueConstraints={@ORM\UniqueConstraint(name="UNIusername",columns={"username"})})
  * @ORM\HasLifecycleCallbacks
  * @BB\Fixtures(qty=20)
  */
@@ -62,7 +62,7 @@ class User implements ApiUserInterface
      * @Serializer\Type("integer")
      * @Serializer\ReadOnly
      */
-    protected $_id;
+    protected $id;
 
     /**
      * The username of this user.
@@ -74,7 +74,7 @@ class User implements ApiUserInterface
      * @Serializer\Expose
      * @Serializer\Type("string")
      */
-    protected $_username;
+    protected $username;
 
     /**
      * The username of this user.
@@ -86,14 +86,14 @@ class User implements ApiUserInterface
      * @Serializer\Expose
      * @Serializer\Type("string")
      */
-    protected $_email;
+    protected $email;
 
     /**
      * The raw password of this user.
      *
      * @var string
      */
-    protected $_raw_password;
+    protected $rawpassword;
 
     /**
      * The password of this user.
@@ -104,7 +104,7 @@ class User implements ApiUserInterface
      *
      * @Serializer\Exclude()
      */
-    protected $_password;
+    protected $password;
 
     /**
      * The User state.
@@ -115,7 +115,7 @@ class User implements ApiUserInterface
      * @ORM\Column(type="integer", name="state", length=2, options={"default": \BackBee\CoreDomain\Security\User::PASSWORD_NOT_PICKED})
      * @Serializer\Type("integer")
      */
-    protected $_state = self::PASSWORD_NOT_PICKED;
+    protected $state = self::PASSWORD_NOT_PICKED;
 
     /**
      * The access state.
@@ -126,7 +126,7 @@ class User implements ApiUserInterface
      * @BB\Fixtures(type="boolean")
      * @Serializer\Type("boolean")
      */
-    protected $_activated = false;
+    protected $activated = false;
 
     /**
      * The firstame of this user.
@@ -137,7 +137,7 @@ class User implements ApiUserInterface
      * @BB\Fixtures(type="firstName")
      * @Serializer\Type("string")
      */
-    protected $_firstname;
+    protected $firstname;
 
     /**
      * The lastname of this user.
@@ -148,14 +148,14 @@ class User implements ApiUserInterface
      * @BB\Fixtures(type="lastName")
      * @Serializer\Type("string")
      */
-    protected $_lastname;
+    protected $lastname;
 
     /**
      * @var BackBee\CoreDomain\NestedNode\PageRevision
      * @ORM\OneToMany(targetEntity="BackBee\CoreDomain\NestedNode\PageRevision", mappedBy="_user", fetch="EXTRA_LAZY")
      * @Serializer\Exclude()
      */
-    protected $_revisions;
+    protected $revisions;
 
     /**
      * @ORM\ManyToMany(targetEntity="BackBee\CoreDomain\Security\Group", mappedBy="_users", fetch="EXTRA_LAZY")
@@ -165,7 +165,7 @@ class User implements ApiUserInterface
      * @Serializer\SerializedName("groups")
      * @Serializer\ReadOnly
      */
-    protected $_groups;
+    protected $groups;
 
     /**
      * User's public api key.
@@ -176,7 +176,7 @@ class User implements ApiUserInterface
      * @BB\Fixtures(type="string")
      * @Serializer\Type("string")
      */
-    protected $_api_key_public;
+    protected $api_key_public;
 
     /**
      * User's private api key.
@@ -187,7 +187,7 @@ class User implements ApiUserInterface
      * @Serializer\Exclude()
      * @Serializer\Type("string")
      */
-    protected $_api_key_private;
+    protected $api_key_private;
 
     /**
      * Whether the api key is enabled (default false).
@@ -198,7 +198,7 @@ class User implements ApiUserInterface
      * @BB\Fixtures(type="boolean")
      * @Serializer\Type("boolean")
      */
-    protected $_api_key_enabled = false;
+    protected $api_key_enabled = false;
 
     /**
      * The creation datetime.
@@ -208,7 +208,7 @@ class User implements ApiUserInterface
      * @ORM\Column(type="datetime", name="created")
      * @Serializer\Type("DateTime")
      */
-    protected $_created;
+    protected $created;
 
     /**
      * The last modification datetime.
@@ -218,7 +218,7 @@ class User implements ApiUserInterface
      * @ORM\Column(type="datetime", name="modified")
      * @Serializer\Type("DateTime")
      */
-    protected $_modified;
+    protected $modified;
 
     /**
      * Class constructor.
@@ -230,11 +230,11 @@ class User implements ApiUserInterface
      */
     public function __construct()
     {
-        $this->_created = new \DateTime();
-        $this->_modified = new \DateTime();
+        $this->created = new \DateTime();
+        $this->modified = new \DateTime();
 
-        $this->_groups = new ArrayCollection();
-        $this->_revisions = new ArrayCollection();
+        $this->groups = new ArrayCollection();
+        $this->revisions = new ArrayCollection();
     }
 
     /**
@@ -244,7 +244,7 @@ class User implements ApiUserInterface
      */
     public function __toString()
     {
-        return trim($this->_firstname . ' ' . $this->_lastname . ' (' . $this->_username . ')');
+        return trim($this->firstname . ' ' . $this->lastname . ' (' . $this->username . ')');
     }
 
     /**
@@ -255,8 +255,8 @@ class User implements ApiUserInterface
     public function serialize()
     {
         $serialized = new \stdClass();
-        $serialized->username = $this->_username;
-        $serialized->commonname = trim($this->_firstname . ' ' . $this->_lastname);
+        $serialized->username = $this->username;
+        $serialized->commonname = trim($this->firstname . ' ' . $this->lastname);
 
         return json_encode($serialized);
     }
@@ -270,7 +270,7 @@ class User implements ApiUserInterface
     public function setActivated($bool)
     {
         if (is_bool($bool)) {
-            $this->_activated = $bool;
+            $this->activated = $bool;
         }
 
         return $this;
@@ -284,7 +284,7 @@ class User implements ApiUserInterface
      */
     public function setUsername($username)
     {
-        $this->_username = $username;
+        $this->username = $username;
 
         return $this;
     }
@@ -297,7 +297,7 @@ class User implements ApiUserInterface
      */
     public function setEmail($email)
     {
-        $this->_email = $email;
+        $this->email = $email;
 
         return $this;
     }
@@ -310,7 +310,7 @@ class User implements ApiUserInterface
      */
     public function setRawPassword($password)
     {
-        $this->_raw_password = $password;
+        $this->rawpassword = $password;
 
         return $this;
     }
@@ -323,7 +323,7 @@ class User implements ApiUserInterface
      */
     public function setPassword($password)
     {
-        $this->_password = $password;
+        $this->password = $password;
 
         return $this;
     }
@@ -336,7 +336,7 @@ class User implements ApiUserInterface
      */
     public function setFirstname($firstname)
     {
-        $this->_firstname = $firstname;
+        $this->firstname = $firstname;
 
         return $this;
     }
@@ -349,7 +349,7 @@ class User implements ApiUserInterface
      */
     public function setLastname($lastname)
     {
-        $this->_lastname = $lastname;
+        $this->lastname = $lastname;
 
         return $this;
     }
@@ -369,7 +369,7 @@ class User implements ApiUserInterface
      */
     public function getUsername()
     {
-        return $this->_username;
+        return $this->username;
     }
 
     /**
@@ -378,7 +378,7 @@ class User implements ApiUserInterface
      */
     public function getEmail()
     {
-        return $this->_email;
+        return $this->email;
     }
 
     /**
@@ -387,7 +387,7 @@ class User implements ApiUserInterface
      */
     public function getRawPassword()
     {
-        return $this->_raw_password;
+        return $this->rawpassword;
     }
 
     /**
@@ -396,7 +396,7 @@ class User implements ApiUserInterface
      */
     public function getPassword()
     {
-        return $this->_password;
+        return $this->password;
     }
 
     /**
@@ -405,7 +405,7 @@ class User implements ApiUserInterface
      */
     public function getFirstname()
     {
-        return $this->_firstname;
+        return $this->firstname;
     }
 
     /**
@@ -414,7 +414,7 @@ class User implements ApiUserInterface
      */
     public function getLastname()
     {
-        return $this->_lastname;
+        return $this->lastname;
     }
 
     /**
@@ -423,7 +423,7 @@ class User implements ApiUserInterface
      */
     public function getRevisions()
     {
-        return $this->_revisions;
+        return $this->revisions;
     }
 
     /**
@@ -432,7 +432,7 @@ class User implements ApiUserInterface
      */
     public function getGroups()
     {
-        return $this->_groups;
+        return $this->groups;
     }
 
     /**
@@ -443,7 +443,7 @@ class User implements ApiUserInterface
      */
     public function setGroups(ArrayCollection $groups)
     {
-        $this->_groups = $groups;
+        $this->groups = $groups;
 
         return $this;
     }
@@ -456,7 +456,7 @@ class User implements ApiUserInterface
      */
     public function addGroup(Group $group)
     {
-        $this->_groups->add($group);
+        $this->groups->add($group);
 
         return $this;
     }
@@ -467,7 +467,8 @@ class User implements ApiUserInterface
      */
     public function getRoles()
     {
-        return [];
+//        @todo roles should be managed properly.
+        return ['ROLE_API_USER'];
     }
 
     /**
@@ -485,7 +486,7 @@ class User implements ApiUserInterface
      */
     public function isActivated()
     {
-        return true === $this->_activated;
+        return true === $this->activated;
     }
 
     /**
@@ -502,7 +503,7 @@ class User implements ApiUserInterface
      */
     public function getApiKeyPublic()
     {
-        return $this->_api_key_public;
+        return $this->api_key_public;
     }
 
     /**
@@ -513,7 +514,7 @@ class User implements ApiUserInterface
      */
     public function setApiKeyPublic($api_key_public)
     {
-        $this->_api_key_public = $api_key_public;
+        $this->api_key_public = $api_key_public;
 
         return $this;
     }
@@ -524,7 +525,7 @@ class User implements ApiUserInterface
      */
     public function getApiKeyPrivate()
     {
-        return $this->_api_key_private;
+        return $this->api_key_private;
     }
 
     /**
@@ -535,7 +536,7 @@ class User implements ApiUserInterface
      */
     public function setApiKeyPrivate($api_key_private)
     {
-        $this->_api_key_private = $api_key_private;
+        $this->api_key_private = $api_key_private;
 
         return $this;
     }
@@ -546,7 +547,7 @@ class User implements ApiUserInterface
      */
     public function getApiKeyEnabled()
     {
-        return $this->_api_key_enabled;
+        return $this->api_key_enabled;
     }
 
     /**
@@ -556,7 +557,7 @@ class User implements ApiUserInterface
      */
     public function setApiKeyEnabled($api_key_enabled)
     {
-        $this->_api_key_enabled = (bool) $api_key_enabled;
+        $this->api_key_enabled = (bool) $api_key_enabled;
 
         return $this->generateKeysOnNeed();
     }
@@ -568,7 +569,7 @@ class User implements ApiUserInterface
      */
     public function getState()
     {
-        return $this->_state;
+        return $this->state;
     }
 
     /**
@@ -579,7 +580,7 @@ class User implements ApiUserInterface
      */
     public function setState($state)
     {
-        $this->_state = (int) $state;
+        $this->state = (int) $state;
 
         return $this;
     }
@@ -590,11 +591,11 @@ class User implements ApiUserInterface
      */
     private function generateApiPublicKey()
     {
-        if (null === $this->_api_key_private) {
+        if (null === $this->api_key_private) {
             return $this->generateRandomApiKey()->getApiKeyPublic();
         }
 
-        return sha1($this->_created->format(\DateTime::ATOM) . $this->_api_key_private);
+        return sha1($this->created->format(\DateTime::ATOM) . $this->api_key_private);
     }
 
     /**
@@ -603,9 +604,9 @@ class User implements ApiUserInterface
      */
     public function generateRandomApiKey()
     {
-        $this->_api_key_private = md5($this->_id . uniqid());
+        $this->api_key_private = md5($this->_id . uniqid());
 
-        $this->_api_key_public = $this->generateApiPublicKey();
+        $this->api_key_public = $this->generateApiPublicKey();
 
         return $this;
     }
@@ -640,7 +641,7 @@ class User implements ApiUserInterface
      */
     public function getCreated()
     {
-        return $this->_created;
+        return $this->created;
     }
 
     /**
@@ -650,7 +651,7 @@ class User implements ApiUserInterface
      */
     public function getModified()
     {
-        return $this->_modified;
+        return $this->modified;
     }
 
     /**
@@ -669,7 +670,7 @@ class User implements ApiUserInterface
      */
     public function updateModified()
     {
-        $this->_modified = new \DateTime();
+        $this->modified = new \DateTime();
     }
 
 }
