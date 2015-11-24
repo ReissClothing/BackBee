@@ -196,9 +196,7 @@ abstract class AbstractRestController extends Controller implements RestControll
      */
     protected function getSerializer()
     {
-        $this->serializer = $this->get('serializer');
-
-        return $this->serializer;
+        return $this->get('serializer');
     }
 
     protected function createValidationException($field, $value, $message)
