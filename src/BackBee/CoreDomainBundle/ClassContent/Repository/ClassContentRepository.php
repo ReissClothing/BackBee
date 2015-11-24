@@ -55,7 +55,7 @@ class ClassContentRepository extends EntityRepository
         $q = $this->_em->getConnection()
                 ->createQueryBuilder()
                 ->select('c.parent_uid')
-                ->from('content_has_subcontent', 'c')
+                ->from('bb_content_has_subcontent', 'c')
                 ->where('c.content_uid = :uid')
                 ->setParameter('uid', $contentUid);
 
@@ -73,7 +73,7 @@ class ClassContentRepository extends EntityRepository
         $result = $this->_em->getConnection()
             ->createQueryBuilder()
             ->select('p.parent_uid', 'c.classname')
-            ->from('content_has_subcontent', 'p')
+            ->from('bb_content_has_subcontent', 'p')
             ->leftJoin('p', 'content', 'c', 'p.parent_uid = c.uid')
             ->where('p.content_uid = :uid')
             ->setParameter('uid', $content->getUid())
@@ -176,7 +176,7 @@ class ClassContentRepository extends EntityRepository
         $classnameArr = array(),
         $delta = 0)
     {
-        $query = 'SELECT c.uid FROM content c';
+        $query = 'SELECT c.uid FROM bb_content c';
         $join = array();
         $where = array();
         $orderby = array();
@@ -209,7 +209,7 @@ class ClassContentRepository extends EntityRepository
                 }
 
                 $alias = uniqid('i'.rand());
-                $join[] = 'LEFT JOIN indexation '.$alias.' ON c.uid  = '.$alias.'.content_uid';
+                $join[] = 'LEFT JOIN bb_indexation '.$alias.' ON c.uid  = '.$alias.'.content_uid';
                 $where[] = $alias.'.field = "'.$field.'" AND '.$alias.'.value '.$crit[1].' "'.$crit[0].'"';
             }
         }
@@ -220,7 +220,7 @@ class ClassContentRepository extends EntityRepository
                 $values = array_filter((array) $values);
                 if (0 < count($values)) {
                     $alias = md5($field);
-                    $join[] = 'LEFT JOIN indexation '.$alias.' ON c.uid  = '.$alias.'.content_uid';
+                    $join[] = 'LEFT JOIN bb_indexation '.$alias.' ON c.uid  = '.$alias.'.content_uid';
                     $where[] = $alias.'.field = "'.$field.'" AND '.$alias.'.value IN ("'.implode('","', $values).'")';
                 }
             }
@@ -279,7 +279,7 @@ class ClassContentRepository extends EntityRepository
 
                     $subquery->andWhere($qOR);
 
-                    $query = 'SELECT c.uid FROM page p LEFT JOIN content c ON c.node_uid = p.uid';
+                    $query = 'SELECT c.uid FROM bb_page p LEFT JOIN bb_content c ON c.node_uid = p.uid';
                     $where[] = 'p.section_uid IN ('.$subquery->getQuery()->getSQL().')';
 
                     if (true === $limitToOnline) {
@@ -321,7 +321,7 @@ class ClassContentRepository extends EntityRepository
 
         $uids = $this->getEntityManager()
                 ->getConnection()
-                ->executeQuery(str_replace('JOIN content c', 'JOIN opt_content_modified c', $query).' ORDER BY '.implode(', ', $orderby).' LIMIT '.$limit.' OFFSET '.$offset)
+                ->executeQuery(str_replace('JOIN bb_content c', 'JOIN bb_opt_content_modified c', $query).' ORDER BY '.implode(', ', $orderby).' LIMIT '.$limit.' OFFSET '.$offset)
                 ->fetchAll(\PDO::FETCH_COLUMN);
 
         if (count($uids) < $limit) {
@@ -388,7 +388,7 @@ class ClassContentRepository extends EntityRepository
 
         $start = (is_array($limitInfos) && array_key_exists('start', $limitInfos)) ? (int) $limitInfos['start'] : 0;
         $limit = (is_array($limitInfos) && array_key_exists('limit', $limitInfos)) ? (int) $limitInfos['limit'] : 0;
-        $stmt = $db->executeQuery('SELECT * FROM `content` WHERE `classname` IN (?) order by modified desc limit ?,?', array($classnameArr, $start, $limit), array(\Doctrine\DBAL\Connection::PARAM_STR_ARRAY, 1, 1)
+        $stmt = $db->executeQuery('SELECT * FROM `bb_content` WHERE `classname` IN (?) order by modified desc limit ?,?', array($classnameArr, $start, $limit), array(\Doctrine\DBAL\Connection::PARAM_STR_ARRAY, 1, 1)
         );
 
         $items = $stmt->fetchAll();
@@ -444,7 +444,7 @@ class ClassContentRepository extends EntityRepository
                         ->getConnection()
                         ->createQueryBuilder()
                         ->select('classname')
-                        ->from('content', 'c')
+                        ->from('bb_content', 'c')
                         ->andWhere("uid IN ('".implode("','", $uids)."')")
                         ->execute()
                         ->fetchAll(\PDO::FETCH_COLUMN);
@@ -675,7 +675,7 @@ class ClassContentRepository extends EntityRepository
             return $result;
         }
         $db = $this->_em->getConnection();
-        $stmt = $db->executeQuery('SELECT count(*) as total FROM `content` WHERE `classname` IN (?)', array($classname), array(\Doctrine\DBAL\Connection::PARAM_STR_ARRAY));
+        $stmt = $db->executeQuery('SELECT count(*) as total FROM `bb_content` WHERE `classname` IN (?)', array($classname), array(\Doctrine\DBAL\Connection::PARAM_STR_ARRAY));
 
         $result = $stmt->fetchColumn();
 
@@ -700,18 +700,6 @@ class ClassContentRepository extends EntityRepository
         }
 
         return $content;
-    }
-
-    /**
-     * Set the storage directories define by the BB5 application.
-     *
-     * @param \BackBee\BBApplication $application
-     *
-     * @return \BackBee\CoreDomainBundle\ClassContent\Repository\Element\fileRepository
-     */
-    public function setDirectories(BBApplication $application = null)
-    {
-        return $this;
     }
 
     /**
@@ -791,7 +779,7 @@ class ClassContentRepository extends EntityRepository
     {
         return $this->getEntityManager()
             ->getConnection()
-            ->executeQuery('SELECT content_uid FROM content_has_subcontent WHERE parent_uid=?', array($content->getUid()))
+            ->executeQuery('SELECT content_uid FROM bb_content_has_subcontent WHERE parent_uid=?', array($content->getUid()))
             ->fetchAll(\PDO::FETCH_COLUMN);
     }
 
@@ -810,7 +798,7 @@ class ClassContentRepository extends EntityRepository
         }, $contentUids)));
 
         $pageUids = $this->_em->getConnection()->executeQuery(
-            sprintf('SELECT uid FROM page WHERE contentset IN (%s)', $contentUids)
+            sprintf('SELECT uid FROM bb_page WHERE contentset IN (%s)', $contentUids)
         )->fetchAll(\PDO::FETCH_COLUMN);
 
         return $this->_em->createQueryBuilder('p')
@@ -841,7 +829,7 @@ class ClassContentRepository extends EntityRepository
         }, $contentUids)));
 
         $parentUids = $this->_em->getConnection()->executeQuery(
-            sprintf('SELECT parent_uid FROM content_has_subcontent WHERE content_uid IN (%s)', $contentUids)
+            sprintf('SELECT parent_uid FROM bb_content_has_subcontent WHERE content_uid IN (%s)', $contentUids)
         )->fetchAll(\PDO::FETCH_COLUMN);
 
         return array_merge($parentUids, $this->getContentsParentUids($parentUids));
@@ -860,8 +848,8 @@ class ClassContentRepository extends EntityRepository
         $q = $this->_em->getConnection()
                 ->createQueryBuilder()
                 ->select('j.parent_uid, c.classname')
-                ->from('content_has_subcontent', 'j')
-                ->from('content', 'c')
+                ->from('bb_content_has_subcontent', 'j')
+                ->from('bb_content', 'c')
                 ->andWhere('c.uid = j.parent_uid')
                 ->andWhere('j.content_uid = :uid')
                 ->setParameter('uid', $childUid);
@@ -939,14 +927,14 @@ class ClassContentRepository extends EntityRepository
     protected function cleanUpContentHardDelete(AbstractClassContent $content)
     {
         $this->_em->getConnection()->executeQuery(
-            'DELETE FROM indexation WHERE owner_uid = :uid',
+            'DELETE FROM bb_indexation WHERE owner_uid = :uid',
             [
                 'uid' => $content->getUid(),
             ]
         )->execute();
 
         $this->_em->getConnection()->executeQuery(
-            'DELETE FROM revision WHERE content_uid = :uid',
+            'DELETE FROM bb_revision WHERE content_uid = :uid',
             [
                 'uid' => $content->getUid(),
             ]
@@ -975,7 +963,7 @@ class ClassContentRepository extends EntityRepository
 
         return $qb
             ->select('DISTINCT c.classname')
-            ->from('content', 'c')
+            ->from('bb_content', 'c')
             ->where($qb->expr()->in('c.uid', $contentUids))
             ->execute()
             ->fetchAll(\PDO::FETCH_COLUMN)

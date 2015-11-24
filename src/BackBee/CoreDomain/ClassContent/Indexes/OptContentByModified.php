@@ -34,7 +34,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @author      c.rouillon <charles.rouillon@lp-digital.fr>
  * @ORM\Entity(repositoryClass="BackBee\CoreDomain\ClassContent\Repository\IndexationRepository")
  * @ORM\Table(
- *   name="opt_content_modified",
+ *   name="bb_opt_content_modified",
  *   indexes={
  *     @ORM\Index(name="IDX_CLASSNAMEO", columns={"classname"}),
  *     @ORM\Index(name="IDX_NODE", columns={"node_uid"}),

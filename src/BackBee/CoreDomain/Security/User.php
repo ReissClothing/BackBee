@@ -41,7 +41,7 @@ use JMS\Serializer\Annotation as Serializer;
  *
  * @Serializer\ExclusionPolicy("all")
  * @ORM\Entity(repositoryClass="BackBee\CoreDomain\Security\Repository\UserRepository")
- * @ORM\Table(name="user", uniqueConstraints={@ORM\UniqueConstraint(name="UNIusername",columns={"username"})})
+ * @ORM\Table(name="bb_user", uniqueConstraints={@ORM\UniqueConstraint(name="UNIusername",columns={"username"})})
  * @ORM\HasLifecycleCallbacks
  * @BB\Fixtures(qty=20)
  */

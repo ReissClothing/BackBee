@@ -60,7 +60,7 @@ use BackBee\CoreDomain\Workflow\State;
  * @copyright   Lp digital system
  * @author      c.rouillon <charles.rouillon@lp-digital.fr>
  * @ORM\Entity(repositoryClass="BackBee\CoreDomain\NestedNode\Repository\PageRepository")
- * @ORM\Table(name="page",indexes={
+ * @ORM\Table(name="bb_page",indexes={
  *     @ORM\Index(name="IDX_STATE_PAGE", columns={"state"}),
  *     @ORM\Index(name="IDX_SELECT_PAGE", columns={"level", "state", "publishing", "archiving", "modified"}),
  *     @ORM\Index(name="IDX_URL", columns={"url"}),

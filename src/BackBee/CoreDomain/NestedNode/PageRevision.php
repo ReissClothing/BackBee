@@ -35,7 +35,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @copyright   Lp digital system
  * @author      m.baptista <michel.baptista@lp-digital.fr>
  * @ORM\Entity(repositoryClass="BackBee\CoreDomain\NestedNode\Repository\PageRevisionRepository")
- * @ORM\Table(name="page_revision")
+ * @ORM\Table(name="bb_page_revision")
  */
 class PageRevision
 {

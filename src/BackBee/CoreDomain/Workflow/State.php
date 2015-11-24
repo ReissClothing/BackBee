@@ -43,7 +43,7 @@ use JMS\Serializer\Annotation as Serializer;
  * @copyright   Lp digital system
  * @author      c.rouillon <charles.rouillon@lp-digital.fr>
  * @ORM\Entity(repositoryClass="BackBee\CoreDomain\Workflow\Repository\StateRepository")
- * @ORM\Table(name="workflow")
+ * @ORM\Table(name="bb_workflow")
  *
  * @Serializer\ExclusionPolicy("all")
  */

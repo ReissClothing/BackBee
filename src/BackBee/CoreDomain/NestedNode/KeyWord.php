@@ -39,7 +39,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @copyright   Lp digital system
  * @author      n.bremont <nicolas.bremont@lp-digital.fr>
  * @ORM\Entity(repositoryClass="BackBee\CoreDomain\NestedNode\Repository\KeyWordRepository")
- * @ORM\Table(name="keyword",indexes={
+ * @ORM\Table(name="bb_keyword",indexes={
  *     @ORM\Index(name="IDX_ROOT", columns={"root_uid"}),
  *     @ORM\Index(name="IDX_PARENT", columns={"parent_uid"}),
  *     @ORM\Index(name="IDX_SELECT_KEYWORD", columns={"root_uid", "leftnode", "rightnode"}),
@@ -114,7 +114,7 @@ class KeyWord extends AbstractNestedNode implements RenderableInterface, \JsonSe
      * A collection of AbstractClassContent indexed by this keyword.
      *
      * @ORM\ManyToMany(targetEntity="BackBee\CoreDomain\ClassContent\AbstractClassContent", fetch="EXTRA_LAZY")
-     * @ORM\JoinTable(name="keywords_contents",
+     * @ORM\JoinTable(name="bb_keywords_contents",
      *      joinColumns={
      *          @ORM\JoinColumn(name="keyword_uid", referencedColumnName="uid")},
      *      inverseJoinColumns={
