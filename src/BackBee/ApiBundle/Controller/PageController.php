@@ -774,7 +774,7 @@ class PageController extends AbstractRestController
                 }
                 $qb->andSiteIs($site);
             } else {
-                $qb->andSiteIs($this->get('site'));
+                $qb->andSiteIs($this->get('bbapp.site_context')->getSite());
             }
 
             if ($request->query->has('root')) {

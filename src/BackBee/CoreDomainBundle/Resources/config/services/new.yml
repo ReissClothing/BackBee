@@ -1,9 +1,4 @@
 services:
-    bb.context.resource_dir:
-        class: ResourceDirContext
-        arguments:
-            - %bbapp.base.repository.dir%
-
     # ----------------- EVENT LISTENERS --------------------
     nestednode.page_listener:
         arguments:

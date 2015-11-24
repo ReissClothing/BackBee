@@ -55,7 +55,7 @@ define(
                 popin = this.popin;
 
                 if ('edit' === action) {
-                    popin.setTitle(data.user.login() + ' ' + trans('edition').toLowerCase());
+                    popin.setTitle(data.user.username() + ' ' + trans('edition').toLowerCase());
                 } else {
                     popin.setTitle(trans('create_user'));
                 }
