@@ -47,7 +47,7 @@ use JMS\Serializer\Annotation as Serializer;
  * @author      c.rouillon <charles.rouillon@lp-digital.fr>
  *
  * @ORM\Entity(repositoryClass="BackBee\CoreDomain\Site\Repository\SiteRepository")
- * @ORM\Table(name="site", indexes={
+ * @ORM\Table(name="bb_site", indexes={
  *     @ORM\Index(name="IDX_SERVERNAME", columns={"server_name"}),
  *     @ORM\Index(name="IDX_LABEL", columns={"label"})})
  * @BB\Fixtures(qty=1)

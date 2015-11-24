@@ -94,7 +94,7 @@ abstract class AbstractClassContent extends AbstractContent
      *
      * @var \Doctrine\Common\Collections\ArrayCollection
      * @ORM\ManyToMany(targetEntity="BackBee\CoreDomain\ClassContent\AbstractClassContent", inversedBy="_parentcontent", cascade={"persist", "detach", "merge", "refresh"}, fetch="EXTRA_LAZY")
-     * @ORM\JoinTable(name="content_has_subcontent",
+     * @ORM\JoinTable(name="bb_content_has_subcontent",
      *     joinColumns={@ORM\JoinColumn(name="parent_uid", referencedColumnName="uid")},
      *     inverseJoinColumns={@ORM\JoinColumn(name="content_uid", referencedColumnName="uid")}
      * )

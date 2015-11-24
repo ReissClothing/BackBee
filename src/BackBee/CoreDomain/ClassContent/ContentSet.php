@@ -39,7 +39,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @author      c.rouillon <charles.rouillon@lp-digital.fr>
 // *              @todo gvf repo should be an interface in code and be resolved to a class in bundle
  * @ORM\Entity(repositoryClass="BackBee\CoreDomainBundle\ClassContent\Repository\ClassContentRepository")
- * @ORM\Table(name="content")
+ * @ORM\Table(name="bb_content")
  * @ORM\HasLifecycleCallbacks
  */
 class ContentSet extends AbstractClassContent implements \Iterator, \Countable

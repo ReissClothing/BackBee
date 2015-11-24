@@ -34,7 +34,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @author      c.rouillon <charles.rouillon@lp-digital.fr>
  *
  * @ORM\Entity(repositoryClass="BackBee\CoreDomainBundle\ClassContent\Repository\IndexationRepository")
- * @ORM\Table(name="indexation",indexes={
+ * @ORM\Table(name="bb_indexation",indexes={
  *     @ORM\Index(name="IDX_OWNER", columns={"owner_uid"}),
  *     @ORM\Index(name="IDX_CONTENT", columns={"content_uid"}),
  *     @ORM\Index(name="IDX_VALUE", columns={"value"}),

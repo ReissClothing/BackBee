@@ -37,7 +37,7 @@ use BackBee\CoreDomain\Site\Site;
  * @author      c.rouillon <charles.rouillon@lp-digital.fr>
  *
  * @ORM\Entity(repositoryClass="BackBee\CoreDomain\NestedNode\Repository\SectionRepository")
- * @ORM\Table(name="section",indexes={@ORM\Index(name="IDX_TREE_SECTION", columns={"uid", "root_uid", "leftnode", "rightnode"})})
+ * @ORM\Table(name="bb_section",indexes={@ORM\Index(name="IDX_TREE_SECTION", columns={"uid", "root_uid", "leftnode", "rightnode"})})
  * @ORM\HasLifecycleCallbacks
  */
 class Section extends AbstractNestedNode

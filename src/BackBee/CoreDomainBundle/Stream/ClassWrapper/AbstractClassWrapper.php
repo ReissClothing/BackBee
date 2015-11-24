@@ -71,7 +71,7 @@ namespace <namespace>;
 
 /**
  * @\Doctrine\ORM\Mapping\Entity(repositoryClass="<repository>")
- * @\Doctrine\ORM\Mapping\Table(name="content")
+ * @\Doctrine\ORM\Mapping\Table(name="bb_content")
  * @\Doctrine\ORM\Mapping\HasLifecycleCallbacks
  * <docblock>
  */
