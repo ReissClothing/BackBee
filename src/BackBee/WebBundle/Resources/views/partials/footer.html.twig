@@ -6,7 +6,8 @@
           <div class="row">
                 <div class="col-sm-3">
                     <p class="logo-wrapper">
-                        <a href="{{ path('bb.default') }}" title="Accueil">
+                        {#@todo gvf pass the root page instead of /#}
+                        <a href="{{ path('/') }}" title="Accueil">
                         <a href="" title="Accueil">
                             {% image '@BackBeeWebBundle/Resources/public/images/logo.png' %}
                             <img src="{{ asset_url }}" alt="Accueil" class="logo">

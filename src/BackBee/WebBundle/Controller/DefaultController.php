@@ -5,6 +5,7 @@ namespace BackBee\WebBundle\Controller;
 use BackBee\CoreDomain\NestedNode\Page;
 use BackBee\CoreDomainBundle\Event\PageFilterEvent;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
@@ -27,7 +28,7 @@ class DefaultController extends Controller
      *
      * @throws FrontControllerException
      */
-    public function defaultAction($uri = '', $sendResponse = true)
+    public function defaultAction(Request $request, $sendResponse = true)
     {
         if (!$site = $this->get('bbapp.site_context')->getSite()) {
             throw new HttpException(500, 'A BackBee\CoreDomain\Site instance is required.');
@@ -38,29 +39,14 @@ class DefaultController extends Controller
 //            ? ('false' !== $this->application->getRequest()->get('bb5-redirect'))
 //            : true
 //        ;
-        if (empty($uri)) {
-            $page = $this->getDoctrine()
-                ->getManager()
-                ->getRepository('BackBee\CoreDomain\NestedNode\Page')
-                ->getRoot($site)
-            ;
-        } else {
-            $page = $this->getDoctrine()
-                ->getManager()
-                ->getRepository('BackBee\CoreDomain\NestedNode\Page')
-                ->findOneBy(array(
-                    '_site'  => $site,
-                    '_url'   => $uri,
-                    '_state' => Page::getUndeletedStates(),
-                ));
-        }
+        $page = $request->attributes->get('_bbapp_page');
 // @TODO gvf
 //        if (null !== $page && false === $page->isOnline()) {
 //            $page = (null === $this->application->getBBUserToken()) ? null : $page;
 //        }
 
         if (null === $page) {
-            throw new HttpException(404, sprintf('The URL `%s` can not be found.',  $uri));
+            throw new HttpException(404, sprintf('The URL `%s` can not be found.',  $request->getUri()));
         }
 // @TODO gvf
 //        if ((null !== $redirect = $page->getRedirect()) && $page->getUseUrlRedirect()) {
@@ -78,7 +64,6 @@ class DefaultController extends Controller
 //            }
 //        }
 
-        $this->get('logger')->info(sprintf('Handling URL request `%s`.', $uri));
 
 //    @TODO gvf I don't think this event is used anywhere
         $event = new PageFilterEvent($page);

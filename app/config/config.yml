@@ -584,3 +584,9 @@ back_bee_layout_generator:
                 maxentry: 0
                 defaultClassContent: ~
                 inherited: false
+
+cmf_routing:
+    chain:
+        routers_by_id:
+            bbapp.routing.dynamic_router: 200
+            router.default:       100

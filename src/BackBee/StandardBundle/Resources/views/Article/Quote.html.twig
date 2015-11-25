@@ -13,7 +13,7 @@
                     {% if link.title is empty %}
                         {% set title = link.url %}
                     {% endif %}
-                    <a href="{{ path('bb.default', {'uri': link.url}) }}" target="{{ link.target }}">{{ title }}</a>
+                    <a href="{{ path(link.url) }}" target="{{ link.target }}">{{ title }}</a>
                 </p>
             {% endif %}
         </div>

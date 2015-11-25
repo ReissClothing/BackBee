@@ -41,11 +41,11 @@ bb.rss:
         uri: .+
 
 # Default route
-bb.default:
-    path: /{uri}
-    defaults:
-        _controller: BackBeeWebBundle:Default:default
-        uri: ''
+#bb.default:
+#    path: /{uri}
+#    defaults:
+#        _controller: BackBeeWebBundle:Default:default
+#        uri: ''
 #   This allows / in route
-    requirements:
-        uri: .+
+#    requirements:
+#        uri: .+

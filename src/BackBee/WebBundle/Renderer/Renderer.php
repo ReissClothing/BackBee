@@ -237,9 +237,9 @@ class Renderer extends AbstractRenderer
         if (null === $obj) {
             return;
         }
-
-        $application = $this->getApplication();
-        if (!$obj->isRenderable() && null === $application->getBBUserToken()) {
+//@todo
+//        if (!$obj->isRenderable() && null === $application->getBBUserToken()) {
+        if (!$obj->isRenderable()) {
             return;
         }
 
@@ -584,28 +584,6 @@ class Renderer extends AbstractRenderer
     }
 
     /**
-     * Restore current service to the dump's state.
-     *
-     * @param array $dump the dump provided by DumpableServiceInterface::dump() from where we can
-     *                    restore current service
-     */
-    public function restore(ContainerInterface $container, array $dump)
-    {
-        $this->_scriptdir = $dump['template_directories'];
-        $this->_layoutdir = $dump['layout_directories'];
-
-        $this->isRestored = true;
-    }
-
-    /**
-     * @return boolean true if current service is already restored, otherwise false
-     */
-    public function isRestored()
-    {
-        return $this->isRestored;
-    }
-
-    /**
      * Return the file path to current layout, try to create it if not exists.
      *
      * @param Layout $layout
@@ -654,29 +632,6 @@ class Renderer extends AbstractRenderer
     }
 
     /**
-     * Autoloads every declared renderer adapters into application config.
-     *
-     * @return self
-     */
-    private function autoloadAdapters()
-    {
-        $rendererConfig = $this->getApplication()->getConfig()->getRendererConfig();
-        $adapters = (array) $rendererConfig['adapter'];
-        foreach ($adapters as $adapter) {
-            $classname = $adapter;
-            $adapterConfig = [];
-            if (is_array($adapter)) {
-                $classname = isset($adapter['class']) ? $adapter['class'] : null;
-                $adapterConfig = isset($adapter['config']) && is_array($adapter['config']) ? $adapter['config'] : [];
-            }
-
-            $this->addRendererAdapter(new $classname($this, $adapterConfig));
-        }
-
-        return $this;
-    }
-
-    /**
      * Generic method to add an external resource (css, javascript in page header or footer).
      *
      * @param string $type
@@ -694,44 +649,6 @@ class Renderer extends AbstractRenderer
         }
 
         $this->externalResources->set($type, $resources);
-    }
-
-    /**
-     * Insert every external resources: css and header js will be added before page '</head>' and
-     * footer javascript will be added before page '</body>'.
-     *
-     * @return self
-     */
-    private function insertExternalResources()
-    {
-        $header_render = '';
-        foreach ($this->externalResources->get(self::CSS_LINK, array()) as $href) {
-            $header_render .= $this->generateStylesheetTag($href);
-        }
-
-        foreach ($header_js = $this->externalResources->get(self::HEADER_JS, array()) as $src) {
-            $header_render .= $this->generateJavascriptTag($src);
-        }
-
-        if (!empty($header_render)) {
-            $this->setRender(str_replace('</head>', "$header_render</head>", $this->getRender()));
-        }
-
-        $footer_render = '';
-        $footer_js = array_diff($this->externalResources->get(self::FOOTER_JS, array()), $header_js);
-        foreach ($footer_js as $src) {
-            $footer_render .= $this->generateJavascriptTag($src);
-        }
-
-        if (!empty($footer_render)) {
-            $this->setRender(str_replace('</body>', "$footer_render</body>", $this->getRender()));
-        }
-
-        $this->externalResources->remove(self::CSS_LINK);
-        $this->externalResources->remove(self::HEADER_JS);
-        $this->externalResources->remove(self::FOOTER_JS);
-
-        return $this;
     }
 
     /**

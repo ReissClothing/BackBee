@@ -1,7 +1,8 @@
 <ul{% if is_header %} id="nav-primary"{% endif %} class="nav navbar-nav {% if is_header %}nav-primary{% else %}nav-footer-map{% endif %}" role="navigation">
     {% if is_header %}
         <li class="nav-selected" role="presentation">
-            <a href="{{ path('bb.default') }}">
+            {#@todo gvf pass the root page instead of /#}
+            <a href="{{ path('/') }}">
                 <i class="fa fa-home"></i><span class="sr-only">Accueil</span>
                 <span>
                     {% image '@BackBeeWebBundle/Resources/public/images/logo.png' %}
@@ -13,7 +14,7 @@
     {% endif %}
     {% for item in sections %}
         <li{% if selected and selected.getUid() == item.getUid() %} class="nav-selected"{% endif %} role="presentation">
-            <a href="{{ path('bb.default', {'uri' : item.url}) }}">{{ item.title }}</a>
+            <a href="{{ path(item.url) }}">{{ item.title }}</a>
         </li>
     {% endfor %}
 </ul>

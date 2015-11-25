@@ -20,7 +20,7 @@
      {# TODO gvf leave just version and get it from js#}
     {#data-api="{{ path('/rest/2/', {'version': 2}) }}"#}
     data-api="{{ path('bb.rest.api.dummy', {'version': 2}) }}"
-    data-base-url="{{ path('bb.default') }}"
+    data-base-url="{{ app.request.getSchemeAndHttpHost() }}"
     data-toolbar-selector="true"
     {% if app.user != null %}
         data-autostart

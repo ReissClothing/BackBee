@@ -136,4 +136,42 @@ services:
 #bbapplication.stop:
 #    listeners:
 #        - [BackBee\Bundle\Listener\BundleListener, onApplicationStop]
-#            
+#
+    bbapp.routing.route_generator:
+        class: Symfony\Cmf\Component\Routing\ContentAwareGenerator
+        arguments:
+            - @bbapp.routing.route_provider
+            - @logger
+
+    bbapp.routing.matcher.dummy_collection:
+        class: Symfony\Component\Routing\RouteCollection
+        public: false
+
+    bbapp.routing.matcher.dummy_context:
+        class: Symfony\Component\Routing\RequestContext
+        public: false
+
+    bbapp.routing.final_matcher:
+        class: Symfony\Cmf\Component\Routing\NestedMatcher\UrlMatcher
+        arguments:
+            - @bbapp.routing.matcher.dummy_collection
+            - @bbapp.routing.matcher.dummy_context
+
+    bbapp.routing.route_matcher:
+        class: Symfony\Cmf\Component\Routing\NestedMatcher\NestedMatcher
+        arguments:
+            - @bbapp.routing.route_provider
+            - @bbapp.routing.final_matcher
+
+    bbapp.routing.dynamic_router:
+        class: Symfony\Cmf\Component\Routing\DynamicRouter
+        arguments:
+            - @router.request_context
+            - @bbapp.routing.route_matcher
+            - @bbapp.routing.route_generator
+
+    bbapp.routing.route_provider:
+        class: BackBee\CoreDomainBundle\Routing\RouteProvider
+        arguments:
+            - @doctrine.orm.default_entity_manager
+            - @bbapp.site_context

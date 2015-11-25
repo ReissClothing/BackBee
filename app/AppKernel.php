@@ -24,6 +24,7 @@ class AppKernel extends Kernel
             new BackBee\ToolbarBundle\BackBeeToolbarBundle(),
             new JMS\SerializerBundle\JMSSerializerBundle(),
             new BackBee\LayoutGeneratorBundle\BackBeeLayoutGeneratorBundle(),
+            new \Symfony\Cmf\Bundle\RoutingBundle\CmfRoutingBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
