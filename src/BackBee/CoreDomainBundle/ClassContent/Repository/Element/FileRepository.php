@@ -166,7 +166,7 @@ class FileRepository extends ClassContentRepository
         $q = $this->_em->getConnection()
                 ->createQueryBuilder()
                 ->select('m.id')
-                ->from('media', 'm')
+                ->from('BackBee\NestedNode\Media', 'm')
                 ->andWhere('m.content_uid IN ("'.implode('","', $parent_ids).'")');
 
         $medias = $q->execute()->fetchAll(\PDO::FETCH_COLUMN);
