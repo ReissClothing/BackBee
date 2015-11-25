@@ -23,10 +23,11 @@
 
 namespace BackBee\CoreDomain\NestedNode\Repository;
 
-use BackBee\CoreDomain\ClassContent\Element\Keyword;
+use BackBee\CoreDomain\NestedNode\Keyword;
 use BackBee\CoreDomain\NestedNode\Page;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Exception;
+
 
 /**
  * Keyword repository.
@@ -204,7 +205,7 @@ class KeyWordRepository extends NestedNodeRepository
     {
         $object = null;
         $result = $this->_em->getConnection()->executeQuery(sprintf(
-            'SELECT uid FROM keyword WHERE hex(lower(keyword)) = hex(lower("%s"))',
+            'SELECT uid FROM BackBee\CoreDomain\NestedNode\KeyWord WHERE hex(lower(keyword)) = hex(lower("%s"))',
             preg_replace('#[/\"]#', '', trim($keyword))
         ))->fetchAll();
 

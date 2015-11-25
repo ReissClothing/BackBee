@@ -176,7 +176,7 @@ class ClassContentRepository extends EntityRepository
         $classnameArr = array(),
         $delta = 0)
     {
-        $query = 'SELECT c.uid FROM bb_content c';
+        $query = 'SELECT c.uid FROM BackBee\CoreDomain\ClassContent\ContentSet c';
         $join = array();
         $where = array();
         $orderby = array();
@@ -279,7 +279,7 @@ class ClassContentRepository extends EntityRepository
 
                     $subquery->andWhere($qOR);
 
-                    $query = 'SELECT c.uid FROM bb_page p LEFT JOIN bb_content c ON c.node_uid = p.uid';
+                    $query = 'SELECT c.uid FROM BackBee\CoreDomain\NestedNode\Page p LEFT JOIN bb_content c ON c.node_uid = p.uid';
                     $where[] = 'p.section_uid IN ('.$subquery->getQuery()->getSQL().')';
 
                     if (true === $limitToOnline) {
@@ -444,7 +444,7 @@ class ClassContentRepository extends EntityRepository
                         ->getConnection()
                         ->createQueryBuilder()
                         ->select('classname')
-                        ->from('bb_content', 'c')
+                        ->from('BackBee\CoreDomain\ClassContent\ContentSet', 'c')
                         ->andWhere("uid IN ('".implode("','", $uids)."')")
                         ->execute()
                         ->fetchAll(\PDO::FETCH_COLUMN);
@@ -798,7 +798,7 @@ class ClassContentRepository extends EntityRepository
         }, $contentUids)));
 
         $pageUids = $this->_em->getConnection()->executeQuery(
-            sprintf('SELECT uid FROM bb_page WHERE contentset IN (%s)', $contentUids)
+            sprintf('SELECT uid FROM BackBee\CoreDomain\NestedNode\Page WHERE contentset IN (%s)', $contentUids)
         )->fetchAll(\PDO::FETCH_COLUMN);
 
         return $this->_em->createQueryBuilder('p')
@@ -849,7 +849,7 @@ class ClassContentRepository extends EntityRepository
                 ->createQueryBuilder()
                 ->select('j.parent_uid, c.classname')
                 ->from('bb_content_has_subcontent', 'j')
-                ->from('bb_content', 'c')
+                ->from('BackBee\CoreDomain\ClassContent\ContentSet', 'c')
                 ->andWhere('c.uid = j.parent_uid')
                 ->andWhere('j.content_uid = :uid')
                 ->setParameter('uid', $childUid);
@@ -963,7 +963,7 @@ class ClassContentRepository extends EntityRepository
 
         return $qb
             ->select('DISTINCT c.classname')
-            ->from('bb_content', 'c')
+            ->from('BackBee\CoreDomain\ClassContent\ContentSet', 'c')
             ->where($qb->expr()->in('c.uid', $contentUids))
             ->execute()
             ->fetchAll(\PDO::FETCH_COLUMN)

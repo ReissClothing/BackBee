@@ -26,7 +26,7 @@ namespace BackBee\CoreDomain\ClassContent;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\Util\ClassUtils;
 use BackBee\ClassContent\Exception\ClassContentException;
-use BackBee\AutoLoader\Exception\ClassNotFoundException;
+use BackBee\CoreDomainBundle\AutoLoader\Exception\ClassNotFoundException;
 use BackBee\CoreDomain\NestedNode\Page;
 
 //@todo gvf

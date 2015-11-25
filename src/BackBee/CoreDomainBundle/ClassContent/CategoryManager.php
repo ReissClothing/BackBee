@@ -24,7 +24,7 @@
 namespace BackBee\CoreDomainBundle\ClassContent;
 
 use BackBee\ApplicationInterface;
-use BackBee\AutoLoader\Exception\ClassNotFoundException;
+use BackBee\CoreDomainBundle\AutoLoader\Exception\ClassNotFoundException;
 use BackBee\CoreDomain\ClassContent\AbstractClassContent;
 use BackBee\CoreDomain\ClassContent\Category;
 use BackBee\Utils\File\File;
@@ -117,8 +117,6 @@ class CategoryManager
 
     /**
      * Parse classcontent directories and hydrate categories attribute.
-     *
-     * @param array $directories classcontent directories
      */
     private function loadCategoriesFromClassContentDirectories()
     {
@@ -154,7 +152,7 @@ class CategoryManager
             }
 
             $this->categories[$id]->addBlock(
-                 $content->getProperty('name'),
+                $content->getProperty('name'),
                 $content->getProperty('description'),
                 $content->getContentType(),
                 $visible

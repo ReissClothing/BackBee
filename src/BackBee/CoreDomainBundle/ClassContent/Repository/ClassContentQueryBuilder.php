@@ -56,8 +56,8 @@ class ClassContentQueryBuilder extends QueryBuilder
     /**
      * ClassContentQueryBuilder constructor.
      *
-     * @param EntityManager            $em
-     * @param \Doctrine\ORM\Query\Expr $select Use cc as identifier
+     * @param EntityManager $em
+     * @param Func|null     $select Use cc as identifier
      */
     public function __construct(EntityManager $em, Func $select = null)
     {

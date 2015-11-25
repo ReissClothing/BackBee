@@ -535,7 +535,7 @@ class IndexationRepository extends EntityRepository
      */
     private function _replaceIdxSite(Page $page)
     {
-        $query = 'INSERT INTO idx_site_content (site_uid, content_uid) '.
+        $query = 'INSERT INTO BackBee\CoreDomain\ClassContent\Indexes\IdxSiteContent (site_uid, content_uid) '.
                 '(SELECT :site, content_uid FROM idx_page_content WHERE page_uid = :page)';
 
         $params = array(
@@ -596,7 +596,7 @@ class IndexationRepository extends EntityRepository
      */
     private function removeIdxSite(Page $page)
     {
-        $query = 'DELETE FROM idx_site_content WHERE site_uid = :site AND content_uid IN (SELECT content_uid FROM idx_page_content WHERE page_uid = :page)';
+        $query = 'DELETE FROM BackBee\CoreDomain\ClassContent\Indexes\IdxSiteContent WHERE site_uid = :site AND content_uid IN (SELECT content_uid FROM idx_page_content WHERE page_uid = :page)';
 
         $params = array(
             'page' => $page->getUid(),
@@ -616,7 +616,7 @@ class IndexationRepository extends EntityRepository
      */
     public function updateIdxContent(AbstractClassContent $content)
     {
-        $query = 'INSERT INTO idx_content_content (content_uid, subcontent_uid) '.
+        $query = 'INSERT INTO BackBee\CoreDomain\ClassContent\Indexes\IdxContentContent (content_uid, subcontent_uid) '.
                 '(SELECT :child, content_uid FROM content_has_subcontent WHERE parent_uid = :child) '.
                 'UNION DISTINCT (SELECT parent_uid, :child FROM content_has_subcontent WHERE content_uid = :child) '.
                 'UNION DISTINCT (SELECT i.content_uid, :child FROM idx_content_content i WHERE i.subcontent_uid IN (SELECT parent_uid FROM content_has_subcontent WHERE content_uid = :child)) '.
@@ -651,7 +651,7 @@ class IndexationRepository extends EntityRepository
             $content = $page->getContentSet();
         }
 
-        $query = 'INSERT INTO idx_page_content (page_uid, content_uid) '.
+        $query = 'INSERT INTO BackBee\CoreDomain\ClassContent\Indexes\IdxPageContent (page_uid, content_uid) '.
                 '(SELECT :page, subcontent_uid FROM idx_content_content WHERE content_uid = :content) '.
                 'UNION DISTINCT (SELECT :page, content_uid FROM idx_content_content WHERE subcontent_uid = :content)';
 
@@ -675,7 +675,7 @@ class IndexationRepository extends EntityRepository
      */
     public function updateIdxSiteContent(Site $site, AbstractClassContent $content)
     {
-        $query = 'INSERT INTO idx_site_content (site_uid, content_uid) '.
+        $query = 'INSERT INTO BackBee\CoreDomain\ClassContent\Indexes\IdxSiteContent (site_uid, content_uid) '.
                 '(SELECT :site, content_uid FROM content_has_subcontent WHERE parent_uid = :content)'.
                 'UNION '.
                 '(SELECT :site, :content) ';
@@ -722,7 +722,7 @@ class IndexationRepository extends EntityRepository
             'content' => $content->getUid(),
         );
 
-        return $this->_executeQuery('DELETE FROM idx_site_content WHERE content_uid = :content', $params)
+        return $this->_executeQuery('DELETE FROM BackBee\CoreDomain\ClassContent\Indexes\IdxSiteContent WHERE content_uid = :content', $params)
                         ->_executeQuery('DELETE FROM idx_page_content WHERE content_uid = :content', $params)
                         ->_removeIdxContentContent($content);
     }
@@ -756,7 +756,7 @@ class IndexationRepository extends EntityRepository
      */
     public function removeIdxSiteContent(Site $site, AbstractClassContent $content)
     {
-        $query = 'DELETE FROM idx_site_content WHERE site_uid = :site AND (content_uid IN '.
+        $query = 'DELETE FROM BackBee\CoreDomain\ClassContent\Indexes\IdxSiteContent WHERE site_uid = :site AND (content_uid IN '.
                 '(SELECT content_uid FROM content_has_subcontent WHERE parent_uid = :content)'.
                 'OR content_uid = :content)';
 

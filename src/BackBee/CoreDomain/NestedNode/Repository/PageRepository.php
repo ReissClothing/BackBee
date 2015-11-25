@@ -731,7 +731,7 @@ class PageRepository extends EntityRepository
      * @param  Page                 $page               The parent page.
      * @param  string               $orderSort          Optional, the sort field, title by default.
      * @param  string               $orderDir           Optional, the sort direction, asc by default.
-     * @param  string               $paging             Optional, the paging criteria: ['start' => xx, 'limit' => xx], empty by default.
+     * @param  array                $paging             Optional, the paging criteria: ['start' => xx, 'limit' => xx], empty by default.
      * @param  integer[]            $restrictedStates   Optional, limit to pages having provided states, empty by default.
      * @param  string[]             $options            Optional, the search criteria:
      *                                                      * 'beforePubdateField'  => timestamp against page._modified,

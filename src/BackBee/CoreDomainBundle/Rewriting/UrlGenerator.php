@@ -26,7 +26,7 @@ namespace BackBee\CoreDomainBundle\Rewriting;
 use BackBee\CoreDomain\ClassContent\AbstractClassContent;
 use BackBee\CoreDomain\ClassContent\AbstractContent;
 use BackBee\CoreDomain\NestedNode\Page;
-use BackBee\Rewriting\Exception\RewritingException;
+use BackBee\CoreDomainBundle\Rewriting\Exception\RewritingException;
 use BackBee\Utils\StringUtils;
 
 /**
@@ -255,6 +255,7 @@ class UrlGenerator implements UrlGeneratorInterface
      *
      * @param \BackBee\CoreDomain\NestedNode\Page $page The page
      * @param string                   &$url The reference of the generated URL
+     * @return string
      */
     public function getUniqueness(Page $page, $url)
     {
@@ -282,7 +283,7 @@ class UrlGenerator implements UrlGeneratorInterface
             ;
         } else {
             $existings = $this->application->getEntityManager()->getConnection()->executeQuery(
-                'SELECT p.uid FROM bb_page p LEFT JOIN bb_section s ON s.uid = p.section_uid WHERE s.root_uid = :root AND p.url REGEXP :regex',
+                'SELECT p.uid FROM BackBee\CoreDomain\NestedNode\Page p LEFT JOIN bb_section s ON s.uid = p.section_uid WHERE s.root_uid = :root AND p.url REGEXP :regex',
                 [
                     'regex' => str_replace(['+'], ['[+]'], $url).'(-[0-9]+)?$',
                     'root'  => $page->getRoot()->getUid(),
