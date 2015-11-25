@@ -321,7 +321,7 @@ class ClassContentRepository extends EntityRepository
 
         $uids = $this->getEntityManager()
                 ->getConnection()
-                ->executeQuery(str_replace('JOIN bb_content c', 'JOIN opt_content_modified c', $query).' ORDER BY '.implode(', ', $orderby).' LIMIT '.$limit.' OFFSET '.$offset)
+                ->executeQuery(str_replace('JOIN bb_content c', 'JOIN bb_opt_content_modified c', $query).' ORDER BY '.implode(', ', $orderby).' LIMIT '.$limit.' OFFSET '.$offset)
                 ->fetchAll(\PDO::FETCH_COLUMN);
 
         if (count($uids) < $limit) {
