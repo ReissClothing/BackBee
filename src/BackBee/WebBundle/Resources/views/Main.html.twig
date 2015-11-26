@@ -12,7 +12,7 @@
 
     <div id="bb5-site-wrapper" class="{% block layout_css_class %}{% endblock %}">
 
-        {{ this.partial('BackBeeWebBundle::partials/header.html.twig')|raw }}
+        {% include 'BackBeeWebBundle:partials:header.html.twig' %}
 
         <nav id="nav-primary-wrapper" class="nav navbar-wrapper collapse navbar-collapse">
             {#<div>#}

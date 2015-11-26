@@ -1,4 +1,5 @@
 parameters:
+# @todo move this to config?
     social_network:
         facebook:
             link: "https://www.facebook.com/backbeeCMS"
@@ -26,20 +27,6 @@ services:
         tags:
             - { name: "kernel.event_listener", event: "block.autoblock.render", method: onRender }
 
-    social.facebook.prerender_listener:
-        class: BackBee\StandardBundle\Event\Listener\SocialListener
-        arguments:
-            - %social_network%
-        tags:
-            - { name: "kernel.event_listener", event: "social.facebook.prerender", method: onPreRenderFacebook }
-
-    social.twitter.prerender_listener:
-        class: BackBee\StandardBundle\Event\Listener\SocialListener
-        arguments:
-            - %social_network%
-        tags:
-            - { name: "kernel.event_listener", event: "social.twitter.prerender", method: onPreRenderTwitter }
-
     article.article.render_listener:
         class: BackBee\StandardBundle\Event\Listener\ArticleListener
         tags:
@@ -65,5 +52,10 @@ services:
         class: BackBee\StandardBundle\Renderer\Helper\breadcrumb
     navbar:
         class: BackBee\StandardBundle\Renderer\Helper\navbar
-    socialnetwork:
-        class: BackBee\StandardBundle\Renderer\Helper\socialNetwork
+
+    bbstandard.twig.social_extension:
+        class: BackBee\StandardBundle\Twig\SocialTwigExtension
+        arguments:
+            - %social_network%
+        tags:
+            - { name: twig.extension }
