@@ -23,10 +23,13 @@
          data-toolbar-selector="true"
             {% if app.user != null %}
                 data-autostart
-                data-site-uid="{{ this.getCurrentPage().getSite().getUid() }}"
-                data-page-uid="{{ this.getCurrentPage().getUid() }}"
-                data-layout-uid="{{ this.getCurrentPage().getLayout().getUid() }}"
-                data-root-uid="{{ this.getCurrentPage().getRoot().getUid() }}"
+                {# might be on a page not managed by BB#}
+                {% if this is defined %}
+                    data-site-uid="{{ this.getCurrentPage().getSite().getUid() }}"
+                    data-page-uid="{{ this.getCurrentPage().getUid() }}"
+                    data-layout-uid="{{ this.getCurrentPage().getLayout().getUid() }}"
+                    data-root-uid="{{ this.getCurrentPage().getRoot().getUid() }}"
+                {% endif %}
             {% endif %}
     >
         <div id="backbee-loader">
