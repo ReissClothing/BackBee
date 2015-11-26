@@ -1,58 +1,56 @@
 {% if app.user != null %}
-{# @todo gvf pensar manera de que esto se ponga en el stylesheets del layout, asi no lo hace, idem para js#}
-        {% stylesheets
-            '@BackBeeWebBundle/Resources/public/css/bb-ui.css'
-            '@BackBeeWebBundle/Resources/public/css/vendor-toolbar.css'
-        filter='cssrewrite'
-        %}
-<link rel="stylesheet" href="{{ asset_url }}"/>
+    {# @todo gvf pensar manera de que esto se ponga en el stylesheets del layout, asi no lo hace, idem para js#}
+    {% stylesheets
+    '@BackBeeWebBundle/Resources/public/css/bb-ui.css'
+    '@BackBeeWebBundle/Resources/public/css/vendor-toolbar.css'
+    filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
     {% endstylesheets %}
 {% else %}
     {% stylesheets
     '@BackBeeWebBundle/Resources/public/css/toolbar/bb-ui-login.css'
-    filter='cssrewrite'
-    %}
+    filter='cssrewrite' %}
     <link rel="stylesheet" href="{{ asset_url }}"/>
     {% endstylesheets %}
 {% endif %}
 
-<div id="{{ wrapper }}"
-     {# TODO gvf leave just version and get it from js#}
-    {#data-api="{{ path('/rest/2/', {'version': 2}) }}"#}
-    data-api="{{ path('bb.rest.api.dummy', {'version': 2}) }}"
-    data-base-url="{{ app.request.getSchemeAndHttpHost() }}"
-    data-toolbar-selector="true"
-    {% if app.user != null %}
-        data-autostart
-        data-site-uid="{{ this.getCurrentPage().getSite().getUid() }}"
-        data-page-uid="{{ this.getCurrentPage().getUid() }}"
-        data-layout-uid="{{ this.getCurrentPage().getLayout().getUid() }}"
-        data-root-uid="{{ this.getCurrentPage().getRoot().getUid() }}"
-    {% endif %}
->
-    <div id="backbee-loader">
-        <div class="loader">
-            <div id="circularG_1" class="circularG"></div>
-            <div id="circularG_2" class="circularG"></div>
-            <div id="circularG_3" class="circularG"></div>
-            <div id="circularG_4" class="circularG"></div>
-            <div id="circularG_5" class="circularG"></div>
-            <div id="circularG_6" class="circularG"></div>
-            <div id="circularG_7" class="circularG"></div>
-            <div id="circularG_8" class="circularG"></div>
+{% if not bbapp_disable_toolbar %}
+    <div id="{{ bbapp_wrapper_toolbar_id }}"
+            {# TODO gvf leave just version and get it from js#}
+            {#data-api="{{ path('/rest/2/', {'version': 2}) }}"#}
+         data-api="{{ path('bb.rest.api.dummy', {'version': 2}) }}"
+         data-base-url="{{ app.request.getSchemeAndHttpHost() }}"
+         data-toolbar-selector="true"
+            {% if app.user != null %}
+                data-autostart
+                data-site-uid="{{ this.getCurrentPage().getSite().getUid() }}"
+                data-page-uid="{{ this.getCurrentPage().getUid() }}"
+                data-layout-uid="{{ this.getCurrentPage().getLayout().getUid() }}"
+                data-root-uid="{{ this.getCurrentPage().getRoot().getUid() }}"
+            {% endif %}
+    >
+        <div id="backbee-loader">
+            <div class="loader">
+                <div id="circularG_1" class="circularG"></div>
+                <div id="circularG_2" class="circularG"></div>
+                <div id="circularG_3" class="circularG"></div>
+                <div id="circularG_4" class="circularG"></div>
+                <div id="circularG_5" class="circularG"></div>
+                <div id="circularG_6" class="circularG"></div>
+                <div id="circularG_7" class="circularG"></div>
+                <div id="circularG_8" class="circularG"></div>
+            </div>
         </div>
+
+
+        {% javascripts '@BackBeeWebBundle/Resources/public/js/require.js' %}
+        <script src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+
+        {% javascripts
+        '@BackBeeWebBundle/Resources/public/js/config.min.js' %}
+        <script src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+
     </div>
-
-
-
-    {% javascripts '@BackBeeWebBundle/Resources/public/js/require.js' %}
-    <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
-
-    {% javascripts
-        '@BackBeeWebBundle/Resources/public/js/config.min.js'
-    %}
-    <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
-
-</div>
+{% endif %}

@@ -59,7 +59,6 @@ parameters:
                         scope:
                             global:
                                 open: user.showCurrent
-        wrapper_toolbar_id: bb5-ui
         default_url: content/contridution/edit
         component:
             logger:
