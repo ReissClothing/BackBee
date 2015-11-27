@@ -79,7 +79,7 @@ EOF
                 $em->persist($layout);
             }
             $em->flush();
-            $output->writeln('Layouts created.');
+            $output->writeln(count($layouts). ' layouts created.');
         } else {
             if ($this->layoutExists($layoutName, $site)) {
                 throw new \Exception('layout ' . $layout . ' already exists.');
@@ -97,7 +97,7 @@ EOF
                 $em->persist($layout);
                 $em->flush();
             }
-            $output->writeln('Layout created.');
+            $output->writeln('Layout: '.$layout->getLabel().' created.');
         }
     }
 
