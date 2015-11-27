@@ -68,19 +68,23 @@ EOF
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $layoutName  = $input->getOption('layout');
-        $site    = $input->getOption('site');
-        $builder = $this->getContainer()->get('bbapp.layout_generator.builder');
+        $layoutName = $input->getOption('layout');
+        $site       = $input->getOption('site');
+        $builder    = $this->getContainer()->get('bbapp.layout_generator.builder');
 
+        $em = $this->getContainer()->get('doctrine.orm.default_entity_manager');
         if ($layoutName === null) {
-            $builder->generateAll($site);
+            $layouts = $builder->generateAll($site);
+            foreach ($layouts as $layout) {
+                $em->persist($layout);
+            }
+            $em->flush();
             $output->writeln('Layouts created.');
         } else {
             if ($this->layoutExists($layoutName, $site)) {
                 throw new \Exception('layout ' . $layout . ' already exists.');
             }
 
-            $em = $this->getContainer()->get('doctrine.orm.default_entity_manager');
             if ($site === null) {
                 $sites = $em->getRepository('BackBee\CoreDomain\Site\Site')->findall();
                 foreach ($sites as $site) {

@@ -95,9 +95,13 @@ class Builder
 
     public function generateAll(Site $site = null)
     {
+        $layouts = [];
+
         foreach ($this->layoutConfig as $name => $config) {
-            $this->generateLayout($name, $site);
+            $layouts[] = $this->generateLayout($name, $site);
         }
+
+        return $layouts;
     }
 
     protected function computeTemplate(Layout $layout, $value)
