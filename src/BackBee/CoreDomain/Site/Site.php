@@ -126,7 +126,7 @@ class Site extends AbstractObjectIdentifiable
     /**
      * The collection of layouts available for this site.
      *
-     * @ORM\OneToMany(targetEntity="BackBee\CoreDomain\Site\Layout", mappedBy="_site", fetch="EXTRA_LAZY")
+     * @ORM\OneToMany(targetEntity="BackBee\CoreDomain\Site\Layout", mappedBy="site", fetch="EXTRA_LAZY")
      *
      * @Serializer\Expose
      * @Serializer\SerializedName("layouts")
