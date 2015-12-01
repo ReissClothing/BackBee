@@ -47,9 +47,9 @@ class AppKernel extends Kernel
      */
     public function getCacheDir()
     {
-        if ($this->shouldUseSharedMemory()) {
-            return '/dev/shm/reiss/cache/' . $this->environment;
-        }
+//        if ($this->shouldUseSharedMemory()) {
+            return '/dev/shm/bb-symfony/cache/' . $this->environment;
+//        }
 
         return $this->rootDir . '/cache/' . $this->environment;
     }
@@ -59,9 +59,9 @@ class AppKernel extends Kernel
      */
     public function getLogDir()
     {
-        if ($this->shouldUseSharedMemory()) {
-            return '/dev/shm/reiss/logs/' . $this->environment;
-        }
+//        if ($this->shouldUseSharedMemory()) {
+            return '/dev/shm/bb-symfony/logs/' . $this->environment;
+//        }
 
         return $this->rootDir . '/logs/' . $this->environment;
     }

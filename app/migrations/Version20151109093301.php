@@ -15,7 +15,8 @@ class Version20151109093301 extends AbstractMigration
      */
     public function up(Schema $schema)
     {
-        $this->addSql('UPDATE page SET url= SUBSTR(url, 2)');
+//        removed bc we match pathinfo which contains leading /
+//        $this->addSql('UPDATE page SET url= SUBSTR(url, 2)');
     }
 
     /**
