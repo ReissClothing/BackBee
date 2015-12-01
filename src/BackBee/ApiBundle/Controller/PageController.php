@@ -31,8 +31,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Exception\InsufficientAuthenticationException;
 use Symfony\Component\Validator\Constraints as Assert;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use BackBee\AutoLoader\Exception\ClassNotFoundException;
 use BackBee\CoreDomain\ClassContent\AbstractClassContent;
 use BackBee\Exception\InvalidArgumentException;
 use BackBee\MetaData\MetaDataBag;
@@ -74,10 +72,12 @@ class PageController extends AbstractRestController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      *
-     * @ParamConverter(name="page", class="BackBee\CoreDomain\NestedNode\Page")
      */
-    public function getMetadataAction(Page $page)
+    public function getMetadataAction(Request $request)
     {
+//     * @ParamConverter(name="page", class="BackBee\CoreDomain\NestedNode\Page")
+        $page = $this->getEntity('BackBee\CoreDomain\NestedNode\Page', $request->query->get('uid'));
+
         $metadata = null !== $page->getMetaData() ? $page->getMetaData()->jsonSerialize() : array();
         $default_metadata = new MetaDataBag($this->getApplication()->getConfig()->getSection('metadata'));
         $metadata = array_merge($default_metadata->jsonSerialize(), $metadata);
@@ -90,10 +90,12 @@ class PageController extends AbstractRestController
      * Get page ancestors
      * @param Page $page the page we want to get its ancestors
      * @return \Symfony\Component\HttpFoundation\Response
-     * @ParamConverter(name="page", class="BackBee\CoreDomain\NestedNode\Page")
      */
-    public function getAncestorsAction(Page $page)
+    public function getAncestorsAction(Request $request)
     {
+//     * @ParamConverter(name="page", class="BackBee\CoreDomain\NestedNode\Page")
+        $page = $this->getEntity('BackBee\CoreDomain\NestedNode\Page', $request->query->get('uid'));
+
         $ancestors = $this->getPageRepository()->getAncestors($page);
 
         return $this->createResponse($this->formatCollection($ancestors));
@@ -107,10 +109,12 @@ class PageController extends AbstractRestController
      *
      * @return Symfony\Component\HttpFoundation\Response
      *
-     * @ParamConverter(name="page", class="BackBee\CoreDomain\NestedNode\Page")
      */
-    public function putMetadataAction(Page $page, Request $request)
+    public function putMetadataAction(Request $request)
     {
+//     * @ParamConverter(name="page", class="BackBee\CoreDomain\NestedNode\Page")
+        $page = $this->getEntity('BackBee\CoreDomain\NestedNode\Page', $request->query->get('uid'));
+
         $metadatas = $page->getMetaData();
 
         foreach ($request->request->all() as $name => $attributes) {
@@ -124,7 +128,7 @@ class PageController extends AbstractRestController
         }
 
         $page->setMetaData($metadatas->compute($page));
-        $this->getDoctrine()->getEntityManager()->flush($page);
+        $this->getDoctrine()->getManager()->flush($page);
 
         return $this->createJsonResponse(null, 204);
     }
@@ -171,17 +175,17 @@ class PageController extends AbstractRestController
      *   })
      * })
      *
-     * @ParamConverter(
-     *   name="parent", options={"id"="parent_uid", "required"=false}, class="BackBee\CoreDomain\NestedNode\Page"
-     * )
      */
-//    @todo Controller "BackBee\ApiBundle\Controller\PageController::getCollectionAction()" requires that you provide a value for the "$start" argument (because there is no default value or because there is a non optional argument after this one).
 //    public function getCollectionAction(Request $request, $start, $count, Page $parent = null)
-    public function getCollectionAction(Request $request, $start = 0, $count = 2000, Page $parent = null)
+//    @todo Controller "BackBee\ApiBundle\Controller\PageController::getCollectionAction()" requires that you provide a value for the "$start" argument (because there is no default value or because there is a non optional argument after this one).
+    public function getCollectionAction(Request $request, $start = 0, $count = 2000)
     {
         $response = null;
         $contentUid = $request->query->get('content_uid', null);
         $contentType = $request->query->get('content_type', null);
+
+//     * @ParamConverter("parent", options={"id"="parent_uid", "required"=false}, class="BackBee\CoreDomain\NestedNode\Page")
+        $parent = $this->getEntity('BackBee\CoreDomain\NestedNode\Page', $request->query->get('parent_uid'), false);
 
         if (null !== $contentUid && null !== $contentType) {
             $response = $this->doGetCollectionByContent($contentType, $contentUid);
@@ -198,6 +202,7 @@ class PageController extends AbstractRestController
         return $response;
     }
 
+
     /**
      * Get page by uid.
      *
@@ -205,11 +210,13 @@ class PageController extends AbstractRestController
      *
      * @return Symfony\Component\HttpFoundation\Response
      *
-     * @ParamConverter("page", class="BackBee\CoreDomain\NestedNode\Page", options={"id" = "uid"})
      * @Rest\Security(expression="is_granted('VIEW', page)")
      */
-    public function getAction(Page $page)
+    public function getAction(Request $request, $uid)
     {
+//     * @ParamConverter("page", class="BackBee\CoreDomain\NestedNode\Page", options={"id" = "uid"})
+        $page = $this->getEntity('BackBee\CoreDomain\NestedNode\Page', $uid);
+
         return $this->createResponse($this->formatItem($page));
     }
 
@@ -221,23 +228,23 @@ class PageController extends AbstractRestController
      *   @Assert\NotBlank()
      * })
      *
-     * @ParamConverter(
-     *   name="layout", id_name="layout_uid", id_source="request", class="BackBee\CoreDomain\Site\Layout", required=true
-     * )
-     * @ParamConverter(
-     *   name="parent", id_name="parent_uid", id_source="request", class="BackBee\CoreDomain\NestedNode\Page", required=false
-     * )
-     * @ParamConverter(
-     *   name="source", id_name="source_uid", id_source="query", class="BackBee\CoreDomain\NestedNode\Page", required=false
-     * )
-     * @ParamConverter(
-     *   name="workflow", id_name="workflow_uid", id_source="request", class="BackBee\CoreDomain\Workflow\State", required=false
-     * )
-     *
      * @Rest\Security(expression="is_granted('VIEW', layout)")
      */
-    public function postAction(Layout $layout, Request $request, Page $parent = null)
+    public function postAction(Request $request)
     {
+
+//        * @ParamConverter(name="layout", id_name="layout_uid", id_source="request", class="BackBee\CoreDomain\Site\Layout", required=true)
+        $layout =$this->getEntity('BackBee\CoreDomain\Site\Layout', $request->query->get('layout_uid'));
+
+//     * @ParamConverter(name="parent", id_name="parent_uid", id_source="request", class="BackBee\CoreDomain\NestedNode\Page", required=false)
+        $parent =$this->getEntity('BackBee\CoreDomain\NestedNode\Page', $request->query->get('parent_uid'), false);
+
+//     * @ParamConverter(name="source", id_name="source_uid", id_source="query", class="BackBee\CoreDomain\NestedNode\Page", required=false)
+//        $source =$this->getEntity('BackBee\CoreDomain\NestedNode\Page', 'source_uid', false);
+
+//     * @ParamConverter(name="workflow", id_name="workflow_uid", id_source="request", class="BackBee\CoreDomain\Workflow\State", required=false)
+//        $workflow =$this->getEntity('BackBee\CoreDomain\Workflow\State', $request->query->get('workflow_uid'), false);
+
         if (null !== $parent) {
             $this->granted('EDIT', $parent);
         }
@@ -357,19 +364,24 @@ class PageController extends AbstractRestController
      *   @Assert\Type(type="digit", message="The value should be a positive number")
      * })
      *
-     * @ParamConverter(name="page", class="BackBee\CoreDomain\NestedNode\Page")
-     * @ParamConverter(name="layout", id_name="layout_uid", class="BackBee\CoreDomain\Site\Layout", id_source="request")
-     * @ParamConverter(
-     *   name="parent", id_name="parent_uid", class="BackBee\CoreDomain\NestedNode\Page", id_source="request", required=false
-     * )
-     * @ParamConverter(
-     *   name="workflow", id_name="workflow_uid", id_source="request", class="BackBee\CoreDomain\Workflow\State", required=false
-     * )
+
      * @Rest\Security(expression="is_granted('EDIT', page)")
      * @Rest\Security(expression="is_granted('VIEW', layout)")
      */
-    public function putAction(Page $page, Layout $layout, Request $request, Page $parent = null)
+    public function putAction(Request $request)
     {
+
+//        * @ParamConverter(name="page", class="BackBee\CoreDomain\NestedNode\Page")
+        $page =$this->getEntity('BackBee\CoreDomain\NestedNode\Page', $request->query->get('uid'));
+
+//     * @ParamConverter(name="layout", id_name="layout_uid", class="BackBee\CoreDomain\Site\Layout", id_source="request")
+        $layout =$this->getEntity('BackBee\CoreDomain\Site\Layout', $request->query->get('layout_uid'));
+
+//     * @ParamConverter(name="parent", id_name="parent_uid", class="BackBee\CoreDomain\NestedNode\Page", id_source="request", required=false)
+        $parent =$this->getEntity('BackBee\CoreDomain\NestedNode\Page', $request->query->get('parent_uid'), false);
+
+//     * @ParamConverter(name="workflow", id_name="workflow_uid", id_source="request", class="BackBee\CoreDomain\Workflow\State", required=false)
+//        $workflow =$this->getEntity('BackBee\CoreDomain\Workflow\State', $request->query->get('workflow_uid'), false);
 
         $page->setLayout($layout);
         $this->trySetPageWorkflowState($page, $this->getEntityFromAttributes('workflow'));
@@ -533,11 +545,13 @@ class PageController extends AbstractRestController
      *   @Assert\NotBlank(message="Request must contain at least one operation")
      * })
      *
-     * @ParamConverter(name="page", class="BackBee\CoreDomain\NestedNode\Page")
      * @Rest\Security(expression="is_granted('EDIT', page)")
      */
-    public function patchAction(Page $page, Request $request)
+    public function patchAction(Request $request)
     {
+//     * @ParamConverter(name="page", class="BackBee\CoreDomain\NestedNode\Page")
+        $page =$this->getEntity('BackBee\CoreDomain\NestedNode\Page', $request->query->get('uid'));
+
         $operations = $request->request->all();
 
         try {
@@ -575,10 +589,12 @@ class PageController extends AbstractRestController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      *
-     * @ParamConverter(name="page", class="BackBee\CoreDomain\NestedNode\Page")
      */
-    public function deleteAction(Page $page)
+    public function deleteAction(Request $request)
     {
+//     * @ParamConverter(name="page", class="BackBee\CoreDomain\NestedNode\Page")
+        $page =$this->getEntity('BackBee\CoreDomain\NestedNode\Page', $request->query->get('uid'));
+
         if (true === $page->isRoot()) {
             throw new BadRequestHttpException('Cannot remove root page of a site.');
         }
@@ -606,18 +622,20 @@ class PageController extends AbstractRestController
      *   @Assert\NotBlank
      * })
      *
-     * @ParamConverter(name="source", class="BackBee\CoreDomain\NestedNode\Page")
-     * @ParamConverter(
-     *   name="parent", id_name="parent_uid", id_source="request", class="BackBee\CoreDomain\NestedNode\Page", required=false
-     * )
-     * @ParamConverter(
-     *   name="sibling", id_name="sibling_uid", id_source="request", class="BackBee\CoreDomain\NestedNode\Page", required=false
-     * )
      *
      * @Rest\Security(expression="is_granted('CREATE', source)")
      */
-    public function cloneAction(Page $source, Page $parent = null, $sibling = null, Request $request)
+    public function cloneAction(Request $request)
     {
+//     * @ParamConverter(name="source", class="BackBee\CoreDomain\NestedNode\Page")
+        $source = $this->getEntity('BackBee\CoreDomain\NestedNode\Page', $request->query->get('uid'));
+
+//     * @ParamConverter(name="parent", id_name="parent_uid", id_source="request", class="BackBee\CoreDomain\NestedNode\Page", required=false)
+        $parent = $this->getEntity('BackBee\CoreDomain\NestedNode\Page', $request->query->get('parent_uid'), false);
+
+//     * @ParamConverter(name="sibling", id_name="sibling_uid", id_source="request", class="BackBee\CoreDomain\NestedNode\Page", required=false)
+        $sibling = $this->getEntity('BackBee\CoreDomain\NestedNode\Page', $request->query->get('sibling_uid'), false);
+
         // user must have view permission on chosen layout
         $this->granted('VIEW', $source->getLayout());
 
@@ -758,6 +776,9 @@ class PageController extends AbstractRestController
      */
     private function doClassicGetCollection(Request $request, $start, $count, Page $parent = null)
     {
+
+//        seguir por aqui en BB el parent no es null seguramente por el param converter
+
         $qb = $this->getPageRepository()
                     ->createQueryBuilder('p');
 
@@ -1042,5 +1063,23 @@ class PageController extends AbstractRestController
         }
 
         return $page;
+    }
+
+    /*
+     * Replacement for Rest\ParamConverter annotation, logic was in ParamConverterListener
+     */
+    protected function getEntity($class, $id, $required = true) {
+
+        if (!$required && null === $id) {
+            return null;
+        }
+
+        $entity = $this->getDoctrine()->getManager()->find($class, $id);
+
+        if ($required && null === $entity) {
+            throw new NotFoundHttpException("No `$class` exists with uid `$id`.");
+        }
+
+        return $entity;
     }
 }
