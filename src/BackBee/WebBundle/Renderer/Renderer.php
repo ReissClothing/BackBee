@@ -237,11 +237,11 @@ class Renderer extends AbstractRenderer
         if (null === $obj) {
             return;
         }
-//@todo
+//@todo gvf renderer should know nothing about permissions, this should be checked outside
 //        if (!$obj->isRenderable() && null === $application->getBBUserToken()) {
-        if (!$obj->isRenderable()) {
-            return;
-        }
+//        if (!$obj->isRenderable()) {
+//            return;
+//        }
 
 //        @TODO gvf
 //        $application->debug(sprintf(

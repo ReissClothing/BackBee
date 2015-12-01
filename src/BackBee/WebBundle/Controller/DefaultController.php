@@ -5,6 +5,7 @@ namespace BackBee\WebBundle\Controller;
 use BackBee\CoreDomain\NestedNode\Page;
 use BackBee\CoreDomainBundle\Event\PageFilterEvent;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -34,35 +35,36 @@ class DefaultController extends Controller
             throw new HttpException(500, 'A BackBee\CoreDomain\Site instance is required.');
         }
 
-// @TODO gvf
-//        $redirect_page = null !== $this->application->getRequest()->get('bb5-redirect', null)
-//            ? ('false' !== $this->application->getRequest()->get('bb5-redirect'))
-//            : true
-//        ;
+        $redirect_page = null !== $request->get('bb5-redirect', null)
+            ? ('false' !== $request->get('bb5-redirect'))
+            : true
+        ;
+
+        // Attributes are populated by the Dynamic Router
         $page = $request->attributes->get('_bbapp_page');
-// @TODO gvf
-//        if (null !== $page && false === $page->isOnline()) {
-//            $page = (null === $this->application->getBBUserToken()) ? null : $page;
-//        }
+
+        // The page is not active, but we are logged in, so we should be able to open it for edit
+        // @todo this should be done differently?
+        if (null !== $page && false === $page->isOnline()) {
+//             @todo gvf the role should be parameter or something more configurable
+            $page = $this->isGranted('ROLE_API_USER') ? $page: null;
+        }
 
         if (null === $page) {
             throw new HttpException(404, sprintf('The URL `%s` can not be found.',  $request->getUri()));
         }
-// @TODO gvf
-//        if ((null !== $redirect = $page->getRedirect()) && $page->getUseUrlRedirect()) {
-//            if ((null === $this->application->getBBUserToken()) || ((null !== $this->application->getBBUserToken()) && (true === $redirect_page))) {
-//                $redirect = $this->application->getRenderer()->getUri($redirect);
-//
-//                $response = new RedirectResponse($redirect, 301, [
-//                        'Cache-Control' => 'no-store, no-cache, must-revalidate',
-//                        'Expires' => 'Thu, 01 Jan 1970 00:00:00 GMT',
-//                    ]
-//                );
-//
-//                $this->send($response);
-//                $this->application->stop();
-//            }
-//        }
+        if ((null !== $redirect = $page->getRedirect()) && $page->getUseUrlRedirect()) {
+            if ((!$this->isGranted('ROLE_API_USER')) || (($this->isGranted('ROLE_API_USER')) && (true === $redirect_page))) {
+                $redirect = $this->get('renderer')->getUri($redirect);
+
+                return new RedirectResponse($redirect, 301, [
+                        'Cache-Control' => 'no-store, no-cache, must-revalidate',
+                        'Expires' => 'Thu, 01 Jan 1970 00:00:00 GMT',
+                    ]
+                );
+
+            }
+        }
 
 
 //    @TODO gvf I don't think this event is used anywhere
