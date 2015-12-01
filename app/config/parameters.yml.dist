@@ -21,6 +21,8 @@ parameters:
     sudoers:
         - admin
 #    @todo gvf this should be moved to config
+    bbapp.api_user_role: ROLE_API_USER
+#    @todo gvf this should be moved to config
     back_bee_toolbar:
         core:
             ApplicationManager:

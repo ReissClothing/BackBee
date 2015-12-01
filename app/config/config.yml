@@ -575,6 +575,7 @@ back_bee_core_domain:
                             acceptedFiles: '.pdf'
 back_bee_layout_generator:
     layouts:
+#    @todo gvf add site?
         ReissLayout:
             template: ~
             label: Reiss Layout

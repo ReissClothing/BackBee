@@ -43,18 +43,20 @@ class DefaultController extends Controller
         // Attributes are populated by the Dynamic Router
         $page = $request->attributes->get('_bbapp_page');
 
+        $role = $this->container->getParameter('bbapp.api_user_role');
+
         // The page is not active, but we are logged in, so we should be able to open it for edit
         // @todo this should be done differently?
         if (null !== $page && false === $page->isOnline()) {
 //             @todo gvf the role should be parameter or something more configurable
-            $page = $this->isGranted('ROLE_API_USER') ? $page: null;
+            $page = $this->isGranted($role) ? $page: null;
         }
 
         if (null === $page) {
             throw new HttpException(404, sprintf('The URL `%s` can not be found.',  $request->getUri()));
         }
         if ((null !== $redirect = $page->getRedirect()) && $page->getUseUrlRedirect()) {
-            if ((!$this->isGranted('ROLE_API_USER')) || (($this->isGranted('ROLE_API_USER')) && (true === $redirect_page))) {
+            if ((!$this->isGranted($role)) || (($this->isGranted($this->container->getParameter('bbapp.api_user_role'))) && (true === $redirect_page))) {
                 $redirect = $this->get('renderer')->getUri($redirect);
 
                 return new RedirectResponse($redirect, 301, [

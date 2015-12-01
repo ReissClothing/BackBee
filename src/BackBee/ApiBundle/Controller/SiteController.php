@@ -41,7 +41,7 @@ class SiteController extends AbstractRestController
      */
     public function getLayoutsAction($uid)
     {
-        if (!$this->isGranted("ROLE_API_USER")) {
+        if (!$this->isGranted()) {
             throw new AccessDeniedHttpException("Your account's api access is disabled");
         }
 
@@ -82,7 +82,7 @@ class SiteController extends AbstractRestController
      */
     public function getCollectionAction()
     {
-        if (!$this->isGranted('ROLE_API_USER')) {
+        if (!$this->isGranted($this->container->getParameter('bbapp.api_user_role'))) {
             throw new AccessDeniedHttpException('Your account\'s api access is disabled');
         }
         $sitesAvailable = [];
