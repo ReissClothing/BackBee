@@ -65,7 +65,7 @@ class Site extends AbstractObjectIdentifiable
      * @BB\Fixture(type="md5")
      *
      * @Serializer\Expose
-     * @Serializer\SerializedName("id")
+     * @Serializer\SerializedName("uid")
      * @Serializer\Type("string")
      */
     protected $_uid;

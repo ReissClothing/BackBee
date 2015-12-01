@@ -135,6 +135,7 @@ class Page extends AbstractObjectIdentifiable implements RenderableInterface, Do
      * @Serializer\Expose
      * @Serializer\Type("string")
      * @Serializer\ReadOnly
+     * @Serializer\SerializedName("uid")
      */
     protected $_uid;
 
@@ -156,6 +157,7 @@ class Page extends AbstractObjectIdentifiable implements RenderableInterface, Do
      *
      * @Serializer\Expose
      * @Serializer\Type("string")
+     * @Serializer\SerializedName("title")
      */
     protected $_title;
 
@@ -168,6 +170,7 @@ class Page extends AbstractObjectIdentifiable implements RenderableInterface, Do
      *
      * @Serializer\Expose
      * @Serializer\Type("string")
+     * @Serializer\SerializedName("alttitle")
      */
     protected $_alttitle;
 
@@ -179,6 +182,7 @@ class Page extends AbstractObjectIdentifiable implements RenderableInterface, Do
      *
      * @Serializer\Expose
      * @Serializer\Type("string")
+     * @Serializer\SerializedName("url")
      */
     protected $_url;
 
@@ -190,6 +194,7 @@ class Page extends AbstractObjectIdentifiable implements RenderableInterface, Do
      *
      * @Serializer\Expose
      * @Serializer\Type("string")
+     * @Serializer\SerializedName("target")
      */
     protected $_target;
 
@@ -201,6 +206,7 @@ class Page extends AbstractObjectIdentifiable implements RenderableInterface, Do
      *
      * @Serializer\Expose
      * @Serializer\Type("string")
+     * @Serializer\SerializedName("redirect")
      */
     protected $_redirect;
 
@@ -230,6 +236,7 @@ class Page extends AbstractObjectIdentifiable implements RenderableInterface, Do
      *
      * @Serializer\Expose
      * @Serializer\Type("DateTime<'U'>")
+     * @Serializer\SerializedName("date")
      */
     protected $_date;
 
@@ -242,6 +249,7 @@ class Page extends AbstractObjectIdentifiable implements RenderableInterface, Do
      *
      * @Serializer\Expose
      * @Serializer\Type("integer")
+     * @Serializer\SerializedName("state")
      */
     protected $_state;
 
