@@ -42,12 +42,17 @@ class metadata extends AbstractHelper
      * @var EntityManagerInterface
      */
     private $entityManager;
+    /**
+     * @var
+     */
+    private $metadataConfig;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager, $metadataConfig)
     {
-
         $this->entityManager = $entityManager;
+        $this->metadataConfig = $metadataConfig;
     }
+
     public function __invoke()
     {
         if (null === $renderer = $this->_renderer) {
@@ -62,7 +67,7 @@ class metadata extends AbstractHelper
 
         if (null === $metadata || $metadata->count() === 0) {
 //            @todo gvf
-            $metadata = new MetaDataBag($renderer->getApplication()->getConfig()->getMetadataConfig(), $page);
+            $metadata = new MetaDataBag($this->metadataConfig, $page);
             $page->setMetaData($metadata);
             if ($this->entityManager->contains($page)) {
                 $this->entityManager->flush($page);

@@ -20,6 +20,22 @@ parameters:
 #  @todo gvf  this is used in voters, users defined here are sudores, this should be done properly!!
     sudoers:
         - admin
+#    @todo gvf move to config
+    bbapp.metadata_config:
+        keywords:
+          name: 'keywords'
+          content:
+            default: 'cms, content manager'
+        description:
+          name: 'description'
+          content:
+            default: "backbee demo website"
+          lang: 'en'
+        robots:
+          name: 'robots'
+          content:
+            default: ''
+            select: ['', 'noindex', 'nofollow', 'noindex, nofollow']
 #    @todo gvf this should be moved to config
     bbapp.api_user_role: ROLE_API_USER
 #    @todo gvf this should be moved to config

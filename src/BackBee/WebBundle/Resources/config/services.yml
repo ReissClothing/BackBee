@@ -45,6 +45,7 @@ services:
         class: BackBee\WebBundle\Renderer\Helper\metadata
         arguments:
             - @doctrine.orm.entity_manager
+            - %bbapp.metadata_config%
 
 
 
