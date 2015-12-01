@@ -14,9 +14,9 @@ parameters:
 #    bbapp.renderer.class: BackBee\Renderer\Renderer
     bbapp.event.dispatcher.class: BackBee\Event\Dispatcher
     bbapp.urlgenerator.class: BackBee\CoreDomainBundle\Rewriting\UrlGenerator
-    bbapp.pagebuilder.class: BackBee\NestedNode\Builder\PageBuilder
+    bbapp.pagebuilder.class: BackBee\CoreDomain\NestedNode\Builder\PageBuilder
     bbapp.registry.class: Symfony\Component\HttpFoundation\ParameterBag
-    bbapp.keywordbuilder.class: BackBee\NestedNode\Builder\KeywordBuilder
+    bbapp.keywordbuilder.class: BackBee\CoreDomain\NestedNode\Builder\KeywordBuilder
     bbapp.request.class: Symfony\Component\HttpFoundation\Request
 
     bbapp.script.command: php

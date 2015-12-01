@@ -30,7 +30,7 @@ class JsonRequestTransformerListener
             return;
         }
 
-        if (! $this->transformJsonBody($request)) {
+        if (!$this->transformJsonBody($request)) {
             $response = Response::create('Unable to parse request.', 400);
             $event->setResponse($response);
         }

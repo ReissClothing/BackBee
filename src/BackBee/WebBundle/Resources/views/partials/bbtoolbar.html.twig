@@ -24,8 +24,9 @@
             {% if app.user != null %}
                 data-autostart
                 {# might be on a page not managed by BB#}
+                {# todo get site uid from context #}
+                data-site-uid="{{ this.getCurrentPage().getSite().getUid() }}"
                 {% if this is defined %}
-                    data-site-uid="{{ this.getCurrentPage().getSite().getUid() }}"
                     data-page-uid="{{ this.getCurrentPage().getUid() }}"
                     data-layout-uid="{{ this.getCurrentPage().getLayout().getUid() }}"
                     data-root-uid="{{ this.getCurrentPage().getRoot().getUid() }}"

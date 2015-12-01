@@ -29,6 +29,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\InsufficientAuthenticationException;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -196,7 +197,7 @@ abstract class AbstractRestController extends Controller implements RestControll
      */
     protected function getSerializer()
     {
-        return $this->get('serializer');
+        return $this->get('bbapi.serializer');
     }
 
     protected function createValidationException($field, $value, $message)
@@ -232,4 +233,6 @@ abstract class AbstractRestController extends Controller implements RestControll
     {
         return $this->getRequest()->attributes->get($name);
     }
+
+
 }

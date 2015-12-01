@@ -34,16 +34,16 @@ define(
         'use strict';
 
         /**
-        * View of new page
-        * @type {Object} Backbone.View
-        */
+         * View of new page
+         * @type {Object} Backbone.View
+         */
         var PageViewTree = Backbone.View.extend({
 
             limit_of_page: 25,
 
             /**
-            * Initialize of PageViewClone
-            */
+             * Initialize of PageViewClone
+             */
             initialize: function (config) {
                 this.config = config;
                 this.config.popin_title = this.config.popin_title || Translator.translate('page_tree');
@@ -94,6 +94,7 @@ define(
                             }
                         },
                         append: function (func) {
+                            this.processDfd = new jQuery.Deferred();
                             if (typeof func !== 'function') { return false; }
                             this.queue.push(func);
                             return this.processDfd.promise();
@@ -118,28 +119,34 @@ define(
             handleSiteSelector: function (widget) {
                 var self = this;
                 this.selectedSite = null;
-                this.getCallStack = this.initCallStack();
+                this.callStack = this.initCallStack();
                 this.siteSelector = require("component!siteselector").createSiteSelector({selected : Core.get("site.uid") });
 
                 this.siteSelector.on("ready", function () {
                     self.selectedSite = this.getSelectedSite(true);
                     self.site_uid = self.selectedSite.uid;
                     self.siteSelectorIsReady = true;
-                    self.getCallStack.execute();
+                    self.callStack.execute();
                 });
 
                 this.siteSelector.on("siteChange", function (site_uid, site) {
                     self.selectedSite = site;
                     self.site_uid = site_uid;
-                    self.getCallStack.execute();
+
+                    if (!self.callStack.hasTask()) {
+                        self.callStack.append(self.getTree).done(function () {
+                            self.loadTreeRoot();
+                        });
+                    }
+                    self.callStack.execute();
                 });
 
                 jQuery(widget.find('.site-selector')).html(this.siteSelector.render());
             },
 
             /**
-            * Initialize tree
-            */
+             * Initialize tree
+             */
             initializeTree: function () {
                 var self = this,
                     uid = Math.random().toString(36).substr(2, 9),
@@ -201,7 +208,7 @@ define(
                     memorizedNode = self.treeView.getNodeById(self.nodeActionMemory[i]);
                     if (memorizedNode) {
                         memorizedNode.before_load = true;
-                       /* remove children too if they exist */
+                        /* remove children too if they exist */
                         jQuery.each(memorizedNode.children, function (i) {
                             self.treeView.invoke("removeNode", memorizedNode.children[i]);
                         });
@@ -215,10 +222,10 @@ define(
             },
 
             /**
-            * Event trigged when LI is created
-            * @param {Object} node
-            * @param {Object} li
-            */
+             * Event trigged when LI is created
+             * @param {Object} node
+             * @param {Object} li
+             */
             onCreateLi: function (node, li) {
 
                 var title = li.find('.jqtree-title');
@@ -235,17 +242,17 @@ define(
             },
 
             /**
-            * Bind default events of tree
-            */
+             * Bind default events of tree
+             */
             bindDefaultEvents: function () {
                 this.treeView.on('tree.click', jQuery.proxy(this.onClick, this));
                 this.treeView.on('tree.open', jQuery.proxy(this.onOpen, this));
             },
 
             /**
-            * Event trigged on click in tree
-            * @param {Object} event
-            */
+             * Event trigged on click in tree
+             * @param {Object} event
+             */
             onClick: function (event) {
 
                 var self = this,
@@ -267,9 +274,9 @@ define(
             },
 
             /**
-            * Event trigged on click in arrow in tree
-            * @param {Object} event
-            */
+             * Event trigged on click in arrow in tree
+             * @param {Object} event
+             */
             onOpen: function (event) {
                 var self = this;
                 if (event.node.is_fake === true) {
@@ -293,12 +300,12 @@ define(
             },
 
             /**
-            * Find pages with page repository and add limit in current node
-            * @param {String} parent_uid
-            * @param {Object} event
-            * @param {Number} start
-            * @param {Number} limit
-            */
+             * Find pages with page repository and add limit in current node
+             * @param {String} parent_uid
+             * @param {Object} event
+             * @param {Number} start
+             * @param {Number} limit
+             */
             findPages: function (node, start) {
                 var dfd = jQuery.Deferred(),
                     self = this;
@@ -316,10 +323,10 @@ define(
             },
 
             /**
-            * Update limit of node for create pagination
-            * @param {Object} event
-            * @param {Object} response
-            */
+             * Update limit of node for create pagination
+             * @param {Object} event
+             * @param {Object} response
+             */
             updateLimit: function (node, response) {
                 if (node !== undefined) {
                     node.range_total = response.getRangeTotal();
@@ -329,10 +336,10 @@ define(
             },
 
             /**
-            * Formate Page object to Node object
-            * @param {Object} page
-            * @returns {Object}
-            */
+             * Formate Page object to Node object
+             * @param {Object} page
+             * @returns {Object}
+             */
             formatePageToNode: function (page) {
                 page.children = [];
 
@@ -356,11 +363,11 @@ define(
             },
 
             /**
-            * Build a simple node
-            * @param {String} label
-            * @param {Object} properties
-            * @returns {Object}
-            */
+             * Build a simple node
+             * @param {String} label
+             * @param {Object} properties
+             * @returns {Object}
+             */
             buildNode: function (label, properties) {
                 var node = {};
 
@@ -384,10 +391,10 @@ define(
             },
 
             /**
-            * Insert data in node, remove loader and add pagination if necessary
-            * @param {Object} data
-            * @param {Object} node
-            */
+             * Insert data in node, remove loader and add pagination if necessary
+             * @param {Object} data
+             * @param {Object} node
+             */
             insertDataInNode: function (data, node) {
                 var key, formattedNode, provNode, ellipsisNode = null, children = node.children;
 
@@ -424,10 +431,12 @@ define(
             selectPage: function (pageUid) {
                 var self = this;
                 if (!pageUid) { return false; }
+                this.setProcessingState();
                 this.mask();
                 PageRepository.findAncestors(pageUid).done(function (ancestorInfos) {
 
                     if (!Array.isArray(ancestorInfos) || ancestorInfos.length === 0) {
+                        self.clearProcessingState();
                         self.unmask();
                         return false;
                     }
@@ -446,6 +455,7 @@ define(
                     });
 
                     if (callbacks.length === 0) {
+                        self.clearProcessingState();
                         self.unmask();
                         return false;
                     }
@@ -486,6 +496,7 @@ define(
                     currentNode = this.treeView.getNodeById(pageUid);
                 if (currentNode) {
                     this.treeView.invoke('selectNode', currentNode);
+                    this.clearProcessingState();
                     this.unmask();
                 } else {
                     PageRepository.findCurrentPage().done(function (data) {
@@ -493,6 +504,7 @@ define(
                         self.addEllipsisNode(currentNode, ancestor);
                         self.treeView.invoke('selectNode', self.treeView.getNodeById(currentNode.id));
                     }).always(function () {
+                        self.clearProcessingState();
                         self.unmask();
                     });
                 }
@@ -524,7 +536,16 @@ define(
                 }
             },
 
+            setProcessingState: function () {
+                this.isProcessing = true;
+            },
+
+            clearProcessingState: function () {
+                this.isProcessing = false;
+            },
+
             unmask: function () {
+                if (this.isProcessing) { return false; }
                 if (this.config.popin) {
                     this.tree.popIn.unmask();
                 }
@@ -580,11 +601,10 @@ define(
                     rootNode;
 
                 if (this.hasSiteSelector() && !this.siteSelectorIsReady) {
-                    return this.getCallStack.append(this.getTree);
+                    return this.callStack.append(this.getTree);
                 }
                 this.mask();
                 PageRepository.findRoot(self.site_uid).done(function (data) {
-                    self.isProcessing = true;
                     if (data.hasOwnProperty(0)) {
                         rootNode = data[0];
                         rootNode.id = rootNode.uid;
@@ -593,9 +613,6 @@ define(
                     }
                 }).fail(function () {
                     dfd.reject();
-                }).always(function () {
-                    self.isProcessing = false;
-                    self.unmask();
                 });
 
                 return dfd.promise();

@@ -232,12 +232,11 @@ class PageController extends AbstractRestController
      */
     public function postAction(Request $request)
     {
-
 //        * @ParamConverter(name="layout", id_name="layout_uid", id_source="request", class="BackBee\CoreDomain\Site\Layout", required=true)
-        $layout =$this->getEntity('BackBee\CoreDomain\Site\Layout', $request->query->get('layout_uid'));
+        $layout =$this->getEntity('BackBee\CoreDomain\Site\Layout', $request->get('layout_uid'));
 
 //     * @ParamConverter(name="parent", id_name="parent_uid", id_source="request", class="BackBee\CoreDomain\NestedNode\Page", required=false)
-        $parent =$this->getEntity('BackBee\CoreDomain\NestedNode\Page', $request->query->get('parent_uid'), false);
+        $parent =$this->getEntity('BackBee\CoreDomain\NestedNode\Page', $request->get('parent_uid'), false);
 
 //     * @ParamConverter(name="source", id_name="source_uid", id_source="query", class="BackBee\CoreDomain\NestedNode\Page", required=false)
 //        $source =$this->getEntity('BackBee\CoreDomain\NestedNode\Page', 'source_uid', false);
@@ -372,13 +371,13 @@ class PageController extends AbstractRestController
     {
 
 //        * @ParamConverter(name="page", class="BackBee\CoreDomain\NestedNode\Page")
-        $page =$this->getEntity('BackBee\CoreDomain\NestedNode\Page', $request->query->get('uid'));
+        $page =$this->getEntity('BackBee\CoreDomain\NestedNode\Page', $request->get('uid'));
 
 //     * @ParamConverter(name="layout", id_name="layout_uid", class="BackBee\CoreDomain\Site\Layout", id_source="request")
-        $layout =$this->getEntity('BackBee\CoreDomain\Site\Layout', $request->query->get('layout_uid'));
+        $layout =$this->getEntity('BackBee\CoreDomain\Site\Layout', $request->get('layout_uid'));
 
 //     * @ParamConverter(name="parent", id_name="parent_uid", class="BackBee\CoreDomain\NestedNode\Page", id_source="request", required=false)
-        $parent =$this->getEntity('BackBee\CoreDomain\NestedNode\Page', $request->query->get('parent_uid'), false);
+        $parent =$this->getEntity('BackBee\CoreDomain\NestedNode\Page', $request->get('parent_uid'), false);
 
 //     * @ParamConverter(name="workflow", id_name="workflow_uid", id_source="request", class="BackBee\CoreDomain\Workflow\State", required=false)
 //        $workflow =$this->getEntity('BackBee\CoreDomain\Workflow\State', $request->query->get('workflow_uid'), false);
