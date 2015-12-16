@@ -31,6 +31,7 @@ define(['page.abstract.form', 'jquery', 'jsclass'], function (Form, jQuery) {
                     elements: {
                         title: this.form.title,
                         alttitle: this.form.alttitle,
+                        url: this.form.url,
                         target: this.form.target,
                         redirect: this.form.redirect,
                         layout_uid: this.form.layout_uid
