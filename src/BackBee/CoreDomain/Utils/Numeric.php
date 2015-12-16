@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with BackBee. If not, see <http://www.gnu.org/licenses/>.
  */
-namespace BackBee\CoreDomainBundle\Utils;
+namespace BackBee\CoreDomain\Utils;
 
 /**
  * Set of utility methods to deal with numeric varaibles
