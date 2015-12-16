@@ -25,11 +25,13 @@ namespace BackBee\CoreDomainBundle\ClassContent;
 
 use BackBee\ApplicationInterface;
 use BackBee\CoreDomain\ClassContent\AbstractClassContent;
+use BackBee\CoreDomain\ClassContent\ContentSet;
 use BackBee\CoreDomainBundle\ClassContent\Iconizer\IconizerInterface;
 use BackBee\Exception\InvalidArgumentException;
 use BackBee\Security\Token\BBUserToken;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Util\ClassUtils;
 
 /**
@@ -64,6 +66,10 @@ class ClassContentManager
     private $context;
     private $env;
     private $classcontentList;
+    /**
+     * @var TokenStorageInterface
+     */
+    private $tokenStorage;
 
     /**
      * Instantiate a ClassContentManager.
@@ -74,6 +80,7 @@ class ClassContentManager
 //    @todo gvf set context and env as app config and pass it here
     public function __construct(
         EntityManagerInterface $entityManager,
+        TokenStorageInterface $tokenStorage,
         $classcontentList,
         IconizerInterface $iconizer = null,
         $context = '',
@@ -86,7 +93,14 @@ class ClassContentManager
         $this->entityManager = $entityManager;
         $this->context = $context;
         $this->env = $env;
+        // @todo gvf this is adding ContentSet class, but it's too hacky
+//        $this->classcontentList = [AbstractClassContent::CLASSCONTENT_BASE_NAMESPACE . 'ContentSet'];
+//        $this->classcontentList = array_merge(
+//            $this->classcontentList,
+//            $classcontentList
+//        );
         $this->classcontentList = $classcontentList;
+        $this->tokenStorage = $tokenStorage;
     }
 
     /**
@@ -251,7 +265,7 @@ class ClassContentManager
     {
         return $this->entityManager->getRepository('BackBee\CoreDomain\ClassContent\Revision')->getDraft(
             $content,
-            $this->token ?: $this->app->getBBUserToken(),
+            $this->tokenStorage->getToken(),
             $checkoutOnMissing
         );
     }

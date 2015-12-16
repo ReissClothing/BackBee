@@ -1000,7 +1000,11 @@ class Renderer extends AbstractRenderer
 //        dirty workaround
         if (0!==strpos($this->templateFile,'BackBeeWebBundle')){
 
-        $this->templateFile = 'BackBeeWebBundle::'. strtolower(str_replace('.twig', '.html.twig', $this->templateFile));
+//            @todo gvf remove once refactoring is finished, temporary hack
+            $this->templateFile = 'BackBeeWebBundle::'.$this->templateFile;
+            if (false == strpos($this->templateFile, '.html.twig')){
+                $this->templateFile = str_replace('.twig', '.html.twig', $this->templateFile);
+            }
         }
 
         $x = $this->getObject();

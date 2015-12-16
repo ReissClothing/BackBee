@@ -1,0 +1,11 @@
+{% extends "BackBeeWebBundle::main.html.twig" %}
+
+{% block content %}
+    <!-- BEGIn cols -->
+    <div class="contentcol row">
+        <div class="col-sm-12 content-area" id="content">
+            {{ this.container().first()|raw }}
+        </div>
+    </div>
+    <!-- END cols -->
+{% endblock %}

@@ -39,7 +39,9 @@ define(
             contentHoverClass: 'bb-content-hover',
             identifierDataAttribute: 'bb-identifier',
             idDataAttribute: 'bb-id',
-
+            ELEMENT_IMAGE: 'Element/Image',
+            TARGET_SELF: 'self',
+            TARGET_PARENT: 'parent',
             /**
              * listen the DOM
              */
@@ -69,9 +71,15 @@ define(
             onContextMenu: function (event) {
                 if (this.isEnabled === true) {
                     var currentTarget = jQuery(event.currentTarget),
+                        contentTargetRule = this.TARGET_SELF,
                         content = ContentManager.getContentByNode(currentTarget);
+
                     if (ContentManager.isUsable(content.type)) {
                         content.jQueryObject = currentTarget;
+                        contentTargetRule = ContentManager.getEventTargetRule(content.type);
+                        if (contentTargetRule === 'parent') {
+                            content = content.getParent();
+                        }
                         Core.Mediator.publish('on:classcontent:contextmenu', content, event);
                     }
                 }

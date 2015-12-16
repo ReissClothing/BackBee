@@ -130,6 +130,7 @@ services:
         class:      %bbapp.classcontent.manager.class%
         arguments:
             - @doctrine.orm.default_entity_manager
+            - @security.token_storage
             - %bbapp.classcontent_list%
             - @classcontent.iconizer.chained
 

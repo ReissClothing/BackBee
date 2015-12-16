@@ -19,6 +19,12 @@ services:
             - { name: "kernel.event_listener", event: "classcontent.include", method: onInclude }
             - { name: doctrine.event_listener, event: postLoad}
 
+    bbapp.repository.user:
+        class: Doctrine\ORM\EntityRepository
+        factory_service: doctrine.orm.default_entity_manager
+        factory_method: getRepository
+        arguments:
+            - BackBee\CoreDomain\Security\User
 #
 #classcontent.update:
 #    listeners:

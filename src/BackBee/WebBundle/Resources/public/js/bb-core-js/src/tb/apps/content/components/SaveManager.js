@@ -21,11 +21,13 @@ define(
     [
         'content.container',
         'content.repository',
+        'content.manager',
         'jquery',
         'jsclass'
     ],
     function (ContentContainer,
               ContentRepository,
+              ContentManager,
               jQuery
             ) {
 
@@ -92,6 +94,44 @@ define(
                     ContentRepository.save(content.revision).done(function () {
                         self.merge(content);
                         dfd.resolve();
+                    }).fail(function () {
+                        var revision = content.revision;
+                        delete revision.uid;
+
+                        ContentManager.createElement(content.type, revision).done(function (newContent) {
+                            var parent = content.getParent();
+
+                            parent.getData('elements').done(function (elements) {
+                                var key,
+                                    currentKey;
+
+                                for (key in elements) {
+                                    if (elements.hasOwnProperty(key)) {
+                                        if (elements[key].uid === content.uid) {
+                                            currentKey = key;
+                                            break;
+                                        }
+                                    }
+                                }
+
+                                if (currentKey !== undefined) {
+                                    elements = {};
+                                    elements[currentKey] = {
+                                        'type': newContent.type,
+                                        'uid': newContent.uid
+                                    };
+
+                                    parent.setElements(elements);
+                                    self.commit(parent);
+
+                                    self.push(parent).done(function () {
+                                        parent.refresh().done(function () {
+                                            dfd.resolve();
+                                        });
+                                    });
+                                }
+                            });
+                        });
                     });
                 }
 

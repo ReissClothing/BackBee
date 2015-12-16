@@ -222,9 +222,6 @@ define(['Core', 'jquery', 'Core/Utils', 'Core/Api', 'actionContainer', 'undersco
                 var plugins = this.contentPlugins[contentType] || [],
                     pluginConfig = Core.config('plugins'),
                     namespaces = Core.config('plugins:namespace');
-                console.log(plugins);
-                console.log(pluginConfig);
-                console.log(namespaces);
                 if (plugins.length) {
                     return plugins;
                 }

@@ -36,7 +36,11 @@
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3",
-        "behat/symfony2-extension": "^2.1"
+        "behat/symfony2-extension": "^2.1",
+        "behat/web-api-extension": "~1.0@dev",
+        "behat/mink-extension": "^2.1",
+        "behat/mink":                   "~1.5",
+        "behat/mink-browserkit-driver": "~1.1"
     },
     "scripts": {
         "post-install-cmd": [

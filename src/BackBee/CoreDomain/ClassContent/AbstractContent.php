@@ -1132,7 +1132,7 @@ abstract class AbstractContent implements ObjectIdentifiableInterface, Renderabl
      */
     final public function getDefaultImageName()
     {
-        return str_replace([self::CLASSCONTENT_BASE_NAMESPACE, NAMESPACE_SEPARATOR], ['', '/'], get_class($this->getContentInstance())).'.png';
+        return '/mediaToRefactor/'. strtolower(str_replace([self::CLASSCONTENT_BASE_NAMESPACE, NAMESPACE_SEPARATOR], ['', '/'], get_class($this->getContentInstance())).'.png');
     }
 
     /**

@@ -31,7 +31,6 @@ use BackBee\CoreDomain\ClassContent\AbstractClassContent;
 use BackBee\CoreDomain\ClassContent\ContentSet;
 use BackBee\ClassContent\Exception\ClassContentException;
 use BackBee\CoreDomain\ClassContent\Revision;
-use BackBee\Security\Token\BBUserToken;
 
 /**
  * Revision repository.
@@ -51,7 +50,7 @@ class RevisionRepository extends EntityRepository
      *
      * @return Revision
      */
-    public function checkout(AbstractClassContent $content, BBUserToken $token)
+    public function checkout(AbstractClassContent $content, TokenInterface $token)
     {
         $revision = new Revision();
         $revision->setAccept($content->getAccept());
@@ -175,7 +174,7 @@ class RevisionRepository extends EntityRepository
      *
      * @return Revision|null
      */
-    public function getDraft(AbstractClassContent $content, BBUserToken $token, $checkoutOnMissing = false)
+    public function getDraft(AbstractClassContent $content, TokenInterface $token, $checkoutOnMissing = false)
     {
         if (null === $revision = $content->getDraft()) {
             try {

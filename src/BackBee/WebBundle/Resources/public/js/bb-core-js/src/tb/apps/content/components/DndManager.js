@@ -222,9 +222,11 @@ define(
 
                             if (contentSet.accept(type)) {
                                 config.class = this.dropZoneClass + ' ' + this.validDropZoneClass;
+                                config.droppable = "true";
                                 div = Renderer.render(dropZoneTemplate, config);
                             } else {
                                 config.class = this.dropZoneClass + ' ' + this.forbiddenDropZoneClass;
+                                config.droppable = "false";
                                 div = Renderer.render(dropZoneTemplate, config);
                             }
 

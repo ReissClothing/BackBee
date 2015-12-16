@@ -54,7 +54,8 @@ define(
             imageClass: 'Element/Image',
             defaultPicturePath: require.toUrl('html/img/filedrop.png'),
             contentSelectedClass: 'bb-content-selected',
-
+            TARGET_SELF: 'self',
+            TARGET_PARENT: 'parent',
 
             initialize: function () {
                 this.maskMng = require('component!mask').createMask({});
@@ -117,16 +118,36 @@ define(
                 return result;
             },
 
+            getEventTargetRule: function (type) {
+                var targetRule = this.TARGET_SELF,
+                    rules = Core.config('contents_events:rules'),
+                    self = this,
+                    currentRule;
+
+                if (rules !== undefined) {
+                    jQuery.each(rules, function (i) {
+                        currentRule = rules[i];
+                        if (currentRule.hasOwnProperty('type') && type === currentRule.type) {
+                            targetRule = [self.TARGET_SELF, self.TARGET_PARENT].indexOf(currentRule.target) !== -1 ? currentRule.target : self.TARGET_SELF;
+                            return true;
+                        }
+
+                    });
+                }
+
+                return targetRule;
+            },
+
             /**
              * Create new element from the API
              * @param {String} type
              * @returns {Promise}
              */
-            createElement: function (type) {
+            createElement: function (type, data) {
                 var self = this,
                     dfd = jQuery.Deferred();
 
-                ContentRepository.save({'type': type}).done(function (data, response) {
+                ContentRepository.save({'type': type, 'data': data}).done(function (data, response) {
                     dfd.resolve(self.buildElement({'type': type, 'uid': response.getHeader('BB-RESOURCE-UID')}));
 
                     return data;
@@ -296,7 +317,7 @@ define(
                     refreshPicture = function (img) {
                         var src = img.attr('src');
 
-                        if (src.length === 0 || img.naturalWidth === 0) {
+                        if (src === undefined || src.length === 0 || img.naturalWidth === 0) {
                             src = require('content.manager').defaultPicturePath;
 
                         }
