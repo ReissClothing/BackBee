@@ -24,7 +24,7 @@
 namespace BackBee\CoreDomain\Site;
 
 use BackBee\CoreDomain\Security\Acl\Domain\AbstractObjectIdentifiable;
-use BackBee\Utils\Numeric;
+use BackBee\CoreDomain\Utils\Numeric;
 use Doctrine\Common\Collections\ArrayCollection;
 use InvalidArgumentException;
 use JMS\Serializer\Annotation as Serializer;
