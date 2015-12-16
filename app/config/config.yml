@@ -584,7 +584,9 @@ back_bee_layout_generator:
               MainColumn:
                 mainZone: true
                 accept: ~
-                maxentry: 0
+#               @todo gvf null should allow for infinite entries.
+#                maxentry: 100
+                maxentry: 100
                 defaultClassContent: ~
                 inherited: false
 

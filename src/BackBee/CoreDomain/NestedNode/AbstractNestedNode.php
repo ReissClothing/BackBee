@@ -23,13 +23,12 @@
 
 namespace BackBee\CoreDomain\NestedNode;
 
+use BackBee\CoreDomainBundle\Utils\Numeric;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 
-use BackBee\Exception\InvalidArgumentException;
 use BackBee\CoreDomain\Security\Acl\Domain\AbstractObjectIdentifiable;
-use BackBee\Utils\Numeric;
 
 /**
  * Abstract class for nested node object in BackBee.
@@ -382,7 +381,7 @@ abstract class AbstractNestedNode extends AbstractObjectIdentifiable
     public function setLeftnode($leftnode)
     {
         if (false === Numeric::isPositiveInteger($leftnode)) {
-            throw new InvalidArgumentException('A nested node position must be a strictly positive integer.');
+            throw new \InvalidArgumentException('A nested node position must be a strictly positive integer.');
         }
 
         $this->_leftnode = $leftnode;
