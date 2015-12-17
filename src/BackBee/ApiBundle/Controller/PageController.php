@@ -23,6 +23,7 @@
 
 namespace BackBee\ApiBundle\Controller;
 
+use BackBee\CoreDomainBundle\AutoLoader\Exception\ClassNotFoundException;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
 use Symfony\Component\HttpFoundation\Request;
