@@ -292,9 +292,9 @@ class PageController extends AbstractRestController
             $this->granted('CREATE', $page);
             $em = $this->getDoctrine()->getManager();
             if (null !== $page->getParent()) {
-               $em
-                        ->getRepository('BackBee\CoreDomain\NestedNode\Page')
-                        ->insertNodeAsFirstChildOf($page, $page->getParent());
+                $em
+                    ->getRepository('BackBee\CoreDomain\NestedNode\Page')
+                    ->insertNodeAsFirstChildOf($page, $page->getParent());
             }
 
             $em->persist($page);
@@ -547,10 +547,10 @@ class PageController extends AbstractRestController
      *
      * @Rest\Security(expression="is_granted('EDIT', page)")
      */
-    public function patchAction(Request $request)
+    public function patchAction(Request $request, $uid)
     {
 //     * @ParamConverter(name="page", class="BackBee\CoreDomain\NestedNode\Page")
-        $page =$this->getEntity('BackBee\CoreDomain\NestedNode\Page', $request->query->get('uid'));
+        $page =$this->getEntity('BackBee\CoreDomain\NestedNode\Page', $uid);
 
         $operations = $request->request->all();
 
@@ -667,12 +667,12 @@ class PageController extends AbstractRestController
         }
 
         return $this->createJsonResponse(null, 201, [
-            'Location' => $this->get('router')->generate(
-                'bb.rest.page.get',
-                [
-                    'version' => $request->attributes->get('version'),
-                    'uid'     => $page->getUid(),
-                ]
+                'Location' => $this->get('router')->generate(
+                    'bb.rest.page.get',
+                    [
+                        'version' => $request->attributes->get('version'),
+                        'uid'     => $page->getUid(),
+                    ]
                 )
             ]
         );
@@ -736,7 +736,7 @@ class PageController extends AbstractRestController
     private function doClassicGetCollectionVersion1(Request $request, $start, $count, Page $parent = null)
     {
         $qb = $this->getPageRepository()
-                    ->createQueryBuilder('p');
+            ->createQueryBuilder('p');
         $orderBy = [
             '_position' => 'ASC',
             '_leftnode' => 'ASC',
@@ -751,7 +751,7 @@ class PageController extends AbstractRestController
         }
         if (null === $parent) {
             $qb->andSiteIs($this->getApplication()->getSite())
-                    ->andParentIs(null);
+                ->andParentIs(null);
         } else {
             $this->granted('VIEW', $parent);
             $qb->andIsDescendantOf($parent, true, 1, $orderBy, $count, $start);
@@ -780,7 +780,7 @@ class PageController extends AbstractRestController
 //        seguir por aqui en BB el parent no es null seguramente por el param converter
 
         $qb = $this->getPageRepository()
-                    ->createQueryBuilder('p');
+            ->createQueryBuilder('p');
 
         if (null !== $parent) {
             $this->granted('VIEW', $parent);
@@ -845,7 +845,7 @@ class PageController extends AbstractRestController
      * Getter for page entity repository.
      *
      * @return \BackBee\NestedNode\Site\Site
-    */
+     */
     private function getSiteRepository()
     {
         return $this->getDoctrine()->getManager()->getRepository('BackBee\CoreDomain\Site\Site');
