@@ -80,7 +80,7 @@ class PageController extends AbstractRestController
         $page = $this->getEntity('BackBee\CoreDomain\NestedNode\Page', $uid);
 
         $metadata = null !== $page->getMetaData() ? $page->getMetaData()->jsonSerialize() : array();
-        $default_metadata = new MetaDataBag($this->getApplication()->getConfig()->getSection('metadata'));
+        $default_metadata = new MetaDataBag($this->getParameter('bbapp.metadata_config'));
         $metadata = array_merge($default_metadata->jsonSerialize(), $metadata);
 
         return $this->createJsonResponse($metadata);
