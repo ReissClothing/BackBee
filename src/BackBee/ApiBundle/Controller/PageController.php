@@ -74,10 +74,10 @@ class PageController extends AbstractRestController
      * @return \Symfony\Component\HttpFoundation\Response
      *
      */
-    public function getMetadataAction(Request $request)
+    public function getMetadataAction(Request $request, $uid)
     {
 //     * @ParamConverter(name="page", class="BackBee\CoreDomain\NestedNode\Page")
-        $page = $this->getEntity('BackBee\CoreDomain\NestedNode\Page', $request->query->get('uid'));
+        $page = $this->getEntity('BackBee\CoreDomain\NestedNode\Page', $uid);
 
         $metadata = null !== $page->getMetaData() ? $page->getMetaData()->jsonSerialize() : array();
         $default_metadata = new MetaDataBag($this->getApplication()->getConfig()->getSection('metadata'));
@@ -92,10 +92,10 @@ class PageController extends AbstractRestController
      * @param Page $page the page we want to get its ancestors
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function getAncestorsAction(Request $request)
+    public function getAncestorsAction(Request $request, $uid)
     {
 //     * @ParamConverter(name="page", class="BackBee\CoreDomain\NestedNode\Page")
-        $page = $this->getEntity('BackBee\CoreDomain\NestedNode\Page', $request->query->get('uid'));
+        $page = $this->getEntity('BackBee\CoreDomain\NestedNode\Page', $uid);
 
         $ancestors = $this->getPageRepository()->getAncestors($page);
 
@@ -111,10 +111,10 @@ class PageController extends AbstractRestController
      * @return Symfony\Component\HttpFoundation\Response
      *
      */
-    public function putMetadataAction(Request $request)
+    public function putMetadataAction(Request $request, $uid)
     {
 //     * @ParamConverter(name="page", class="BackBee\CoreDomain\NestedNode\Page")
-        $page = $this->getEntity('BackBee\CoreDomain\NestedNode\Page', $request->query->get('uid'));
+        $page = $this->getEntity('BackBee\CoreDomain\NestedNode\Page', $uid);
 
         $metadatas = $page->getMetaData();
 
@@ -590,10 +590,10 @@ class PageController extends AbstractRestController
      * @return \Symfony\Component\HttpFoundation\Response
      *
      */
-    public function deleteAction(Request $request)
+    public function deleteAction(Request $request, $uid)
     {
 //     * @ParamConverter(name="page", class="BackBee\CoreDomain\NestedNode\Page")
-        $page =$this->getEntity('BackBee\CoreDomain\NestedNode\Page', $request->query->get('uid'));
+        $page =$this->getEntity('BackBee\CoreDomain\NestedNode\Page', $uid);
 
         if (true === $page->isRoot()) {
             throw new BadRequestHttpException('Cannot remove root page of a site.');
@@ -625,10 +625,10 @@ class PageController extends AbstractRestController
      *
      * @Rest\Security(expression="is_granted('CREATE', source)")
      */
-    public function cloneAction(Request $request)
+    public function cloneAction(Request $request, $uid)
     {
 //     * @ParamConverter(name="source", class="BackBee\CoreDomain\NestedNode\Page")
-        $source = $this->getEntity('BackBee\CoreDomain\NestedNode\Page', $request->query->get('uid'));
+        $source = $this->getEntity('BackBee\CoreDomain\NestedNode\Page', $uid);
 
 //     * @ParamConverter(name="parent", id_name="parent_uid", id_source="request", class="BackBee\CoreDomain\NestedNode\Page", required=false)
         $parent = $this->getEntity('BackBee\CoreDomain\NestedNode\Page', $request->query->get('parent_uid'), false);
