@@ -57,8 +57,6 @@ Clone this repo and run:
  
     app/console assetic:dump
 
-Edit ``BackBee\WebBundle\Renderer\AbstractRenderer.php`` line 537 and change it according to your setup.
-
 #####IMPORTANT, your php.ini should have (this is because we include classes generated from strings, something that will probably change in near future):
 
 #####allow_url_include=1
