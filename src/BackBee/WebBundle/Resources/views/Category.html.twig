@@ -1,0 +1,16 @@
+{% extends "BackBeeWebBundle::main.html.twig" %}
+
+{% block layout_css_class %}page-has-rightpane{% endblock %}
+
+{% block content %}
+<!-- BEGIn cols -->
+<div class="contentcol row">
+    <div class="col-sm-8 content-area" id="content">
+        {{ this.container().first()|raw }}
+    </div>
+    <aside class="col-sm-4 aside">
+        {{ this.container().next()|raw }}
+    </aside>
+</div>
+<!-- END cols -->
+{% endblock %}
