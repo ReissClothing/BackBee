@@ -136,85 +136,85 @@ class Yaml extends AbstractClassWrapper
                 throw new ClassWrapperException('Malformed class content description');
             }
 
-                $contentDesc = $yamlData;
-                foreach ($contentDesc as $key => $data) {
-                    switch ($key) {
-                        case 'extends':
-                            $buildData['extends'] = $this->_normalizeVar($data, true);
-                            if (substr($buildData['extends'], 0, 1) != NAMESPACE_SEPARATOR) {
-                                $buildData['extends'] = NAMESPACE_SEPARATOR.$this->namespace.
-                                    NAMESPACE_SEPARATOR.$buildData['extends'];
+            $contentDesc = $yamlData;
+            foreach ($contentDesc as $key => $data) {
+                switch ($key) {
+                    case 'extends':
+                        $buildData['extends'] = $this->_normalizeVar($data, true);
+                        if (substr($buildData['extends'], 0, 1) != NAMESPACE_SEPARATOR) {
+                            $buildData['extends'] = NAMESPACE_SEPARATOR.$this->namespace.
+                                NAMESPACE_SEPARATOR.$buildData['extends'];
+                        }
+
+                        break;
+                    case 'interfaces':
+                        $data = false === is_array($data) ? array($data) : $data;
+                        $buildData['interfaces'] = array();
+
+                        foreach ($data as $i) {
+                            $interface = $i;
+                            if (NAMESPACE_SEPARATOR !== substr($i, 0, 1)) {
+                                $interface = NAMESPACE_SEPARATOR.$i;
                             }
 
-                            break;
-                        case 'interfaces':
-                            $data = false === is_array($data) ? array($data) : $data;
-                            $buildData['interfaces'] = array();
+                            // add interface only if it exists
+                            if (true === interface_exists($interface)) {
+                                $buildData['interfaces'][] = $interface;
+                            }
+                        }
 
-                            foreach ($data as $i) {
-                                $interface = $i;
-                                if (NAMESPACE_SEPARATOR !== substr($i, 0, 1)) {
-                                    $interface = NAMESPACE_SEPARATOR.$i;
-                                }
+                        // build up interface use string
+                        $str = implode(', ', $buildData['interfaces']);
+                        if (0 < count($data['interfaces'])) {
+                            $buildData['interfaces'] = 'implements '.$str;
+                        } else {
+                            $buildData['interfaces'] = '';
+                        }
 
-                                // add interface only if it exists
-                                if (true === interface_exists($interface)) {
-                                    $buildData['interfaces'][] = $interface;
-                                }
+                        break;
+                    case 'repository':
+                        if (class_exists($data)) {
+                            $buildData['repository'] = $data;
+                        }
+                        break;
+                    case 'traits':
+                        $data = false === is_array($data) ? array($data) : $data;
+                        $buildData['traits'] = array();
+
+                        foreach ($data as $t) {
+                            $trait = $t;
+                            if (NAMESPACE_SEPARATOR !== substr($t, 0, 1)) {
+                                $trait = NAMESPACE_SEPARATOR.$t;
                             }
 
-                            // build up interface use string
-                            $str = implode(', ', $buildData['interfaces']);
-                            if (0 < count($data['interfaces'])) {
-                                $buildData['interfaces'] = 'implements '.$str;
-                            } else {
-                                $buildData['interfaces'] = '';
+                            // add traits only if it exists
+                            if (true === trait_exists($trait)) {
+                                $buildData['traits'][] = $trait;
                             }
+                        }
 
-                            break;
-                        case 'repository':
-                            if (class_exists($data)) {
-                                $buildData['repository'] = $data;
-                            }
-                            break;
-                        case 'traits':
-                            $data = false === is_array($data) ? array($data) : $data;
-                            $buildData['traits'] = array();
+                        // build up trait use string
+                        $str = implode(', ', $buildData['traits']);
+                        if (0 < count($buildData['traits'])) {
+                            $buildData['traits'] = 'use '.$str.';';
+                        } else {
+                            $buildData['traits'] = '';
+                        }
 
-                            foreach ($data as $t) {
-                                $trait = $t;
-                                if (NAMESPACE_SEPARATOR !== substr($t, 0, 1)) {
-                                    $trait = NAMESPACE_SEPARATOR.$t;
-                                }
+                        break;
+                    case 'elements':
+                    case 'parameters':
+                    case 'properties':
+                        $values = array();
+                        $data = (array) $data;
+                        foreach ($data as $var => $value) {
+                            $values[$this->_normalizeVar($var)] = $value;
+                        }
 
-                                // add traits only if it exists
-                                if (true === trait_exists($trait)) {
-                                    $buildData['traits'][] = $trait;
-                                }
-                            }
-
-                            // build up trait use string
-                            $str = implode(', ', $buildData['traits']);
-                            if (0 < count($buildData['traits'])) {
-                                $buildData['traits'] = 'use '.$str.';';
-                            } else {
-                                $buildData['traits'] = '';
-                            }
-
-                            break;
-                        case 'elements':
-                        case 'parameters':
-                        case 'properties':
-                            $values = array();
-                            $data = (array) $data;
-                            foreach ($data as $var => $value) {
-                                $values[strtolower($this->_normalizeVar($var))] = $value;
-                            }
-
-                            $buildData[$key] = $values;
-                            break;
-                    }
+                        $buildData[$key] = $values;
+                        break;
                 }
+            }
         } catch (ClassWrapperException $e) {
             throw new ClassWrapperException($e->getMessage(), 0, null, $this->_path);
         }
@@ -246,21 +246,21 @@ class Yaml extends AbstractClassWrapper
 //                    return true;
 //                }
 //            }
-            if (!array_key_exists($classConfigKey, $this->classConfigConfiguration)) {
-                throw new \Exception(sprintf('Couldn\'t find class definition \'%s\'', $classpath));
+        if (!array_key_exists($classConfigKey, $this->classConfigConfiguration)) {
+            throw new \Exception(sprintf('Couldn\'t find class definition \'%s\'', $classpath));
 
-            }
-            if ($data = $this->checkDatas($this->classConfigConfiguration[$classConfigKey])) {
-                $data['classname'] = $classname;
-                $data['namespace'] = $namespace;
-                return $this->_buildClass($data);
+        }
+        if ($data = $this->checkDatas($this->classConfigConfiguration[$classConfigKey])) {
+            $data['classname'] = $classname;
+            $data['namespace'] = $namespace;
+            return $this->_buildClass($data);
 
 //                @todo gvf
 //                if (null !== $this->_cache) {
 //                    $this->_cache->save(md5($this->_path), $this->_data);
 //                }
 
-            }
+        }
 
 //@todo gvf
 //        seguir por aqui, cambiar la excepcion, no encuentra el fichero yml
