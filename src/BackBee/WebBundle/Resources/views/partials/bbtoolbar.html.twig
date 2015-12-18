@@ -13,7 +13,8 @@
     <link rel="stylesheet" href="{{ asset_url }}"/>
     {% endstylesheets %}
 {% endif %}
-
+{#todo gvf get role from container param#}
+{#{% if not bbapp_disable_toolbar and is_granted('ROLE_BACKBEE_API')%}#}
 {% if not bbapp_disable_toolbar %}
     <div id="{{ bbapp_wrapper_toolbar_id }}"
             {# TODO gvf leave just version and get it from js#}
