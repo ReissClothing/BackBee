@@ -1,0 +1,36 @@
+{% extends 'BackBeeWebBundle::layout.html.twig' %}
+{% block head %}
+    {{ parent() }}
+    {{ this.partial('BackBeeWebBundle::partials/head.html.twig')|raw }}
+{% endblock %}
+
+{% block body %}
+
+    {% include 'BackBeeWebBundle:partials:bbtoolbar.html.twig' %}
+
+    <div id="fb-root"></div>
+
+    <div id="bb5-site-wrapper" class="{% block layout_css_class %}{% endblock %}">
+
+        {% include 'BackBeeWebBundle:partials:header.html.twig' %}
+
+        <nav id="nav-primary-wrapper" class="nav navbar-wrapper collapse navbar-collapse">
+            {#<div>#}
+                {#{{ dump(app.user) }}#}
+            {#</div>#}
+            <div class="container">
+                {{ this.navbar('header')|raw }}
+            </div>
+        </nav>
+
+        {% block beforeMainContent %}
+            {{ this.breadcrumb()|raw }}
+        {% endblock %}
+
+        <div class="main container" role="main" itemprop="mainContentOfPage">
+            {% block content %}{% endblock %}
+        </div>
+
+        {{ this.partial('partials/footer.twig')|raw }}
+    </div>
+{% endblock %}
