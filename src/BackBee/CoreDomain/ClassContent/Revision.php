@@ -200,7 +200,7 @@ class Revision extends AbstractContent implements \Iterator, \Countable
      *
      * @return Revision
      */
-    public function setToken(BBUserToken $token = null)
+    public function setToken(TokenInterface $token = null)
     {
         $this->token = $token;
 
